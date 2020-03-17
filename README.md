@@ -246,3 +246,4 @@ Instagram: <https://www.instagram.com/CreativeTimOfficial>
 [CHANGELOG]: ./CHANGELOG.md
 
 [version-badge]: https://img.shields.io/badge/version-2.4.0-blue.svg
+# dashboard_angular
