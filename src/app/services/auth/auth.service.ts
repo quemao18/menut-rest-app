@@ -112,6 +112,7 @@ export class AuthService {
     this.spinner.show();
     return this.afAuth.auth.signInWithPopup(provider)
     .then((result) => {
+      console.log(result)
        this.ngZone.run(() => {
          setTimeout(() => {
           this.spinner.hide();
