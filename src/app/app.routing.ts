@@ -4,6 +4,8 @@ import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { LoginComponent } from './login/login.component';
+import { HomeLayoutComponent } from './layouts/home-layout/home-layout.component';
 
 const routes: Routes =[
   {
@@ -16,6 +18,18 @@ const routes: Routes =[
     children: [{
       path: '',
       loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
+    }]
+  },
+  {
+    path: 'home',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  }, {
+    path: '',
+    component: HomeLayoutComponent,
+    children: [{
+      path: '',
+      loadChildren: './layouts/home-layout/home-layout.module#HomeLayoutModule'
     }]
   }
 ];
