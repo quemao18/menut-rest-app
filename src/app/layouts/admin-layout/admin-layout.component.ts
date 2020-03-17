@@ -21,7 +21,9 @@ export class AdminLayoutComponent implements OnInit {
 
   ngOnInit() {
       const isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
-
+      
+      $('.fixed-plugin').hide(); //ocultando el config a la derecha
+      
       if (isWindows && !document.getElementsByTagName('body')[0].classList.contains('sidebar-mini')) {
           // if we are on windows OS we activate the perfectScrollbar function
 
@@ -61,6 +63,7 @@ export class AdminLayoutComponent implements OnInit {
       let $sidebar_responsive = $('body > .navbar-collapse');
       let $sidebar_img_container = $sidebar.find('.sidebar-background');
 
+    //   $sidebar.attr('data-color', 'azure');
 
       if(window_width > 767){
           if($('.fixed-plugin .dropdown').hasClass('show-dropdown')){
