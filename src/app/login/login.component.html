@@ -6,14 +6,14 @@
                 <div class="card-header card-header-rose text-center">
                   <h4 class="card-title">Login</h4>
                   <div class="social-line">
-                    <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
+                    <a href="#facebook"  (click)="authService.facebookAuth()" class="btn btn-just-icon btn-link btn-white">
                       <i class="fa fa-facebook-square"></i>
                     </a>
-                    <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
+                    <!-- <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
                       <i class="fa fa-twitter"></i>
-                    </a>
-                    <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
-                      <i class="fa fa-google-plus"></i>
+                    </a> -->
+                    <a href="#google" (click)="authService.googleAuth()" class="btn btn-just-icon btn-link btn-white">
+                      <i class="fa fa-google"></i>
                     </a>
                   </div>
                 </div>
@@ -36,7 +36,7 @@
                           <i class="material-icons">email</i>
                         </span>
                       </div>
-                      <input type="email" class="form-control" placeholder="Email...">
+                      <input #userEmail type="email" class="form-control" placeholder="Email..." required>
                     </div>
                   </span>
                   <span class="bmd-form-group">
@@ -46,12 +46,13 @@
                           <i class="material-icons">lock_outline</i>
                         </span>
                       </div>
-                      <input type="password" class="form-control" placeholder="Password...">
+                      <input #userPwd type="password" class="form-control" placeholder="Password..." required>
                     </div>
                   </span>
                 </div>
                 <div class="card-footer justify-content-center">
-                  <a href="#pablo" class="btn btn-rose btn-link btn-lg">Lets Go</a>
+                  <input type="button" (click)="authService.signIn(userEmail.value, userPwd.value)" class="btn btn-rose btn-link btn-lg" value="Login">
+                  <input type="button" (click)="authService.signUp(userEmail.value, userPwd.value)" class="btn btn-rose btn-link btn-lg" value="Register">
                 </div>
               </div>
             </form>
