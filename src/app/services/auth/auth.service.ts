@@ -2,10 +2,11 @@ import { Injectable, NgZone } from '@angular/core';
 import { User } from "../user/user";
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from "@angular/fire/auth";
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { NotificationService } from '../notification/notification.service';
+import { Observable } from 'rxjs/internal/Observable';
 
 declare var $: any;
 
@@ -16,6 +17,8 @@ declare var $: any;
 export class AuthService {
   userData: any; // Save logged in user data
   isAdmin: boolean = false;
+  user: any  = {isAdmin:false}; 
+  private usersCollection: AngularFirestoreCollection<User>;
 
   constructor(
     public afs: AngularFirestore,   // Inject Firestore service
@@ -27,13 +30,19 @@ export class AuthService {
   ) {    
     /* Saving user data in localstorage when 
     logged in and setting up null when logged out */
+    this.spinner.show();
     this.afAuth.authState.subscribe(user => {
+      this.spinner.hide();
       if (user) {
         this.userData = user;
-        this.setIsAdminIn(user.uid);
-        this.userData.isAdmin = this.isAdmin;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user'));
+        // this.setIsAdminIn(user.uid);
+        this.getUser(user.uid);
+        setTimeout(() => {
+          this.userData.isAdmin = this.user.isAdmin;
+          localStorage.setItem('user', JSON.stringify(this.userData));
+          JSON.parse(localStorage.getItem('user'));
+        }, 1000);
+
       } else {
         localStorage.setItem('user', null);
         JSON.parse(localStorage.getItem('user'));
@@ -109,7 +118,7 @@ export class AuthService {
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null && user.emailVerified !== false && this.isAdmin !== false) ? true : false;
+    return (user !== null && user.emailVerified !== false && this.user.isAdmin !== false) ? true : false;
   }
 
   // Sign in with Google
@@ -146,17 +155,17 @@ export class AuthService {
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
   setUserData(user) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
-    this.setIsAdminIn(user.uid);
+    // this.setIsAdminIn(user.uid);
     // console.log(this.isAdmin);
-    if(!this.isAdmin) 
-    this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not allowed to access!' );
+    // if(!this.isAdmin) 
+    // this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not allowed to access!' );
     const userData: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
-      isAdmin: this.isAdmin
+      isAdmin: this.user.isAdmin
     }
     return userRef.set(userData, {
       merge: true
@@ -169,7 +178,16 @@ export class AuthService {
       userD.subscribe(value => {
         this.isAdmin = value.isAdmin;
       });
-}
+  }
+
+  //Obtiene un gato
+  public getUser(uid: string) {
+    this.afs.collection('users').doc(uid).valueChanges().subscribe(
+      user => { 
+          this.user = user
+      }
+    );
+  }
 
   // Sign out 
   async signOut() {
