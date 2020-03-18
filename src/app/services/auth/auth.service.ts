@@ -92,13 +92,16 @@ export class AuthService {
 
   // Reset Forggot password
   async forgotPassword(passwordResetEmail) {
+    this.spinner.show();
     return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail)
     .then(() => {
       // window.alert('Password reset email sent, check your inbox.');
+      this.spinner.hide();
       this.notification.showNotification('top', 'center', 'success', 'check', 'Password reset email sent, check your inbox.');
       this.router.navigate(['login']);
     }).catch((error) => {
       // window.alert(error)
+      this.spinner.hide();
       this.notification.showNotification('top', 'center', 'danger', 'warning', error);
     })
   }
