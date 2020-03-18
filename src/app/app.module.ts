@@ -19,8 +19,8 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from 'environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { NotificationsComponent } from './notifications/notifications.component';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { NotificationService } from './services/notification/notification.service';
 
 
 @NgModule({
@@ -46,7 +46,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     HomeLayoutComponent,
 
   ],
-  providers: [AuthService, NotificationsComponent],
+  providers: [AuthService, NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

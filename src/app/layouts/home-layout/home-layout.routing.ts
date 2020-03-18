@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from '../../login/login.component';
+import { SecureInnerPagesGuard } from 'app/services/guard/secure-inner-pages.guard';
+import { ForgotPasswordComponent } from 'app/forgot-password/forgot-password.component';
 
 export const HomeLayoutRoutes: Routes = [
     // {
@@ -44,6 +46,7 @@ export const HomeLayoutRoutes: Routes = [
     //         component: UpgradeComponent
     //     }]
     // }
-    { path: 'login',      component: LoginComponent },
+    { path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard] },
+    { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [SecureInnerPagesGuard] },
 
 ];

@@ -59,7 +59,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'table-list',     component: TableListComponent, canActivate: [AuthGuard], },
     { path: 'typography',     component: TypographyComponent, canActivate: [AuthGuard], },
     { path: 'icons',          component: IconsComponent, canActivate: [AuthGuard], },
-    { path: 'maps',           component: MapsComponent, canActivate: [AuthGuard], },
+    // { path: 'maps',           component: MapsComponent, canActivate: [AuthGuard], },
     { path: 'notifications',  component: NotificationsComponent, canActivate: [AuthGuard], },
     { path: 'upgrade',        component: UpgradeComponent },
 ];

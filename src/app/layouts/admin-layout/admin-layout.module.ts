@@ -37,7 +37,7 @@ import {MatSelectModule} from '@angular/material/select';
     TableListComponent,
     TypographyComponent,
     IconsComponent,
-    MapsComponent,
+    // MapsComponent,
     NotificationsComponent,
     UpgradeComponent,
   ]
