@@ -163,7 +163,7 @@ export class AuthService {
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
-      isAdmin: this.user.isAdmin
+      // isAdmin: this.user.isAdmin
     }
     return userRef.update(userData)
   }
