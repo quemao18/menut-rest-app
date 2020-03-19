@@ -47,7 +47,7 @@ export class AuthService {
         localStorage.setItem('user', null);
         JSON.parse(localStorage.getItem('user'));
       }
-    })
+    });
   }
 
   // Sign in with email/password
@@ -155,9 +155,7 @@ export class AuthService {
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
   setUserData(user) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
-    // this.setIsAdminIn(user.uid);
-    // console.log(this.isAdmin);
-    // if(!this.isAdmin) 
+    // if(!this.user.isAdmin) 
     // this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not allowed to access!' );
     const userData: User = {
       uid: user.uid,
@@ -167,18 +165,16 @@ export class AuthService {
       emailVerified: user.emailVerified,
       isAdmin: this.user.isAdmin
     }
-    return userRef.set(userData, {
-      merge: true
-    })
+    return userRef.update(userData)
   }
 
-  async setIsAdminIn(uid){
-      const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-      const userD = userRef.valueChanges();
-      userD.subscribe(value => {
-        this.isAdmin = value.isAdmin;
-      });
-  }
+  // async setIsAdminIn(uid){
+  //     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+  //     const userD = userRef.valueChanges();
+  //     userD.subscribe(value => {
+  //       this.isAdmin = value.isAdmin;
+  //     });
+  // }
 
   //Obtiene un gato
   public getUser(uid: string) {
