@@ -247,3 +247,20 @@ Instagram: <https://www.instagram.com/CreativeTimOfficial>
 
 [version-badge]: https://img.shields.io/badge/version-2.4.0-blue.svg
 # dashboard_angular
+
+
+### create environments
+
+export const environment = {
+  production: false,
+  firebaseConfig: {
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: ""
+  }
+};

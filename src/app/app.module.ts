@@ -38,13 +38,12 @@ import { NotificationService } from './services/notification/notification.servic
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
   ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     HomeLayoutComponent,
-
   ],
   providers: [AuthService, NotificationService],
   bootstrap: [AppComponent]

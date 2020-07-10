@@ -17,7 +17,11 @@ import {MatRippleModule} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
-
+import { WizardComponent } from 'app/wizard/wizard.component';
+import { NgWizardModule, NgWizardConfig, THEME } from 'ng-wizard';
+const ngWizardConfig: NgWizardConfig = {
+  theme: THEME.default
+};
 @NgModule({
   imports: [
     CommonModule,
@@ -30,6 +34,7 @@ import {MatSelectModule} from '@angular/material/select';
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
+    NgWizardModule.forRoot(ngWizardConfig)
   ],
   declarations: [
     DashboardComponent,
@@ -40,6 +45,7 @@ import {MatSelectModule} from '@angular/material/select';
     // MapsComponent,
     NotificationsComponent,
     UpgradeComponent,
+    WizardComponent
   ]
 })
 

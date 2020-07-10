@@ -1,0 +1,30 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 ml-auto mr-auto">
+                <div class="" >
+                <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
+ 
+                    <ng-wizard-step [title]="'Step 1'" [description]="'Step 1 description'">
+                        <span>Step 1 content</span>
+                    </ng-wizard-step>
+                 
+                    <ng-wizard-step [title]="'Step 2'" [description]="'Step 2 description'">
+                        <span>Step 2 content</span>
+                    </ng-wizard-step>
+                 
+                    <ng-wizard-step [title]="'Step 3'" [description]="'Step 3 description'">
+                        <span>Step 3 content</span>
+                    </ng-wizard-step>
+                 
+                    <ng-wizard-step [title]="'Step 4'" [description]="'Step 4 description'">
+                        <span>Step 4 content</span>
+                    </ng-wizard-step>
+                 
+                </ng-wizard>
+                </div>
+
+            </div>
+        </div>
+    </div>
+  </div>

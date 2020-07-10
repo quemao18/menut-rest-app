@@ -46,7 +46,7 @@ export const HomeLayoutRoutes: Routes = [
     //         component: UpgradeComponent
     //     }]
     // }
-    { path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard] },
+    { path: 'login', component: LoginComponent,  },
     { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [SecureInnerPagesGuard] },
 
 ];

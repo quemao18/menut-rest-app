@@ -10,6 +10,7 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { AuthGuard } from 'app/services/guard/auth.guard';
 import { SecureInnerPagesGuard } from 'app/services/guard/secure-inner-pages.guard';
+import { WizardComponent } from 'app/wizard/wizard.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -62,4 +63,6 @@ export const AdminLayoutRoutes: Routes = [
     // { path: 'maps',           component: MapsComponent, canActivate: [AuthGuard], },
     { path: 'notifications',  component: NotificationsComponent, canActivate: [AuthGuard], },
     { path: 'upgrade',        component: UpgradeComponent },
+    { path: 'wizard',         component: WizardComponent },
+
 ];

@@ -1,12 +1,12 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, OnInit } from '@angular/core';
 import { User } from "../user/user";
-import { auth } from 'firebase/app';
+// import { auth } from 'firebase/app';
+import * as firebase from 'firebase/app';
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { NotificationService } from '../notification/notification.service';
-import { Observable } from 'rxjs/internal/Observable';
 
 declare var $: any;
 
@@ -15,10 +15,11 @@ declare var $: any;
 })
 
 export class AuthService {
-  userData: any; // Save logged in user data
+
+  userDataAuth: any; // Save logged in user data
   isAdmin: boolean = false;
-  user: any  = {isAdmin:false}; 
-  private usersCollection: AngularFirestoreCollection<User>;
+  userDB: any ;
+  userLogged: any = null;
 
   constructor(
     public afs: AngularFirestore,   // Inject Firestore service
@@ -28,40 +29,22 @@ export class AuthService {
     public notification: NotificationService,
     public spinner: NgxSpinnerService
   ) {    
-    /* Saving user data in localstorage when 
-    logged in and setting up null when logged out */
-    this.spinner.show();
-    this.afAuth.authState.subscribe(user => {
-      this.spinner.hide();
-      if (user) {
-        this.userData = user;
-        // this.setIsAdminIn(user.uid);
-        this.getUser(user.uid);
-        setTimeout(() => {
-          this.userData.isAdmin = this.user.isAdmin;
-          localStorage.setItem('user', JSON.stringify(this.userData));
-          JSON.parse(localStorage.getItem('user'));
-        }, 1000);
 
-      } else {
-        localStorage.setItem('user', null);
-        JSON.parse(localStorage.getItem('user'));
-      }
-    });
+      this.checkAuthFirebase();
+
   }
 
   // Sign in with email/password
   async signIn(email, password) {
     this.spinner.show();
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+    return await firebase.auth().signInWithEmailAndPassword(email, password)
       .then((result) => { 
         this.ngZone.run(() => {
-          setTimeout(() => {
-            this.spinner.hide();
-            this.router.navigate(['dashboard']);
-          }, 50);
-        });
-        this.setUserData(result.user);
+          this.spinner.hide();
+          this.router.navigate(['dashboard']);
+          this.setUserData(result.user);
+        }); 
+
       }).catch((error) => {
         // window.alert(error.message)
         this.spinner.hide();
@@ -73,7 +56,7 @@ export class AuthService {
   async signUp(email, password) {
     try {
       this.spinner.show();
-      const result = await this.afAuth.auth.createUserWithEmailAndPassword(email, password);
+      const result = await firebase.auth().createUserWithEmailAndPassword(email, password);
       /* Call the SendVerificaitonMail() function when new user sign
       up and returns promise */
       this.spinner.hide();
@@ -91,7 +74,7 @@ export class AuthService {
 
   // Send email verfificaiton when new user sign up
   async sendVerificationMail() {
-    return this.afAuth.auth.currentUser.sendEmailVerification()
+    return await firebase.auth().currentUser.sendEmailVerification()
     .then(() => {
       // this.router.navigate(['verify-email-address']);
       this.notification.showNotification('top', 'center', 'success', 'check', 'Email sent. Check your inbox!');
@@ -102,7 +85,7 @@ export class AuthService {
   // Reset Forggot password
   async forgotPassword(passwordResetEmail) {
     this.spinner.show();
-    return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail)
+    return await firebase.auth().sendPasswordResetEmail(passwordResetEmail)
     .then(() => {
       // window.alert('Password reset email sent, check your inbox.');
       this.spinner.hide();
@@ -117,32 +100,54 @@ export class AuthService {
 
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null && user.emailVerified !== false && this.user.isAdmin !== false) ? true : false;
+      // return (user !== null && user.emailVerified !== false && this.user.isAdmin !== false) ? true : false;
+    return (this.getUserLoggedIn() === null) ? false : true;
   }
 
+  get isAdmindIn(): boolean { 
+      // return (user !== null && user.emailVerified !== false && this.user.isAdmin !== false) ? true : false;
+    // console.log(this.getUserLoggedIn());
+    return (this.getUserLoggedIn() !== null && this.getUserLoggedIn().isAdmin === false) ? false : true;
+
+  }
   // Sign in with Google
   googleAuth() {
-    return this.authLogin(new auth.GoogleAuthProvider());
+    return this.authLogin(new firebase.auth.GoogleAuthProvider());
   }
 
   // Sign in with Facebook
   facebookAuth() {
-    return this.authLogin(new auth.FacebookAuthProvider());
+    return this.authLogin(new firebase.auth.FacebookAuthProvider());
   }
 
   // Auth logic to run auth providers
   async authLogin(provider) {
-    this.spinner.show();
-    return this.afAuth.auth.signInWithPopup(provider)
+    // this.spinner.show();
+    return await firebase.auth().signInWithPopup(provider)
     .then((result) => {
-       this.ngZone.run(() => {
-         setTimeout(() => {
-          this.spinner.hide();
-          this.router.navigate(['dashboard']);
-         }, 500);
-        })
-      this.setUserData(result.user);
+      // this.spinner.hide();
+
+      this.ngZone.run(() => {
+        if(result.user)
+          this.getUserDB(result.user.uid);
+        else{
+          this.signOut();
+        }
+
+        // this.checkUserExistDB(result.user.uid);
+
+        // setTimeout(() => {
+          // console.log(this.isAdmindIn)
+          // if(this.isAdmindIn)
+          //   this.router.navigate(['dashboard']);
+            // this.signOut();
+        // }, 2000);
+      })
+     
+   
+    // this.setUserData(result.user);
+    // this.getUserDB(result.user.uid);
+
     }).catch((error) => {
       // window.alert(error)
       this.spinner.hide();
@@ -153,47 +158,91 @@ export class AuthService {
   /* Setting up user data when sign in with username/password, 
   sign up with username/password and sign in with social auth  
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
-  setUserData(user) {
+  setUserData(user: any) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
     // if(!this.user.isAdmin) 
     // this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not allowed to access!' );
+    // let userDB = this.getUser(user.uid);
+    // console.log(userDB);
     const userData: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
-      // isAdmin: this.user.isAdmin
+      // isAdmin: user.isAdmin == true ? true: false
     }
-    return userRef.update(userData)
+    
+    userRef.update(userData);
+    // this.setUserLoggedIn(userData);
+    // this.getUser(userData.uid);
   }
 
-  // async setIsAdminIn(uid){
-  //     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-  //     const userD = userRef.valueChanges();
-  //     userD.subscribe(value => {
-  //       this.isAdmin = value.isAdmin;
-  //     });
-  // }
-
   //Obtiene un gato
-  public getUser(uid: string) {
-    this.afs.collection('users').doc(uid).valueChanges().subscribe(
-      user => { 
-          this.user = user
-      }
-    );
+  getUserDB(uid: string) {
+        console.log(uid);
+        return this.afs.collection('users').doc(uid).valueChanges().subscribe(
+          (user: any) => {
+            if(user){
+              console.log('userDB', user);
+              if(user.isAdmin){
+                this.setUserLoggedIn(user);
+                this.router.navigate(['dashboard']);
+              }else{
+                this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );
+                this.signOut();
+              }
+            }else{
+              console.log("No such document!");
+              this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not allowed to access!' );
+              this.signOut();
+
+            }
+          }
+        );
+  }
+
+
+  getUserLoggedIn() {
+    return JSON.parse(localStorage.getItem('user'));
+    // return this.isUserLoggedIn;
+  }
+
+  setUserLoggedIn(data) { 
+    localStorage.setItem('user', JSON.stringify(data));
+  }
+
+  async checkAuthFirebase() {
+    console.log(this.getUserLoggedIn())
+    // if(this.getUserLoggedIn().isAdmindIn !== true){
+    //   this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );
+    //   this.router.navigate(['login'])
+    // }
+    // this.spinner.show();
+    // return this.afAuth.authState.subscribe(user => {
+    //   this.spinner.hide();
+    //   if (user) {
+    //     this.getUser(user.uid);
+    //   }else{
+    //     // this.userDB = {isAdmin : false};
+    //     localStorage.setItem('user', null);
+    //   }
+    // });
   }
 
   // Sign out 
   async signOut() {
-    return this.afAuth.auth.signOut().then(() => {
-      localStorage.removeItem('user');
-      setTimeout(() => {
-        this.router.navigate(['login']);
-      }, 500);
+    this.spinner.show();
+    return await firebase.auth().signOut().then(() => {
+      this.ngZone.run(() => {
+        // setTimeout(() => {
+          localStorage.removeItem('user');
+          this.spinner.hide();
+          this.router.navigate(['login']);
+        // }, 500);
 
-    })
+      });
+    });
   }
 
 }
