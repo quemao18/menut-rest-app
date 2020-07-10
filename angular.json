@@ -35,7 +35,19 @@
               "node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js",
               "node_modules/bootstrap-notify/bootstrap-notify.js",
               "node_modules/chartist/dist/chartist.js"
-
+            ],
+            "allowedCommonJsDependencies": [
+              "rxjs",
+              "rxjs-compat",
+              "@firebase",
+              "@firebase/app",
+              "@firebase/firestore",
+              "chartist",
+              "hammerjs",
+              "jquery",
+              "firebase/app",
+              "app/wizard/wizard.component",
+              "app/forgot-password/forgot-password.component"
             ]
           },
           "configurations": {

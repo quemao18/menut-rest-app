@@ -42,7 +42,7 @@ export class AuthService {
         this.ngZone.run(() => {
           this.spinner.hide();
           this.router.navigate(['dashboard']);
-          this.setUserData(result.user);
+          this.saveUserDB(result.user);
         }); 
 
       }).catch((error) => {
@@ -62,7 +62,7 @@ export class AuthService {
       this.spinner.hide();
       this.notification.showNotification('top', 'center', 'success', 'check', 'Register success!');
       this.sendVerificationMail();
-      this.setUserData(result.user);
+      this.saveUserDB(result.user);
     }
     catch (error) {
       // window.alert(error.message);
@@ -126,30 +126,12 @@ export class AuthService {
     return await firebase.auth().signInWithPopup(provider)
     .then((result) => {
       // this.spinner.hide();
-
-      this.ngZone.run(() => {
-        if(result.user)
-          this.getUserDB(result.user.uid);
-        else{
-          this.signOut();
-        }
-
-        // this.checkUserExistDB(result.user.uid);
-
-        // setTimeout(() => {
-          // console.log(this.isAdmindIn)
-          // if(this.isAdmindIn)
-          //   this.router.navigate(['dashboard']);
-            // this.signOut();
-        // }, 2000);
-      })
-     
-   
-    // this.setUserData(result.user);
-    // this.getUserDB(result.user.uid);
+      this.saveUserDB(result.user);
+      this.getUserDB(result.user);
 
     }).catch((error) => {
       // window.alert(error)
+      console.log(error);
       this.spinner.hide();
       this.notification.showNotification('top', 'center', 'danger', 'warning', error.message);
     })
@@ -158,50 +140,68 @@ export class AuthService {
   /* Setting up user data when sign in with username/password, 
   sign up with username/password and sign in with social auth  
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
-  setUserData(user: any) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
-    // if(!this.user.isAdmin) 
-    // this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not allowed to access!' );
-    // let userDB = this.getUser(user.uid);
-    // console.log(userDB);
+  async saveUserDB(user: any) {
+    // const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.email}`);
     const userData: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
-      // isAdmin: user.isAdmin == true ? true: false
-    }
+    };
+
+    var docRef = this.afs.collection("users").doc(user.email);
+    await docRef.get().toPromise().then(
+      (doc) => {
+      if (doc.exists) {
+          console.log("Update user DB:", doc.data());
+          docRef.update(userData);
+      } else {
+          // doc.data() will be undefined in this case
+          console.log("Create user DB not admin!");
+          userData.isAdmin = false;
+          docRef.set(userData);
+      }
+    }).catch(
+        (err) => {
+          console.log(err);
+          this.spinner.hide();
+          this.signOut();
+        }
+      );
     
-    userRef.update(userData);
-    // this.setUserLoggedIn(userData);
-    // this.getUser(userData.uid);
   }
 
-  //Obtiene un gato
-  getUserDB(uid: string) {
-        console.log(uid);
-        return this.afs.collection('users').doc(uid).valueChanges().subscribe(
-          (user: any) => {
-            if(user){
-              console.log('userDB', user);
-              if(user.isAdmin){
-                this.setUserLoggedIn(user);
-                this.router.navigate(['dashboard']);
-              }else{
-                this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );
-                this.signOut();
-              }
-            }else{
-              console.log("No such document!");
-              this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not allowed to access!' );
-              this.signOut();
-
-            }
+  async getUserDB(userData: any) {
+    this.spinner.show();
+    var docRef = this.afs.collection('users').doc(userData.email);
+    await docRef.get().take(1).toPromise().then(
+      (doc) => {
+        this.spinner.hide();
+        if(doc.exists){
+          console.log('User fund', doc.data());
+          if(doc.data().isAdmin){
+            this.setUserLoggedIn(doc.data());
+            this.ngZone.run(() => {
+              this.router.navigate(['dashboard']);
+            });
+          }else{
+            this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );
+            this.signOut();
           }
-        );
+        }else{
+          console.log("No such document!");
+          this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not allowed to access!' );
+          this.signOut();
+        }
+      }).catch(
+      (err) => {
+        console.log(err);
+        this.spinner.hide();
+        this.signOut();
+      }
+    );
   }
-
 
   getUserLoggedIn() {
     return JSON.parse(localStorage.getItem('user'));
@@ -212,22 +212,9 @@ export class AuthService {
     localStorage.setItem('user', JSON.stringify(data));
   }
 
-  async checkAuthFirebase() {
-    console.log(this.getUserLoggedIn())
-    // if(this.getUserLoggedIn().isAdmindIn !== true){
-    //   this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );
-    //   this.router.navigate(['login'])
-    // }
-    // this.spinner.show();
-    // return this.afAuth.authState.subscribe(user => {
-    //   this.spinner.hide();
-    //   if (user) {
-    //     this.getUser(user.uid);
-    //   }else{
-    //     // this.userDB = {isAdmin : false};
-    //     localStorage.setItem('user', null);
-    //   }
-    // });
+  checkAuthFirebase() {
+    if(this.getUserLoggedIn())
+    this.getUserDB(this.getUserLoggedIn())
   }
 
   // Sign out 

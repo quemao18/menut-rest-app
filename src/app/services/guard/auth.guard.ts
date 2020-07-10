@@ -50,10 +50,10 @@ export class AuthGuard implements CanActivate {
         this.router.navigate(['login'])
       }else{      
       // console.log(this.authService.isAdmindIn)
-      if(this.authService.isAdmindIn !== true){
-        this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );
-        this.router.navigate(['login'])
-      }
+      // if(this.authService.isAdmindIn !== true){
+      //   this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );
+      //   this.router.navigate(['login'])
+      // }
       }
      
     });
