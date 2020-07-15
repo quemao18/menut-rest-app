@@ -102,9 +102,9 @@
             color: $white-color;
         }
 
-        &:not([class*="card-header-"]){
-            // @include shadow-big();
-        }
+        // &:not([class*="card-header-"]){
+        //     // @include shadow-big();
+        // }
 
         .nav-tabs {
             padding: 0;
@@ -167,7 +167,7 @@
     &.bg-primary,
     &.card-rotate.bg-primary .front,
     &.card-rotate.bg-primary .back{
-      background: linear-gradient(60deg, $purple-400, $purple-600);
+      background: linear-gradient(60deg, $yellow-600, $yellow-700);
     }
     .card-header-info .card-icon,
     .card-header-info .card-text,

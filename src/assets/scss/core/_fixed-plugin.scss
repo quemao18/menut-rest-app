@@ -126,6 +126,10 @@
   background-color: #e91e63;
 }
 
+.fixed-plugin .badge-chacaitoba{
+    background-color: #fff171;
+  }
+  
 .fixed-plugin h5{
     font-size: 14px;
     margin: 10px;
@@ -168,7 +172,7 @@
 }
 
 .fixed-plugin .adjustments-line p{
-    float: left;
+    // float: left;
     display: inline-block;
     margin-bottom: 0;
     font-size: 1em;

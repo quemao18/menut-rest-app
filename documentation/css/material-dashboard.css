@@ -8600,7 +8600,7 @@ button:focus {
     vertical-align: middle;
     position: relative;
     top: -2px;
-    float: left;
+    /* float: left; */
     padding-right: 10px;
     display: inline-block; }
     .form-check .form-check-sign:before {
@@ -9403,7 +9403,7 @@ button:focus {
   vertical-align: middle;
   position: relative;
   top: -2px;
-  float: left;
+  /* float: left; */
   padding-right: 10px;
   display: inline-block; }
 
@@ -11164,7 +11164,7 @@ fieldset[disabled] .form-group .form-control {
     .navbar .navbar-toggler .navbar-toggler-icon {
       width: 22px;
       height: 2px;
-      vertical-align: middle;
+      /* vertical-align: middle; */
       outline: 0;
       display: block;
       border-radius: 1px; }
@@ -11305,7 +11305,7 @@ fieldset[disabled] .form-group .form-control {
     border-radius: 10px;
     text-align: center;
     line-height: 19px;
-    vertical-align: middle;
+    /* vertical-align: middle; */
     display: block; }
 
 #navbar .navbar {
@@ -13043,6 +13043,10 @@ h2.title {
     opacity: .8; }
   .sidebar[data-background-color="black"] .nav li .dropdown-menu .dropdown-item {
     color: #fff; }
+  .sidebar[data-color="chacaitoba"] li.active > a {
+      background-color: #fff171;
+      -webkit-box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(172, 169, 44, 0.4);
+              box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(208, 212, 0, 0.4); }
   .sidebar[data-color="purple"] li.active > a {
     background-color: #9c27b0;
     -webkit-box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
@@ -13348,7 +13352,7 @@ h2.title {
   text-align: center; }
 
 .fixed-plugin .adjustments-line p {
-  float: left;
+  /* float: left; */
   display: inline-block;
   margin-bottom: 0;
   font-size: 1em;
@@ -15058,8 +15062,9 @@ a[aria-expanded="true"] .caret,
     border-top-color: white; }
   .dropdown-menu {
     display: none; }
-  .navbar-fixed-top {
-    -webkit-backface-visibility: hidden; }
+  /* .navbar-fixed-top {
+    -webkit-backface-visibility: hidden; 
+  } */
   #bodyClick {
     height: 100%;
     width: 100%;

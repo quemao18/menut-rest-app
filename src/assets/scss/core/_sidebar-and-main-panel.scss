@@ -303,6 +303,11 @@
         }
     }
 
+    
+    &[data-color="chacaitoba"]{
+        @include set-background-color-button($brand-primary);
+        @include sidebar-active-color($black-color);
+    }
     &[data-color="purple"]{
         @include set-background-color-button($brand-primary);
     }

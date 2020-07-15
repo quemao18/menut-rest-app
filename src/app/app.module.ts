@@ -26,6 +26,7 @@ import { UserService } from './services/user/user.service';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { VersionCheckService } from './services/version/version-check.service';
 
 @NgModule({
   imports: [
@@ -51,7 +52,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     AdminLayoutComponent,
     HomeLayoutComponent,
   ],
-  providers: [AuthService, NotificationService, UserService],
+  providers: [AuthService, NotificationService, UserService, VersionCheckService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

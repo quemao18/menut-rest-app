@@ -10,6 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && ng serve -o",
+    "post-build": "node ./build/post-build.js",
+    "build-fire": "ng build --prod --outputHashing=all && npm run post-build && firebase deploy ",
     "deploy": "ng build && firebase deploy"
   },
   "engines": {

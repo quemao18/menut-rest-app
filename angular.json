@@ -42,6 +42,8 @@
               "@firebase",
               "@firebase/app",
               "@firebase/firestore",
+              "@firebase/component",
+              "@firebase/util",
               "chartist",
               "hammerjs",
               "jquery",
