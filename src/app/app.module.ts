@@ -21,7 +21,11 @@ import { environment } from 'environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NotificationService } from './services/notification/notification.service';
+import { UserService } from './services/user/user.service';
 
+import { AngularFireStorageModule } from '@angular/fire/storage';
+
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   imports: [
@@ -38,14 +42,16 @@ import { NotificationService } from './services/notification/notification.servic
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
     NgxSpinnerModule,
+    // ImageCropperModule
   ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     HomeLayoutComponent,
   ],
-  providers: [AuthService, NotificationService],
+  providers: [AuthService, NotificationService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

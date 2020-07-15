@@ -19,6 +19,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import { WizardComponent } from 'app/wizard/wizard.component';
 import { NgWizardModule, NgWizardConfig, THEME } from 'ng-wizard';
+import { ImageCropperModule } from 'ngx-image-cropper';
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
 };
@@ -34,7 +35,8 @@ const ngWizardConfig: NgWizardConfig = {
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
-    NgWizardModule.forRoot(ngWizardConfig)
+    NgWizardModule.forRoot(ngWizardConfig),
+    ImageCropperModule,
   ],
   declarations: [
     DashboardComponent,

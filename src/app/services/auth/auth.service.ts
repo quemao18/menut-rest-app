@@ -1,9 +1,9 @@
-import { Injectable, NgZone, OnInit } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { User } from "../user/user";
 // import { auth } from 'firebase/app';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from "@angular/fire/auth";
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { NotificationService } from '../notification/notification.service';
@@ -29,21 +29,22 @@ export class AuthService {
     public notification: NotificationService,
     public spinner: NgxSpinnerService
   ) {    
-
-      this.checkAuthFirebase();
-
+      // this.checkAuthFirebase();
   }
+
 
   // Sign in with email/password
   async signIn(email, password) {
     this.spinner.show();
     return await firebase.auth().signInWithEmailAndPassword(email, password)
       .then((result) => { 
-        this.ngZone.run(() => {
-          this.spinner.hide();
-          this.router.navigate(['dashboard']);
-          this.saveUserDB(result.user);
-        }); 
+        this.saveUserDB(result.user);
+        this.getUserDB(result.user);
+        // this.ngZone.run(() => {
+        //   this.spinner.hide();
+        //   this.router.navigate(['dashboard']);
+        //   this.saveUserDB(result.user);
+        // }); 
 
       }).catch((error) => {
         // window.alert(error.message)
@@ -169,7 +170,6 @@ export class AuthService {
           this.signOut();
         }
       );
-    
   }
 
   async getUserDB(userData: any) {
@@ -180,14 +180,17 @@ export class AuthService {
         this.spinner.hide();
         if(doc.exists){
           console.log('User fund', doc.data());
+          this.setUserLoggedIn(doc.data());
           if(doc.data().isAdmin){
-            this.setUserLoggedIn(doc.data());
             this.ngZone.run(() => {
               this.router.navigate(['dashboard']);
             });
           }else{
             this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );
             this.signOut();
+            // this.ngZone.run(() => {
+            //   this.router.navigate(['user-profile']);
+            // });
           }
         }else{
           console.log("No such document!");
@@ -209,14 +212,19 @@ export class AuthService {
   }
 
   setUserLoggedIn(data) { 
+    // localStorage.removeItem('user');
     localStorage.setItem('user', JSON.stringify(data));
   }
 
   checkAuthFirebase() {
+    console.log('check')
     if(this.getUserLoggedIn())
     this.getUserDB(this.getUserLoggedIn())
   }
 
+  removeUserLocalStore(){
+    localStorage.removeItem('user');
+  }
   // Sign out 
   async signOut() {
     this.spinner.show();

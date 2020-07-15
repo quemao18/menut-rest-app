@@ -46,14 +46,15 @@ export class AuthGuard implements CanActivate {
     .take(1)
     .map(authState => !!authState)
     .do(authenticated => {
+      // this.authService.getUserDB(firebase.auth().currentUser)
       if (!authenticated) {
         this.router.navigate(['login'])
       }else{      
-      // console.log(this.authService.isAdmindIn)
-      // if(this.authService.isAdmindIn !== true){
-      //   this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );
-      //   this.router.navigate(['login'])
-      // }
+        // console.log(this.authService.isAdmindIn)
+        // if(this.authService.isAdmindIn !== true){
+        //   this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );
+        //   this.router.navigate(['login'])
+        // }
       }
      
     });
