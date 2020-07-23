@@ -115,8 +115,8 @@
   a:focus,
   a:active {
     @include shadow-small-color($brand-primary);
-    background-color: $brand-primary;
-    color: inherit;
+    background-color: $brand-danger;
+    color: white;
   }
 }
 

@@ -264,3 +264,7 @@ export const environment = {
     measurementId: ""
   }
 };
+
+### hosting 
+firebase deploy --only hosting:chacaitoba
+firebase deploy --only hosting:chacaitoba-dev

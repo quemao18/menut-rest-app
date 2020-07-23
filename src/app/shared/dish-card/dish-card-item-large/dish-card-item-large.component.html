@@ -1,0 +1,51 @@
+<!-- es -->
+<div *ngIf="lang=='es'">
+    <div [@flip] class="card card-profile">
+        <div class="image">
+            <img src="{{photoBG}}" alt="..."/>
+            <div (click)="lang = 'en'" title="English" class="top-right">EN</div>
+        </div>
+        <div class="card-avatar">
+            <a href="javascript:void(0)" (click)="open(nameEs, photoPF)">
+                <img class="img" src="{{photoPF}}" />
+            </a>
+        </div>
+        <div class="card-body">
+            <h6 *ngIf="ref" class="card-category text-gray">{{ref}}</h6>
+            <h4 class="card-title">{{nameEs}}</h4>
+            <p class="card-description">
+            {{descriptionEs}}
+            </p> 
+            <p class="card-description text-success">{{price}}$</p>
+            <p class="text-danger" *ngIf="!status">Agotado</p>
+            <a [ngClass]="!status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Agregar</a>
+        </div>
+    </div>
+</div>
+<!-- es -->
+<!-- en -->
+<div *ngIf="lang=='en'">
+    <div [@flip] class="card card-profile" >
+        <div class="image">
+        <img src="{{photoBG}}" alt="..."/>
+        <div (click)="lang = 'es'" title="Español" class="top-right">ES</div>
+        </div>
+        <div class="card-avatar">
+            <a href="javascript:void(0)" (click)="open(nameEn, photoPF)">
+                <img class="img" src="{{photoPF}}" />
+            </a>
+        </div>
+        
+        <div class="card-body">
+            <h6 *ngIf="ref" class="card-category text-gray">{{ref}}</h6>
+            <h4 class="card-title">{{nameEn}}</h4>
+            <p class="card-description">
+            {{descriptionEn}}
+            </p> 
+            <p class="card-description text-success">{{price}}$</p>
+            <p class="text-danger" *ngIf="!status">No Stock</p>
+            <a [ngClass]="!status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Add</a>
+        </div>
+    </div>
+</div>
+<!-- en -->

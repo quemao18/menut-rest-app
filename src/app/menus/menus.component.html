@@ -1,0 +1,199 @@
+<div #scroll></div>
+<div class="main-content" *ngIf="!showForm">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div [@animate] class="card card-plain">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title mt-0">Menus 
+                            <a (click)="new();" class="link-white" title="Add" [routerLink]="">
+                              <i class="material-icons" >add</i>
+                            </a>
+                        </h4>
+                        <mat-form-field class="search2 card-title mt-0">
+                          <input type="text" #queryString matInput class="search" placeholder="Search" >
+                        </mat-form-field>  
+                        <p class="card-category"> Available menus </p>
+                    </div>
+                    <div class="card-body">
+                      <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                         <div style="min-height: 550px;" class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="">
+                                    <th style="text-align: center;">Order</th>
+                                    <th>Ref.</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Picture</th>
+                                    <th>Actions</th>
+                                </thead>
+                                <tbody>
+                                    <tr class="enabled" [routerLink]="['/dishes', menu.id]" [@animate] *ngFor="let menu of menus | filter: {search: queryString.value} | paginate: config "> 
+                                        <td style="text-align: center;">
+                                            {{menu.data.order}}
+                                        </td>
+                                        <td>
+                                          {{menu.data.ref}}
+                                        </td>
+                                        <td>
+                                            {{menu.data.name.es}} <br>
+                                            {{menu.data.name.en}}
+                                        </td>
+                                        <td>
+                                            {{menu.data.description.es}} <br>
+                                            {{menu.data.description.en}}
+                                        </td>
+                                        <td>
+                                           <img class="rounded-circle" height="50px" src="{{menu.data.photoPF}}">
+                                        </td>
+                                        <td> 
+                                            <a (click)="changeStatus(menu.id, menu.data.status); $event.stopPropagation()" [routerLink]="" [title]="!menu.data.status ? 'Active' : 'Desactive'">
+                                              <i class="material-icons">{{!menu.data.status ? 'check': 'power_settings_new'}}</i>
+                                            </a>
+                                            <a (click)="edit(menu.id); $event.stopPropagation()" title="Edit" [routerLink]=""><i class="material-icons" >edit</i></a>
+                                            <a (click)="delete(menu.id); $event.stopPropagation()" class="link-danger" title="Delete" [routerLink]=""><i class="material-icons" >delete</i></a>
+                                        </td>  
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls style="text-align: center;" (pageChange)="pageChanged($event)"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content" *ngIf="showForm">
+    <div class="container-fluid" >
+        <div class="row">
+            <div class="col-md-8">
+                <div [@animate] class="card card-plain flip" >
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Menú</h4>
+                        <p class="card-category">Complete data</p>
+                    </div>
+                    <div class="card-body">
+                      <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+                            <div class="row">
+                                <input hidden #id formControlName= "id" >
+                                <div class="col-md-2">
+                                  <mat-form-field class="example-full-width">
+                                    <input min="1" max={{config.totalItems}} type="number" matInput #order formControlName= "order" placeholder="Order">
+                                  </mat-form-field>
+                                </div>
+
+                                <div class="col-md-2">
+                                  <mat-form-field class="example-full-width">
+                                    <input type="text" matInput #ref formControlName= "ref" placeholder="Ref.">
+                                  </mat-form-field>
+                                </div>
+                                
+                                  <div class="col-md-4" formGroupName = "name">
+                                      <mat-form-field class="example-full-width">
+                                        <input matInput #nameEs formControlName= "es" placeholder="Nombre">
+                                      </mat-form-field>
+                                  </div>
+                                  <div class="col-md-4" formGroupName = "name">
+                                      <mat-form-field class="example-full-width">
+                                        <input matInput #nameEn formControlName= "en" placeholder="Name">
+                                      </mat-form-field>
+                                  </div>
+
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-6" formGroupName = "description">
+                                  <mat-form-field class="example-full-width">
+                                    <input matInput #descriptionEs formControlName= "es" placeholder="Descripción">
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-md-6" formGroupName = "description">
+                                  <mat-form-field class="example-full-width">
+                                    <input matInput #descriptionEn formControlName= "en" placeholder="Description">
+                                  </mat-form-field>
+                              </div>
+                          </div>
+              
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <label>Photo</label>
+                                  <div class="example-full-width">
+                                    <input class="file-input" type="file" #file formControlName="filePF" (change)="fileChangeEvent($event, 'profile')">
+                                  </div>
+                                  <image-cropper
+                                  [imageChangedEvent]="imageChangedEventPF"
+                                  [maintainAspectRatio]="true"
+                                  [roundCropper]="false"
+                                  [aspectRatio]="1 / 1"
+                                  format="webp"
+                                  [imageQuality] = "20"
+                                  (imageCropped)="imageCropped($event, 'profile')"
+                                  (imageLoaded)="imageLoaded()"
+                                  (cropperReady)="cropperReady()"
+                                  (loadImageFailed)="loadImageFailed()"
+                                  ></image-cropper>
+                                </div>
+                                <div class="col-md-6">
+                                  <label>Background</label>
+                                  <div class="example-full-width">
+                                    <input class="file-input" type="file" #file formControlName="fileBG" (change)="fileChangeEvent($event, 'background')">
+                                  </div>
+                                  <image-cropper
+                                  [imageChangedEvent]="imageChangedEventBG"
+                                  [maintainAspectRatio]="false"
+                                  [roundCropper]="false"
+                                  [aspectRatio]="1 / 1"
+                                  format="webp"
+                                  [imageQuality] = "20"
+                                  (imageCropped)="imageCropped($event, 'background')"
+                                  (imageLoaded)="imageLoaded()"
+                                  (cropperReady)="cropperReady()"
+                                  (loadImageFailed)="loadImageFailed()"
+                                  ></image-cropper>
+                              </div>
+                             
+                              </div>
+                              <hr>
+                              Status: <input type="checkbox" #status formControlName= "status" >
+                               <!-- <button [ngClass]="{'button': true, 'is-success': true, 'is-large': true, 'is-loading': porcentaje > 0 && porcentaje < 100}" [disabled]="!profileForm.valid && (porcentaje > 0 && porcentaje < 100)">Subir archivo</button> -->
+                            <button mat-raised-button (click)="scrollDiv(scroll)" [disabled]="!form.valid" type="submit" class="btn btn-danger pull-right">Save</button>
+                            <button (click) = "showForm=!showForm; reset();" mat-raised-button type="button" class="btn btn-link pull-right">Cancel</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+       
+            <div class="col-md-4">
+              <app-menu-card-item-large
+              [lang]="lang" 
+              [photoBG]="photoBG"
+              [photoPF]="photoPF"
+              [ref]="ref.value"
+              [nameEn]="nameEn.value"
+              [nameEs]="nameEs.value"
+              [descriptionEn]="descriptionEn.value"
+              [descriptionEs]="descriptionEs.value"
+              [status]="form.value.status"
+
+              ></app-menu-card-item-large>
+
+              <app-menu-card-item-medium
+              [lang]="lang" 
+              [photoBG]="photoBG"
+              [photoPF]="photoPF"
+              [ref]="ref.value"
+              [nameEn]="nameEn.value"
+              [nameEs]="nameEs.value"
+              [descriptionEn]="descriptionEn.value"
+              [descriptionEs]="descriptionEs.value"
+              [status]="form.value.status"
+
+              ></app-menu-card-item-medium>
+              
+            </div>
+    </div>
+  </div>

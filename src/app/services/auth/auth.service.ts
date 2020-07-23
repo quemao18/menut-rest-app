@@ -8,6 +8,8 @@ import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { NotificationService } from '../notification/notification.service';
 
+import { take } from 'rxjs/operators';
+
 declare var $: any;
 
 @Injectable({
@@ -38,8 +40,8 @@ export class AuthService {
     this.spinner.show();
     return await firebase.auth().signInWithEmailAndPassword(email, password)
       .then((result) => { 
-        this.saveUserDB(result.user);
         this.getUserDB(result.user);
+        this.saveUserDB(result.user);
         // this.ngZone.run(() => {
         //   this.spinner.hide();
         //   this.router.navigate(['dashboard']);
@@ -127,8 +129,8 @@ export class AuthService {
     return await firebase.auth().signInWithPopup(provider)
     .then((result) => {
       // this.spinner.hide();
-      this.saveUserDB(result.user);
       this.getUserDB(result.user);
+      this.saveUserDB(result.user);
 
     }).catch((error) => {
       // window.alert(error)
@@ -175,7 +177,7 @@ export class AuthService {
   async getUserDB(userData: any) {
     this.spinner.show();
     var docRef = this.afs.collection('users').doc(userData.email);
-    await docRef.get().take(1).toPromise().then(
+    await docRef.get().pipe(take(1)).toPromise().then(
       (doc) => {
         this.spinner.hide();
         if(doc.exists){

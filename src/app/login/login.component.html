@@ -3,7 +3,7 @@
           <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
             <form [formGroup]="profileForm" class="form" >
               <div class="card card-login card-hidden">
-                <div class="card-header card-header-primary text-center">
+                <div class="card-header card-header-danger text-center">
                   <h4 class="card-title">Login</h4>
                   <div class="social-line">
                     <a href="#" (click)="authService.facebookAuth()" class="btn btn-just-icon btn-link btn-white">
@@ -54,8 +54,8 @@
                     </p>
                 </div>
                 <div class="card-footer justify-content-center">
-                  <input type="button" (click)="authService.signIn(userEmail.value, userPwd.value)" class="btn btn-rose btn-link btn-lg" value="Login" [disabled]="!profileForm.valid" >
-                  <input type="button" (click)="authService.signUp(userEmail.value, userPwd.value)" class="btn btn-rose btn-link btn-lg" value="Register" [disabled]="!profileForm.valid">
+                  <input type="button" (click)="authService.signIn(userEmail.value, userPwd.value)" class="btn btn-danger btn-link btn-lg" value="Login" [disabled]="!profileForm.valid" >
+                  <input type="button" (click)="authService.signUp(userEmail.value, userPwd.value)" class="btn btn-danger btn-link btn-lg" value="Register" [disabled]="!profileForm.valid">
                 </div>
               </div>
             </form>

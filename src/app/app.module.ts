@@ -21,12 +21,18 @@ import { environment } from 'environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NotificationService } from './services/notification/notification.service';
-import { UserService } from './services/user/user.service';
 
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
-import { ImageCropperModule } from 'ngx-image-cropper';
 import { VersionCheckService } from './services/version/version-check.service';
+import { NgxImageCompressService } from 'ngx-image-compress';
+import { CustomerLayoutComponent } from './layouts/customer-layout/customer-layout.component';
+import { ComponentsCustomerModule } from './customer/components/components-customer.module';
+
+import { HttpClientModule } from '@angular/common/http';
+
+
+
 
 @NgModule({
   imports: [
@@ -35,24 +41,23 @@ import { VersionCheckService } from './services/version/version-check.service';
     ReactiveFormsModule,
     HttpModule,
     ComponentsModule,
+    ComponentsCustomerModule,
     RouterModule,
     AppRoutingModule,
-    // AgmCoreModule.forRoot({
-    //   apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
-    // }),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
     NgxSpinnerModule,
-    // ImageCropperModule
+    HttpClientModule
   ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     HomeLayoutComponent,
+    CustomerLayoutComponent,
   ],
-  providers: [AuthService, NotificationService, UserService, VersionCheckService],
+  providers: [AuthService, NotificationService, VersionCheckService, NgxImageCompressService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

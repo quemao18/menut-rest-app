@@ -1,0 +1,56 @@
+<div class="main-content">
+    <div class="container-fluid top">
+        <div class="row">
+            <div *ngIf="menuTitle==''" class="col-md-6 mx-auto">
+            <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                <div [@animate] class="card" >
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title mt-0">Menú</h4>
+                    </div>
+                    <div class="card-body">
+                        <app-menu-card-item-medium  *ngFor="let menu of menus"
+                        [lang]="lang" 
+                        [photoBG]="menu.data.photoBG"
+                        [photoPF]="menu.data.photoPF"
+                        [ref]="menu.data.ref"
+                        [nameEn]="menu.data.name.en"
+                        [nameEs]="menu.data.name.es"
+                        [descriptionEn]="menu.data.description.en"
+                        [descriptionEs]="menu.data.description.es"
+                        [status]="menu.data.status"
+                        (click) = "showMenu(menu.id, menu.data.name, menu.data.status)"
+                        ></app-menu-card-item-medium>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="menuTitle!=''" class="col-md-6 mx-auto">
+                <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                    <div [@animate] class="card">
+                        <div class="card-header card-header-danger">
+                            <h4 class="card-title mt-0">{{menuTitle}}</h4>
+                            <a (click)="ngOnInit()" class="" style="float: right; color: white;" title="Menu" [routerLink]="">
+                                Menú <i class="material-icons" >undo</i>
+                            </a>
+                        </div>
+                        <div class="card-body menu">
+                            <app-dish-card-item-large  *ngFor="let dish of dishes"
+                            [lang]="lang" 
+                            [photoBG]="dish.data.photoBG"
+                            [photoPF]="dish.data.photoPF"
+                            [ref]="dish.data.ref"
+                            [nameEn]="dish.data.name.en"
+                            [nameEs]="dish.data.name.es"
+                            [descriptionEn]="dish.data.description.en"
+                            [descriptionEs]="dish.data.description.es"
+                            [status]="dish.data.status"
+                            [price]="dish.data.price"
+                            ></app-dish-card-item-large>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</div>
+  

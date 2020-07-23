@@ -1,0 +1,240 @@
+<div #scroll></div>
+<div class="main-content" *ngIf="!showForm">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Menu:  -->
+                <mat-form-field >
+                    <mat-label>Select Menú</mat-label>
+                    <mat-select (selectionChange)="updateDishes(menuId)"  [(value)]="menuId" >
+                      <mat-option *ngFor="let menu of menus" [value]="menu.id">
+                        {{menu.data.name.en}}/{{menu.data.name.es}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-12">
+
+                <a class="" style="float: right; margin-top:-45px; margin-right: 20px;" title="Menus" [routerLink]="'/menus'">
+                    Menus <i class="material-icons" >undo</i>
+                </a>
+                <div [@animate] class="card card-plain">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title mt-0">Dishes 
+                            <a (click)="new();" class="link-white" title="Add" [routerLink]="">
+                              <i class="material-icons" >add</i>
+                            </a>
+                        </h4>
+                        <mat-form-field class="search2 card-title mt-0">
+                          <input type="text" #queryString matInput class="search" placeholder="Search" >
+                        </mat-form-field>  
+                        <p class="card-category"> Availables dishes for menu <span *ngIf="menu" style="font-weight: bold;">{{menu.data.name.es}}/{{menu.data.name.en}} </span> </p>
+                    </div>
+                    <div class="card-body">
+                      <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                         <div style="min-height: 550px;"  class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="">
+                                    <th style="text-align: center;">Order</th>
+                                    <th>Ref.</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Price $</th>
+                                    <th>Picture</th>
+                                    <th>Actions</th>
+                                </thead>
+                                <tbody>
+                                    <tr [@animate] *ngFor="let dish of dishes | filter: {search: queryString.value} | paginate: config "> 
+                                        <td style="text-align: center;">
+                                            {{dish.data.order}}
+                                        </td>
+                                        <td>
+                                          {{dish.data.ref}}
+                                        </td>
+                                        <td>
+                                            {{dish.data.name.es}} <br>
+                                            {{dish.data.name.en}}
+                                        </td>
+                                        <td style="width: 50%;">
+                                            {{dish.data.description.es}} <br>
+                                            {{dish.data.description.en}}
+                                        </td>
+                                        <td>{{dish.data.price}}</td>
+                                        <td>
+                                           <img class="rounded-circle" height="50px" src="{{dish.data.photoPF}}">
+                                        </td>
+                                        <td> 
+                                            <a (click)="changeStatus(dish.id, dish.data.status)" [routerLink]="" [title]="!dish.data.status ? 'Active' : 'Desactive'">
+                                              <i class="material-icons">{{!dish.data.status ? 'check': 'power_settings_new'}}</i>
+                                            </a>
+                                            <a (click)="edit(dish.id)" title="Edit" [routerLink]=""><i class="material-icons" >edit</i></a>
+                                            <a (click)="delete(dish.id)" class="link-danger" title="Delete" [routerLink]=""><i class="material-icons" >delete</i></a>
+                                        </td>  
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls style="text-align: center;" (pageChange)="pageChanged($event)"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content" *ngIf="showForm">
+    <div class="container-fluid" >
+        <div class="row">
+            <div class="col-md-8">
+                <div [@animate] class="card card-plain flip" >
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Dish</h4>
+                        <p class="card-category">Complete data for the dish</p>
+                    </div>
+                    <div class="card-body">
+                      <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+                            <div class="row">
+                                <input hidden #id formControlName= "id" >
+                                <!-- <input hidden #menuId formControlName= "menuId" > -->
+                                <div class="col-md-2">
+                                  <mat-form-field class="example-full-width">
+                                    <input min="1" max={{config.totalItems}} type="number" matInput #order formControlName= "order" placeholder="Order">
+                                  </mat-form-field>
+                                </div>
+
+                                <div class="col-md-2">
+                                  <mat-form-field class="example-full-width">
+                                    <input type="text" matInput #ref formControlName= "ref" placeholder="Ref.">
+                                  </mat-form-field>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <mat-form-field class="example-full-width">
+                                      <input type="number" matInput #price formControlName= "price" placeholder="Price">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <mat-form-field >
+                                        <mat-label>Select a menú</mat-label>
+                                        <mat-select #menuId formControlName= "menuId"  >
+                                          <mat-option *ngFor="let menu of menus" [value]="menu.id">
+                                            {{menu.data.name.en}}/{{menu.data.name.es}}
+                                          </mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                </div>
+                                
+                            </div>
+
+                            <div class="row">
+
+                                  <div class="col-md-6" formGroupName = "name">
+                                      <mat-form-field class="example-full-width">
+                                        <input matInput #nameEs formControlName= "es" placeholder="Nombre">
+                                      </mat-form-field>
+                                  </div>
+                                  <div class="col-md-6" formGroupName = "name">
+                                      <mat-form-field class="example-full-width">
+                                        <input matInput #nameEn formControlName= "en" placeholder="Name">
+                                      </mat-form-field>
+                                  </div>
+
+                            </div>
+
+
+                            <div class="row">
+                              <div class="col-md-6" formGroupName = "description">
+                                  <mat-form-field class="example-full-width">
+                                    <textarea rows="3" matInput #descriptionEs formControlName= "es" placeholder="Descripción"></textarea>
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-md-6" formGroupName = "description">
+                                  <mat-form-field class="example-full-width">
+                                    <textarea rows="3" matInput #descriptionEn formControlName= "en" placeholder="Description"></textarea>
+                                  </mat-form-field>
+                              </div>
+                          </div>
+              
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <label>Photo</label>
+                                  <div class="example-full-width">
+                                    <input class="file-input" type="file" #file formControlName="filePF" (change)="fileChangeEvent($event, 'profile')">
+                                  </div>
+                                  <image-cropper
+                                  [imageChangedEvent]="imageChangedEventPF"
+                                  [maintainAspectRatio]="true"
+                                  [roundCropper]="false"
+                                  [aspectRatio]="1 / 1"
+                                  format="webp"
+                                  [imageQuality] = "20"
+                                  (imageCropped)="imageCropped($event, 'profile')"
+                                  (imageLoaded)="imageLoaded()"
+                                  (cropperReady)="cropperReady()"
+                                  (loadImageFailed)="loadImageFailed()"
+                                  ></image-cropper>
+                                </div>
+                                <div class="col-md-6">
+                                  <label>Background</label>
+                                  <div class="example-full-width">
+                                    <input class="file-input" type="file" #file formControlName="fileBG" (change)="fileChangeEvent($event, 'background')">
+                                  </div>
+                                  <image-cropper
+                                  [imageChangedEvent]="imageChangedEventBG"
+                                  [maintainAspectRatio]="false"
+                                  [roundCropper]="false"
+                                  [aspectRatio]="1 / 1"
+                                  format="webp"
+                                  [imageQuality] = "20"
+                                  (imageCropped)="imageCropped($event, 'background')"
+                                  (imageLoaded)="imageLoaded()"
+                                  (cropperReady)="cropperReady()"
+                                  (loadImageFailed)="loadImageFailed()"
+                                  ></image-cropper>
+                              </div>
+                             
+                              </div>
+                              <hr>
+                              Status: <input type="checkbox" #status formControlName= "status" >
+                               <!-- <button [ngClass]="{'button': true, 'is-success': true, 'is-large': true, 'is-loading': porcentaje > 0 && porcentaje < 100}" [disabled]="!profileForm.valid && (porcentaje > 0 && porcentaje < 100)">Subir archivo</button> -->
+                            <button mat-raised-button (click)="scrollDiv(scroll)" [disabled]="!form.valid" type="submit" class="btn btn-danger pull-right">Save</button>
+                            <button (click) = "showForm=!showForm; reset()" mat-raised-button type="button" class="btn btn-link pull-right">Cancel</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- es -->
+            <div class="col-md-4">
+
+                <app-dish-card-item-large
+                [lang]="lang" 
+                [photoBG]="photoBG"
+                [photoPF]="photoPF"
+                [ref]="ref.value"
+                [nameEn]="nameEn.value"
+                [nameEs]="nameEs.value"
+                [descriptionEn]="descriptionEn.value"
+                [descriptionEs]="descriptionEs.value"
+                [status]="form.value.status"
+                [price]="price.value"
+                ></app-dish-card-item-large>
+  
+                <app-dish-card-item-medium
+                [lang]="lang" 
+                [photoBG]="photoBG"
+                [photoPF]="photoPF"
+                [ref]="ref.value"
+                [nameEn]="nameEn.value"
+                [nameEs]="nameEs.value"
+                [descriptionEn]="descriptionEn.value"
+                [descriptionEs]="descriptionEs.value"
+                [status]="form.value.status"
+                [price]="price.value"
+                ></app-dish-card-item-medium>
+               
+            </div>
+    </div>
+  </div>
