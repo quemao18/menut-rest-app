@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Lightbox } from 'ngx-lightbox';
+import { ShoppingCartService } from 'app/services/shopping-cart/shopping-cart.service';
 
 @Component({
   selector: 'app-dish-card-item-medium',
@@ -32,18 +33,17 @@ import { Lightbox } from 'ngx-lightbox';
 export class DishCardItemMediumComponent implements OnInit {
 
   @Input() public lang: string;
-  @Input() public photoBG: string;
-  @Input() public photoPF: string;
-  @Input() public ref: any;
-  @Input() public nameEs: string;
-  @Input() public nameEn: string;
-  @Input() public descriptionEs: string;
-  @Input() public descriptionEn: string;
-  @Input() public status: boolean;
-  @Input() public price: number;
+  @Input() public item: any;
+
+  @Output()
+  totalPrice = new EventEmitter<number>();
+
+  totalPriceCart: number = 0;
+  animate = false;
 
     constructor(
-      private _lightbox: Lightbox
+      private _lightbox: Lightbox,
+      private shoppingCartService: ShoppingCartService
     ) { }
 
   ngOnInit(): void {
@@ -62,5 +62,19 @@ export class DishCardItemMediumComponent implements OnInit {
   close(): void {
     // close lightbox programmatically
     this._lightbox.close();
+  }
+
+  updateQty(qty:number){
+    this.shoppingCartService.addToCart(this.item, qty);
+    this.shoppingCartService.getTotalAmount().subscribe(total => this.totalPriceCart =  total)
+    this.totalPrice.emit(this.totalPriceCart);
+  }
+
+  remove(){
+    // this.shoppingCartService.removeProduct(this.item.id);
+    this.shoppingCartService.removeFromCart(this.item);
+    this.shoppingCartService.getTotalAmount().subscribe(total => this.totalPriceCart =  total);
+    console.log(this.totalPriceCart)
+    this.totalPrice.emit(this.totalPriceCart);
   }
 }

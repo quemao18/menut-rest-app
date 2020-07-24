@@ -1,52 +1,34 @@
 <div *ngIf="lang=='es'"> 
-    <!-- <div [@flip] [ngClass]="!status? 'disabled':'enabled'" class="media border p-3" style="position: relative;">
-        <img src="{{photoPF}}" (click)="open(0)" class="align-self-start mr-3 rounded-circle" style="width:70px; height: 70px;">
-        <div (click)="lang = 'en'" title="English" class="top-right">EN</div>
-        <div class="media-body">
-          <h4>{{nameEs.value}}</h4>
-          <p class="card-description">{{descriptionEs.value}}</p>
-          <p class="text-danger" *ngIf="!status">Agotado</p>
-        </div>
-      </div> -->
       <div [@flip] class="card card-stats">
         <div class="card-header card-header-info card-header-icon">
           <div (click)="lang = 'en'; $event.stopPropagation();" title="English" class="top-right2">EN</div>
-          <img src="{{photoPF}}" (click)="open(nameEs, photoPF); $event.stopPropagation();" class="card-icon-2 " style="width:70px; height: 70px;">
-          <div class="card-body" [ngClass]="!status? 'disabled':'enabled'" >
-            <p class="card-category">{{descriptionEs}}</p>
-            <h3 class="card-title">{{nameEs}}</h3>
+          <img src="{{item.data.photoPF}}" (click)="open(item.data.name.es, item.data.photoPF); $event.stopPropagation();" class="card-icon-2 " style="width:70px; height: 70px;">
+          <div class="card-body" [ngClass]="!item.data.status? 'disabled':'enabled'" >
+            <p class="card-category">{{item.data.description.es}}</p>
+            <h3 class="card-title">{{item.data.name.es}}</h3>
           </div>
         </div>
-        <div class="card-footer" *ngIf="!status">
+        <div class="card-footer" *ngIf="!item.data.status">
             <div class="stats">
-                <span *ngIf="!status"><i class="material-icons">warning</i> Agotado</span>
+                <span><i class="material-icons">warning</i> Agotado</span>
             </div>
         </div>
     </div>
 </div>
 
 <div *ngIf="lang=='en'"> 
-    <!-- <div [@flip] [ngClass]="!status? 'disabled':'enabled'" class="media border p-3" style="position: relative;">
-        <img src="{{photoPF}}" (click)="open(0)" class="align-self-start mr-3 rounded-circle" style="width:70px; height: 70px;">
-        <div (click)="lang = 'es'" title="Español" class="top-right">ES</div>
-        <div class="media-body">
-        <h4>{{nameEn.value}}</h4>
-        <p class="card-description">{{descriptionEn.value}}</p>
-        <p class="text-danger" *ngIf="!status">Unavailable</p>
-        </div>
-    </div> -->
     <div [@flip] class="card card-stats">
       <div class="card-header card-header-info card-header-icon">
         <div (click)="lang = 'es'; $event.stopPropagation();" title="Español" class="top-right2">ES</div>
-        <img src="{{photoPF}}" (click)="open(nameEn, photoPF); $event.stopPropagation()" class="card-icon-2 " style="width:70px; height: 70px;">
-        <div class="card-body" [ngClass]="!status? 'disabled':'enabled'" >
-          <p class="card-category">{{descriptionEn}}</p>
-          <h3 class="card-title">{{nameEn}}</h3>
+        <img src="{{item.data.photoPF}}" (click)="open(item.data.name.en, item.data.photoPF); $event.stopPropagation()" class="card-icon-2 " style="width:70px; height: 70px;">
+        <div class="card-body" [ngClass]="!item.data.status? 'disabled':'enabled'" >
+          <p class="card-category">{{item.data.description.en}}</p>
+          <h3 class="card-title">{{item.data.name.en}}</h3>
         </div>
       </div>
-      <div class="card-footer" *ngIf="!status">
+      <div class="card-footer" *ngIf="!item.data.status">
           <div class="stats">
-              <span *ngIf="!status"><i class="material-icons">warning</i> Unavailable</span>
+              <span><i class="material-icons">warning</i> Unavailable</span>
           </div>
       </div>
   </div>

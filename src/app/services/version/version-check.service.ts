@@ -18,6 +18,7 @@ export class VersionCheckService {
      * @param {number} frequency - in milliseconds, defaults to 30 minutes
      */
     public initVersionCheck(url, frequency = 1000 * 60) {
+
         setInterval(() => {
             // this.showNotification();
             this.checkVersion(url);
@@ -42,6 +43,7 @@ export class VersionCheckService {
                     const hash = response.hash;
                     const hashChanged = this.hasHashChanged(this.currentHash, hash);
                     console.log('hash', hash);
+                    console.log('currentHash', this.currentHash);
                     // If new version, do something
                     if (hashChanged) {
                         // ENTER YOUR CODE TO DO SOMETHING UPON VERSION CHANGE

@@ -2,23 +2,25 @@
 <div *ngIf="lang=='es'">
     <div [@flip] class="card card-profile">
         <div class="image">
-            <img src="{{photoBG}}" alt="..."/>
+            <img src="{{item.data.photoBG}}" alt="..."/>
             <div (click)="lang = 'en'" title="English" class="top-right">EN</div>
         </div>
         <div class="card-avatar">
-            <a href="javascript:void(0)" (click)="open(nameEs, photoPF)">
-                <img class="img" src="{{photoPF}}" />
+            <a href="javascript:void(0)" (click)="open(item.data.nameEs, item.data.photoPF)">
+                <img class="img" src="{{item.data.photoPF}}" />
             </a>
         </div>
         <div class="card-body">
-            <h6 *ngIf="ref" class="card-category text-gray">{{ref}}</h6>
-            <h4 class="card-title">{{nameEs}}</h4>
+            <h6 *ngIf="ref" class="card-category text-gray">{{item.data.ref}}</h6>
+            <h4 class="card-title">{{item.data.name.es}}</h4>
             <p class="card-description">
-            {{descriptionEs}}
+            {{item.data.description.es}}
             </p> 
-            <p class="card-description text-success">{{price}}$</p>
-            <p class="text-danger" *ngIf="!status">Agotado</p>
-            <a [ngClass]="!status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Agregar</a>
+            <p class="card-description text-success">{{item.data.price}}$</p>
+            <p class="text-danger" *ngIf="!item.data.status">Agotado</p>
+            <a *ngIf="!inCart" (click)="addToCart()" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Agregar</a>
+            <a *ngIf="inCart" (click)="remove(item)" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Quitar</a>
+       
         </div>
     </div>
 </div>
@@ -27,25 +29,26 @@
 <div *ngIf="lang=='en'">
     <div [@flip] class="card card-profile" >
         <div class="image">
-        <img src="{{photoBG}}" alt="..."/>
+        <img src="{{item.data.photoBG}}" alt="..."/>
         <div (click)="lang = 'es'" title="Español" class="top-right">ES</div>
         </div>
         <div class="card-avatar">
-            <a href="javascript:void(0)" (click)="open(nameEn, photoPF)">
-                <img class="img" src="{{photoPF}}" />
+            <a href="javascript:void(0)" (click)="open(item.data.nameEn, item.data.photoPF)">
+                <img class="img" src="{{item.data.photoPF}}" />
             </a>
         </div>
         
         <div class="card-body">
-            <h6 *ngIf="ref" class="card-category text-gray">{{ref}}</h6>
-            <h4 class="card-title">{{nameEn}}</h4>
+            <h6 *ngIf="ref" class="card-category text-gray">{{item.data.ref}}</h6>
+            <h4 class="card-title">{{item.data.name.en}}</h4>
             <p class="card-description">
-            {{descriptionEn}}
+            {{item.data.description.en}}
             </p> 
-            <p class="card-description text-success">{{price}}$</p>
-            <p class="text-danger" *ngIf="!status">No Stock</p>
-            <a [ngClass]="!status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Add</a>
-        </div>
+            <p class="card-description text-success">{{item.data.price}}$</p>
+            <p class="text-danger" *ngIf="!item.data.status">No Stock</p>
+            <a *ngIf="!inCart" (click)="addToCart()" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Add</a>
+            <a *ngIf="inCart" (click)="remove(item.id)" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Remove</a>
+       </div>
     </div>
 </div>
 <!-- en -->

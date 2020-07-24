@@ -12,7 +12,7 @@
     "install-clean": "rm -r node_modules && rm -r package-lock.json && npm install && ng serve -o",
     "post-build": "node ./build/post-build.js",
     "build-fire-prod": "ng build --prod && npm run post-build && firebase deploy ",
-    "build-fire-dev": "ng build && npm run post-build && firebase deploy -P dev ",
+    "build-fire-dev": "ng build --outputHashing=all && npm run post-build && firebase deploy -P dev ",
     "deploy": "ng build && firebase deploy"
   },
   "engines": {
@@ -39,6 +39,7 @@
     "@angular/platform-server": "10.0.4",
     "@angular/router": "10.0.4",
     "ajv": "6.12.3",
+    "angularx-qrcode": "^10.0.6",
     "arrive": "2.4.1",
     "bootstrap": "^4.5.0",
     "bootstrap-material-design": "4.1.3",

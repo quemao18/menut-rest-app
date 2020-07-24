@@ -1,11 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Lightbox } from 'ngx-lightbox';
 
 @Component({
-  selector: 'app-menu-card-item-medium',
-  templateUrl: './menu-card-item-medium.component.html',
-  styleUrls: ['./menu-card-item-medium.component.css'],
+  selector: 'app-qr-card',
+  templateUrl: './qr-card.component.html',
+  styleUrls: ['./qr-card.component.css'],
   animations: [
     trigger('animate', [
       state('*', style({
@@ -29,30 +28,13 @@ import { Lightbox } from 'ngx-lightbox';
     ])  
   ]
 })
-export class MenuCardItemMediumComponent implements OnInit {
+export class QrCardComponent implements OnInit {
 
-  @Input() public lang: string;
-  @Input() public item: any;
-
-    constructor(
-      private _lightbox: Lightbox
-    ) {}
+  @Input() public orderId: string;
+  
+  constructor() { }
 
   ngOnInit(): void {
   }
 
-  open(name: string, photo: string): void {
-    // open lightbox        
-    const album = [{
-          src: photo,
-          caption: name,
-          thumb: photo
-       }];
-    this._lightbox.open(album, 0);
-  }
- 
-  close(): void {
-    // close lightbox programmatically
-    this._lightbox.close();
-  }
 }

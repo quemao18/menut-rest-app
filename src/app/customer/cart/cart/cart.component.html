@@ -1,0 +1,51 @@
+<div class="main-content">
+    <div class="container-fluid top">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                    <div [@animate] class="card">
+                        <div class="card-header card-header-danger">
+                            <h4 class="card-title mt-0">Pedido</h4>
+                            <h6 style="cursor: pointer; float: right; color: white; margin-top: -21px; margin-right: 0px;" title="Menú" [routerLink]="['/menu']" 
+                            class="">
+                            <i style="position: absolute; right: 64px; top: 12px" class="material-icons" >menu_book</i>
+                            Menú
+                            </h6>
+                        </div>
+                        <div class="card-body menu">
+                            <h3 *ngIf="shoppingCartItems.length == 0 && orderId == ''" style="text-align: center;" class="card-category">Nada agregado</h3>
+
+                            <app-dish-card-item-medium class="dish-card" *ngFor="let item of shoppingCartItems"
+                            [lang]="'es'" 
+                            [item]="item"
+                            (totalPrice)="totalPriceCart($event)"
+                            ></app-dish-card-item-medium>
+                            
+                            <app-qr-card *ngIf="orderId!=''" [orderId]= "orderId">
+
+                            </app-qr-card>
+
+                            <h6 *ngIf="totalPrice>0 && orderId == ''" style="text-align: right; margin-right: 20px;" class="card-category">Total: {{totalPrice}}$</h6>
+                            <hr>
+                            <div class="card-footer justify-content-center">
+                                <input (click)="checkout()" [disabled]="shoppingCartItems.length==0"  type="button" class="btn btn-danger btn-link btn-lg" value="Procesar">
+                                <input [routerLink]="['/menu']" type="button" class="btn btn-danger btn-link btn-lg" value="Menú">
+                              </div>
+                        </div>
+                     
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+  
+
+<!-- <div [@flip] class="card card-stats" *ngFor = "let item of items">
+    <div class="card-header card-header-info card-header-icon">
+        <img src="{{item.image}}" (click)="open(item.name, item.image); $event.stopPropagation();" class="card-icon-2 " style="width:70px; height: 70px;">
+        <div class="card-body" [ngClass]="!status? 'disabled':'enabled'" >
+        <p class="card-category">{{item.price}}</p>
+        <h3 class="card-title">{{item.name}}</h3>
+        </div>
+    </div>
+</div> -->

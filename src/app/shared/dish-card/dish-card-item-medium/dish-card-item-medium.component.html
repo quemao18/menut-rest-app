@@ -1,20 +1,50 @@
 <div *ngIf="lang=='es'"> 
-  <div [@flip] [ngClass]="!status? 'disabled':'enabled'" class="media border p-3" style="position: relative;">
-    <img src="{{photoPF}}" (click)="open(nameEs, photoPF)" class="align-self-start mr-3 rounded-circle" style="width:70px; height: 70px;">
-    <div (click)="lang = 'en'" title="English" class="top-right">EN</div>
-    <div class="media-body">
-      <h4>{{nameEs}}<span class="ref" *ngIf="ref" class="card-category text-gray">{{ref}}</span></h4>
-      <p class="card-description">{{descriptionEs}}</p>
-      <p class="card-description text-success">{{price}}$</p>
-      <p class="text-danger" *ngIf="!status">Agotado</p>
-      <!-- <a href="javascript:void(0)" class="btn btn-danger btn-round button-list">Ver</a> -->
+  <div [@flip] class="card card-stats">
+    <div class="card-header card-header-info card-header-icon">
+      <div (click)="lang = 'en'; $event.stopPropagation();" title="English" class="top-right2">EN</div>
+      <img src="{{item.data.photoPF}}" (click)="open(item.data.nameEs, item.data.photoPF); $event.stopPropagation()" class="card-icon-2 " style="width:70px; height: 70px;">
+      <div class="card-body" [ngClass]="!item.data.status? 'disabled':'enabled'" >
+        <p class="card-category">{{item.data.description.es}}</p>
+        <h3 class="card-title">{{item.data.name.es}}</h3>
+        <span class="card-category text-info">{{item.data.price}}$</span>
+      </div>
+    </div>
+    <div class="">
+      <hr>
+        <div class="">
+              <button style="margin-top: -10px; margin-left: 10px;" (click)="remove()" class="btn btn-danger btn-round float-left" type="button" id="toleft">Eliminar</button>
+              <button style="margin-top: -10px; margin-right: 10px;" (click)="updateQty(1)" class="btn-icon btn btn-danger btn-round float-right" type="button" ><span class="btn2p">+</span></button>
+              <a style="width: 30px;height: 5px; text-align: center; margin-top: 0;" class="float-right" type="button" id="more">{{item.qty}}</a>
+              <button [disabled]="item.qty<=1" href="javascript:void(0)"  style="margin-top: -10px;" (click)="updateQty(-1)" class="btn-icon btn btn-danger btn-round float-right" type="button"><span class="btn2m">-</span></button>
+        </div>
     </div>
   </div>
 </div>
 <!-- es -->
 <!-- en -->
 <div *ngIf="lang=='en'"> 
-  <div [@flip] [ngClass]="!status? 'disabled':'enabled'" class="media border p-3" style="position: relative;">
+  <div [@flip] class="card card-stats">
+    <div class="card-header card-header-info card-header-icon">
+      <div (click)="lang = 'es'; $event.stopPropagation();" title="Español" class="top-right2">ES</div>
+      <img src="{{item.data.photoPF}}" (click)="open(item.data.name.en, item.data.photoPF); $event.stopPropagation()" class="card-icon-2 " style="width:70px; height: 70px;">
+      <div class="card-body" [ngClass]="!item.data.status? 'disabled':'enabled'" >
+        <p class="card-category">{{item.data.description.en}}</p>
+        <h3 class="card-title">{{item.data.name.en}}</h3>
+        <span class="card-category text-info">{{item.data.price}}$</span>
+      </div>
+    </div>
+    <div class="">
+      <hr>
+        <div class="">
+              <button style="margin-top: -10px; margin-left: 10px;" (click)="remove()" class="btn btn-danger btn-round float-left" type="button" id="toleft">Remove</button>
+              <button style="margin-top: -10px; margin-right: 10px;" (click)="updateQty(1)" class="btn-icon btn btn-danger btn-round float-right" type="button" ><span class="btn2p">+</span></button>
+              <a style="width: 30px;height: 5px; text-align: center; margin-top: 0;" class="float-right" type="button" id="more">{{item.qty}}</a>
+              <button [disabled]="item.qty<=1" href="javascript:void(0)"  style="margin-top: -10px;" (click)="updateQty(-1)" class="btn-icon btn btn-danger btn-round float-right" type="button"><span class="btn2m">-</span></button>
+        </div>
+    </div>
+  </div>
+
+  <!-- <div [@flip] [ngClass]="!status? 'disabled':'enabled'" class="media border p-3" style="position: relative;">
     <img src="{{photoPF}}" (click)="open(nameEn, photoPF)" class="align-self-start mr-3 rounded-circle" style="width:70px; height: 70px;">
     <div (click)="lang = 'es'" title="Español" class="top-right">ES</div>
     <div class="media-body">
@@ -22,8 +52,8 @@
       <p class="card-description">{{descriptionEn}}</p>
       <p class="card-description text-success">{{price}}$</p>
       <p class="text-danger" *ngIf="!status">No Stock</p>
-      <!-- <a href="javascript:void(0)" class="btn btn-danger btn-round button-list">View</a> -->
+      <a href="javascript:void(0)" class="btn btn-danger btn-round button-list">View</a> 
     </div>
-  </div>
+  </div> -->
 </div> 
 <!-- en -->

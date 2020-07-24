@@ -18,8 +18,7 @@ import { SidebarCustomerComponent } from 'app/customer/components/sidebar-custom
 import { NavbarCustomerComponent } from 'app/customer/components/navbar-customer/navbar-customer.component';
 import { MenuCardItemLargeComponent } from 'app/shared/menu-card/menu-card-item-large/menu-card-item-large.component';
 import { SharedModule } from 'app/shared/shared.module';
-
-
+import { CartComponent } from 'app/customer/cart/cart/cart.component';
 
 @NgModule({
   imports: [
@@ -41,6 +40,7 @@ import { SharedModule } from 'app/shared/shared.module';
   declarations: [
     MenuListComponent,
     DishListComponent,
+    CartComponent
   ],
 })
 export class CustomerLayoutModule { }

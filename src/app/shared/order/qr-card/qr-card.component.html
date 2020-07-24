@@ -1,0 +1,9 @@
+<div [@flip] class="card card-profile" >
+    <div class="card-body">
+        <h6 class="card-title">{{orderId}}</h6>
+        <p class="card-description">
+            <qrcode [qrdata]="orderId" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+        </p> 
+        <p class="">Muestra este código al mesonero.</p>
+    </div>
+</div>

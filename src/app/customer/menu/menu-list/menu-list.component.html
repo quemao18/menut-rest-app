@@ -3,50 +3,47 @@
         <div class="row">
             <div *ngIf="menuTitle==''" class="col-md-6 mx-auto">
             <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
-                <div [@animate] class="card" >
+                <div [@animate]="disable" class="card">
                     <div class="card-header card-header-danger">
                         <h4 class="card-title mt-0">Menú</h4>
                     </div>
-                    <div class="card-body">
-                        <app-menu-card-item-medium  *ngFor="let menu of menus"
+                    <div class="card-body menu">
+                        <app-menu-card-item-medium *ngFor="let menu of menus"
                         [lang]="lang" 
-                        [photoBG]="menu.data.photoBG"
-                        [photoPF]="menu.data.photoPF"
-                        [ref]="menu.data.ref"
-                        [nameEn]="menu.data.name.en"
-                        [nameEs]="menu.data.name.es"
-                        [descriptionEn]="menu.data.description.en"
-                        [descriptionEs]="menu.data.description.es"
-                        [status]="menu.data.status"
-                        (click) = "showMenu(menu.id, menu.data.name, menu.data.status)"
+                        [item]="menu"
+                        (click) = "showMenu(menu); $event.stopPropagation();"
                         ></app-menu-card-item-medium>
                     </div>
+                    <button *ngIf="totalItemsCart>0" [routerLink]="['/cart']" class="float" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
+                        <span class="badge badge-light">{{totalItemsCart}}</span>
+                    </button>
+
                 </div>
             </div>
 
             <div *ngIf="menuTitle!=''" class="col-md-6 mx-auto">
                 <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
-                    <div [@animate] class="card">
+                    <div [@animate]="!disable" class="card">
                         <div class="card-header card-header-danger">
                             <h4 class="card-title mt-0">{{menuTitle}}</h4>
-                            <a (click)="ngOnInit()" class="" style="float: right; color: white;" title="Menu" [routerLink]="">
-                                Menú <i class="material-icons" >undo</i>
-                            </a>
+                            <h6 (click)="ngOnInit()" style="cursor: pointer; float: right; color: white; margin-top: -36px; margin-right: 0px;" 
+                            title="Menú" 
+                                class="">
+                                <i style="position: relative; top: 4px;" class="material-icons" >menu_book</i>
+                                Menú
+                            </h6>
                         </div>
                         <div class="card-body menu">
                             <app-dish-card-item-large  *ngFor="let dish of dishes"
                             [lang]="lang" 
-                            [photoBG]="dish.data.photoBG"
-                            [photoPF]="dish.data.photoPF"
-                            [ref]="dish.data.ref"
-                            [nameEn]="dish.data.name.en"
-                            [nameEs]="dish.data.name.es"
-                            [descriptionEn]="dish.data.description.en"
-                            [descriptionEs]="dish.data.description.es"
-                            [status]="dish.data.status"
-                            [price]="dish.data.price"
+                            [item]="dish"
+                            (totalItems)="totalItems($event)"
+                            (inCartItem)="inCartItem($event)"
                             ></app-dish-card-item-large>
                         </div>
+                        <button *ngIf="totalItemsCart>0" (click)="$event.stopPropagation();" [routerLink]="['/cart']" class="float" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
+                            <span class="badge badge-light">{{totalItemsCart}}</span>
+                        </button>
                     </div>
                 </div>
 

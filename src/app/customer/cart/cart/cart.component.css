@@ -8,6 +8,10 @@
     background-color: ghostwhite;
 }
 
+.dish-card.card{
+    height: 150px;
+}
+
 .top{
     margin-top: -40px;
 }
@@ -31,3 +35,33 @@
     color: white;
     border-radius: 60%;
  }
+
+ .card-title, .media-body h4{
+    text-transform: uppercase;
+    margin: 0px;
+    font-size: medium;
+}
+
+.card-body{
+    margin: 15px !important;
+    padding: 0;
+}
+
+.disabled{
+    cursor: not-allowed;
+}
+
+.enabled{
+    cursor: pointer;
+}
+
+/* Top right text */
+.top-right {
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    cursor: pointer;
+    color: blue;
+    font-size: 12px;
+    font-weight: 600;
+}

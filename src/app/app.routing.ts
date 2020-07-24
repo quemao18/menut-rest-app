@@ -18,7 +18,16 @@ const redirectUnauthorizedToLandingCustomer = () => redirectUnauthorizedTo(['men
 
 
 const routes: Routes =[
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full', }, 
+  
+  { path: '', redirectTo: 'menu', pathMatch: 'full', }, 
+  { 
+    path: '', component: CustomerLayoutComponent,
+    children: [
+      // { path: '', loadChildren: './layouts/customer-layout/customer-layout.module#CustomerLayoutModule'},
+      { path: '', loadChildren: () => CustomerLayoutModule },
+    ]
+  },
+  { path: 'dashboard', redirectTo: 'dashboard', pathMatch: 'full', }, 
   {
     path: '',
     component: AdminLayoutComponent,
@@ -36,14 +45,7 @@ const routes: Routes =[
       { path: '', loadChildren: () => HomeLayoutModule }
     ]
   },
-  { path: '', redirectTo: 'menu', pathMatch: 'full', }, 
-  { 
-    path: '', component: CustomerLayoutComponent,
-    children: [
-      // { path: '', loadChildren: './layouts/customer-layout/customer-layout.module#CustomerLayoutModule'},
-      { path: '', loadChildren: () => CustomerLayoutModule }
-    ]
-  },
+  
 ];
 
 

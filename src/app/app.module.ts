@@ -4,13 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
-
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 
 import { AppComponent } from './app.component';
-
-import { AgmCoreModule } from '@agm/core';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { HomeLayoutComponent } from './layouts/home-layout/home-layout.component';
@@ -30,9 +27,7 @@ import { CustomerLayoutComponent } from './layouts/customer-layout/customer-layo
 import { ComponentsCustomerModule } from './customer/components/components-customer.module';
 
 import { HttpClientModule } from '@angular/common/http';
-
-
-
+import { ShoppingCartService } from './services/shopping-cart/shopping-cart.service';
 
 @NgModule({
   imports: [
@@ -49,7 +44,7 @@ import { HttpClientModule } from '@angular/common/http';
     AngularFirestoreModule,
     AngularFireStorageModule,
     NgxSpinnerModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   declarations: [
     AppComponent,
@@ -57,7 +52,13 @@ import { HttpClientModule } from '@angular/common/http';
     HomeLayoutComponent,
     CustomerLayoutComponent,
   ],
-  providers: [AuthService, NotificationService, VersionCheckService, NgxImageCompressService],
+  providers: [
+    AuthService, 
+    NotificationService, 
+    VersionCheckService, 
+    NgxImageCompressService, 
+    ShoppingCartService, 
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

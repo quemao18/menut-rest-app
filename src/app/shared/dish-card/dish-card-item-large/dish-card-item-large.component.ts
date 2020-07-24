@@ -1,6 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Lightbox } from 'ngx-lightbox';
+import { ShoppingCartService, Product } from 'app/services/shopping-cart/shopping-cart.service';
+import { NotificationService } from 'app/services/notification/notification.service';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-dish-card-item-large',
@@ -32,21 +35,46 @@ import { Lightbox } from 'ngx-lightbox';
 export class DishCardItemLargeComponent implements OnInit {
 
   @Input() public lang: string;
-  @Input() public photoBG: string;
-  @Input() public photoPF: string;
-  @Input() public ref: any;
-  @Input() public nameEs: string;
-  @Input() public nameEn: string;
-  @Input() public descriptionEs: string;
-  @Input() public descriptionEn: string;
-  @Input() public status: boolean;
-  @Input() public price: number;
+  @Input() public item: any;
 
+  @Output()
+  totalItems = new EventEmitter<number>();
+  @Output()
+  inCartItem = new EventEmitter<boolean>();
+
+  totalPrice = 0;
+  inCart = false;
+  totalItemsCart = 0;
+  public shoppingCartItems$: Observable<Product[]> = of([]);
+  public shoppingCartItems: Product[] = [];
+  
     constructor(
-      private _lightbox: Lightbox
-    ) { }
+      private _lightbox: Lightbox,
+      private shoppingCartService: ShoppingCartService,
+      private notification: NotificationService
+    ) {
+     }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      // this.shoppingCartItems = this.shoppingCartService.getItemsInCart();
+      this.shoppingCartService.getTotalAmount().subscribe(total=> this.totalPrice = total);
+      this.shoppingCartItems$ = this
+      .shoppingCartService
+      .getItems();
+      this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);
+
+      if(this.shoppingCartItems){
+      const productExistInCart = this.shoppingCartItems.find(({id}) => id === this.item.id);
+      // console.log(productExistInCart)
+      if(productExistInCart) 
+      this.inCart = true; 
+      else
+      this.inCart = false;
+      }
+      // console.log(this.inCart)
+    }, 100);
+
   }
 
   open(name: string, photo: string): void {
@@ -62,6 +90,49 @@ export class DishCardItemLargeComponent implements OnInit {
   close(): void {
     // close lightbox programmatically
     this._lightbox.close();
+  }
+
+  addToCart(){
+    let item = {
+      data: this.item.data,
+      // lang: this.lang,
+      id: this.item.id,
+      qty: 1
+    } 
+    this.item = item;
+    this.lang == 'es' ?
+    this.notification.showNotification('top', 'right', 'success', 'check', 'Agregado!'):
+    this.notification.showNotification('top', 'right', 'success', 'check', 'Added!');
+
+    this.shoppingCartService.addToCart(item, 1);
+    this.shoppingCartService.getTotalAmount().subscribe(total=> this.totalPrice = total);
+    this.shoppingCartItems$ = this
+    .shoppingCartService
+    .getItems();
+    this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);
+    // this.shoppingCartService.addProductToCart(item, 1);
+    // this.shoppingCartItems = this.shoppingCartService.getItemsInCart();
+    this.totalItems.emit(this.shoppingCartItems.length);
+    this.inCartItem.emit(true);
+    this.inCart = true;
+  }
+
+  remove(item: Product){
+    this.lang == 'es' ?
+    this.notification.showNotification('top', 'right', 'danger', 'warning', 'Eliminado!'):
+    this.notification.showNotification('top', 'right', 'danger', 'warning', 'Deleted!');
+    // this.shoppingCartService.removeFromCart(this.item);
+    // console.log(id)
+    this.shoppingCartService.removeFromCart(item);
+    this.shoppingCartService.getTotalAmount().subscribe(total=> this.totalPrice = total);
+    this.shoppingCartItems$ = this
+    .shoppingCartService
+    .getItems();
+    this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);
+    // this.shoppingCartItems = this.shoppingCartService.getItemsInCart();
+    this.totalItems.emit(this.shoppingCartItems.length);
+    this.inCartItem.emit(false);
+    this.inCart = false;
   }
 
 }
