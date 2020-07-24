@@ -14,7 +14,7 @@
         <div class="">
               <button style="margin-top: -10px; margin-left: 10px;" (click)="remove()" class="btn btn-danger btn-round float-left" type="button" id="toleft">Eliminar</button>
               <button style="margin-top: -10px; margin-right: 10px;" (click)="updateQty(1)" class="btn-icon btn btn-danger btn-round float-right" type="button" ><span class="btn2p">+</span></button>
-              <a style="width: 30px;height: 5px; text-align: center; margin-top: 0;" class="float-right" type="button" id="more">{{item.qty}}</a>
+              <a style="width: 30px;height: 5px; text-align: center; margin-top: 0;" class="float-right" id="more">{{item.qty}}</a>
               <button [disabled]="item.qty<=1" href="javascript:void(0)"  style="margin-top: -10px;" (click)="updateQty(-1)" class="btn-icon btn btn-danger btn-round float-right" type="button"><span class="btn2m">-</span></button>
         </div>
     </div>
@@ -38,7 +38,7 @@
         <div class="">
               <button style="margin-top: -10px; margin-left: 10px;" (click)="remove()" class="btn btn-danger btn-round float-left" type="button" id="toleft">Remove</button>
               <button style="margin-top: -10px; margin-right: 10px;" (click)="updateQty(1)" class="btn-icon btn btn-danger btn-round float-right" type="button" ><span class="btn2p">+</span></button>
-              <a style="width: 30px;height: 5px; text-align: center; margin-top: 0;" class="float-right" type="button" id="more">{{item.qty}}</a>
+              <a style="width: 30px;height: 5px; text-align: center; margin-top: 0;" class="float-right" id="more">{{item.qty}}</a>
               <button [disabled]="item.qty<=1" href="javascript:void(0)"  style="margin-top: -10px;" (click)="updateQty(-1)" class="btn-icon btn btn-danger btn-round float-right" type="button"><span class="btn2m">-</span></button>
         </div>
     </div>

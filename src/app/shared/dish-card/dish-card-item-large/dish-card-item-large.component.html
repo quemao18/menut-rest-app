@@ -6,7 +6,7 @@
             <div (click)="lang = 'en'" title="English" class="top-right">EN</div>
         </div>
         <div class="card-avatar">
-            <a href="javascript:void(0)" (click)="open(item.data.nameEs, item.data.photoPF)">
+            <a href="javascript:void(0)" (click)="open(item.data.name.es, item.data.photoPF)">
                 <img class="img" src="{{item.data.photoPF}}" />
             </a>
         </div>
@@ -33,7 +33,7 @@
         <div (click)="lang = 'es'" title="Español" class="top-right">ES</div>
         </div>
         <div class="card-avatar">
-            <a href="javascript:void(0)" (click)="open(item.data.nameEn, item.data.photoPF)">
+            <a href="javascript:void(0)" (click)="open(item.data.name.en, item.data.photoPF)">
                 <img class="img" src="{{item.data.photoPF}}" />
             </a>
         </div>
