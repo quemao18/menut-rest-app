@@ -82,6 +82,7 @@ export class MenuListComponent implements OnInit {
       // this.disable = true; //disable animation
       console.log('Updating dishes and menu...');
     },60*1000*2);
+
   }
 
   totalItems(total: number) {
