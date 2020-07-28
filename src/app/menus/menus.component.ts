@@ -52,8 +52,6 @@ export class MenusComponent implements OnInit, AfterViewInit {
 
      }
 
-
-
   showForm: boolean = false;
   percentage = 0;
   finish = false;
@@ -65,6 +63,22 @@ export class MenusComponent implements OnInit, AfterViewInit {
   path = '/menus';
   photoPF = './assets/img/default-pf.png';
   photoBG = './assets/img/default-bg.png';
+    
+  item: any = {
+    data:{
+    photoPF: './assets/img/default-pf.png',
+    photoBG: './assets/img/default-bg.png',
+    name: {
+      es: '',
+      en: '',
+    },
+    description: {
+      es: '',
+      en: '',
+    },
+    }
+  }
+
   form = new FormGroup({
     // uid: new FormControl({value: null, disabled: true}),
     id: new FormControl(),
@@ -213,6 +227,24 @@ export class MenusComponent implements OnInit, AfterViewInit {
         this.status = menu.payload.data()['status'],
         this.photoPF = menu.payload.data()['photoPF'];
         this.photoBG = menu.payload.data()['photoBG'];
+        this.item = {
+          data: {
+            photoBG: menu.payload.data()['photoBG'],
+            photoPF: menu.payload.data()['photoPF'],
+            status: menu.payload.data()['status'],
+            name: {
+              es: menu.payload.data()['name']['es'],
+              en: menu.payload.data()['name']['en'],
+            },
+            description: {
+              es: menu.payload.data()['description']['es'],
+              en: menu.payload.data()['description']['en'],
+            },
+            ref: menu.payload.data()['ref'],
+            order: menu.payload.data()['order'],
+          }
+        };
+        // console.log(this.item)
         this.form.patchValue({
           id: documentId,
           name: {
@@ -234,6 +266,29 @@ export class MenusComponent implements OnInit, AfterViewInit {
       (error) => 
         this.notificationService.showNotification('top', 'right', 'danger','danger', error.message)
       )//.unsubscribe();
+    }
+
+    onChanges(): void {
+      this.form.valueChanges.subscribe(val => {
+          // console.log(val);
+          this.item = {
+            data: {
+              photoBG: this.photoBG,
+              photoPF: this.photoPF,
+              status: val.status,
+              name: {
+                es: val.name.es,
+                en: val.name.en,
+              },
+              description: {
+                es: val.description.es,
+                en: val.description.en
+              },
+              ref: val.ref,
+              order: val.order,
+            }
+          };
+      });
     }
 
     new(){

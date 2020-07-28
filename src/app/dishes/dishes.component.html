@@ -93,7 +93,7 @@
                     </div>
                     <div class="card-body">
                       <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
-                        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+                        <form (keypress)="onChanges()" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
                             <div class="row">
                                 <input hidden #id formControlName= "id" >
                                 <!-- <input hidden #menuId formControlName= "menuId" > -->
@@ -208,31 +208,15 @@
             </div>
             <!-- es -->
             <div class="col-md-4">
-
+                <p>View</p>
                 <app-dish-card-item-large
                 [lang]="lang" 
-                [photoBG]="photoBG"
-                [photoPF]="photoPF"
-                [ref]="ref.value"
-                [nameEn]="nameEn.value"
-                [nameEs]="nameEs.value"
-                [descriptionEn]="descriptionEn.value"
-                [descriptionEs]="descriptionEs.value"
-                [status]="form.value.status"
-                [price]="price.value"
+                [item]="item"
                 ></app-dish-card-item-large>
                 <p>In Cart</p>
                 <app-dish-card-item-medium
                 [lang]="lang" 
-                [photoBG]="photoBG"
-                [photoPF]="photoPF"
-                [ref]="ref.value"
-                [nameEn]="nameEn.value"
-                [nameEs]="nameEs.value"
-                [descriptionEn]="descriptionEn.value"
-                [descriptionEs]="descriptionEs.value"
-                [status]="form.value.status"
-                [price]="price.value"
+                [item]="item"
                 ></app-dish-card-item-medium>
                
             </div>

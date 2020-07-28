@@ -7,6 +7,7 @@ import { DishCardItemLargeComponent } from './dish-card/dish-card-item-large/dis
 import { DishCardItemMediumComponent } from './dish-card/dish-card-item-medium/dish-card-item-medium.component';
 import { QrCardComponent } from './order/qr-card/qr-card.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import { CardItemComponent } from './order/card-item/card-item.component';
 
 
 @NgModule({
@@ -20,14 +21,17 @@ import { QRCodeModule } from 'angularx-qrcode';
     MenuCardItemMediumComponent,
     DishCardItemLargeComponent,
     DishCardItemMediumComponent,
-    QrCardComponent
+    QrCardComponent,
+    CardItemComponent
   ],
   exports: [
     MenuCardItemLargeComponent,
     MenuCardItemMediumComponent,
     DishCardItemLargeComponent,
     DishCardItemMediumComponent,
-    QrCardComponent
+    QrCardComponent,
+    CardItemComponent
+
   ]
 })
 export class SharedModule { }

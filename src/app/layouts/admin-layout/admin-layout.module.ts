@@ -14,6 +14,7 @@ import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatRippleModule} from '@angular/material/core';
+import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
@@ -23,7 +24,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { MenusComponent } from 'app/menus/menus.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { FilterPipe } from 'app/pipes/pipes.pipe';
+import { FilterPipe, FilterOrderPipe } from 'app/pipes/pipes.pipe';
 
 import { LightboxModule } from 'ngx-lightbox';
 import { DishesComponent } from 'app/dishes/dishes.component';
@@ -32,6 +33,8 @@ import { MenuCardItemMediumComponent } from 'app/shared/menu-card/menu-card-item
 import { DishCardItemLargeComponent } from 'app/shared/dish-card/dish-card-item-large/dish-card-item-large.component';
 import { DishCardItemMediumComponent } from 'app/shared/dish-card/dish-card-item-medium/dish-card-item-medium.component';
 import { SharedModule } from 'app/shared/shared.module';
+import { OrdersComponent, DialogItems } from 'app/orders/orders/orders.component';
+import { BrowserModule } from '@angular/platform-browser';
 // import { AgGridModule } from '@ag-grid-community/angular';
 // import { FilterPipeModule, FilterPipe } from 'ngx-filter-pipe';
 
@@ -41,6 +44,7 @@ const ngWizardConfig: NgWizardConfig = {
 @NgModule({
   imports: [
     CommonModule,
+    // BrowserModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
     ReactiveFormsModule,
@@ -48,13 +52,14 @@ const ngWizardConfig: NgWizardConfig = {
     MatRippleModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDialogModule,
     MatSelectModule,
     MatTooltipModule,
     ImageCropperModule,
     NgxSpinnerModule,
     NgxPaginationModule,
     LightboxModule,
-    SharedModule
+    SharedModule,
   ],
   declarations: [
     DashboardComponent,
@@ -69,6 +74,9 @@ const ngWizardConfig: NgWizardConfig = {
     MenusComponent,
     DishesComponent,
     FilterPipe,
+    FilterOrderPipe,
+    OrdersComponent,
+    DialogItems
   ],
  
 })

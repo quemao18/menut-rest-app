@@ -24,6 +24,14 @@ export class OrderService {
     return this.firestore.collection(collection).doc(documentId).snapshotChanges();
   }
 
+  public getByOrderId(orderId: string) {
+    return this.firestore.collection(collection, ref => ref
+      // .limit(limit)
+      .orderBy('date', 'desc')
+      .where('orderId', '==', orderId)
+    ).get();
+  }
+
   public gets(status?: boolean) {
     if(status)
     return this.firestore.collection(collection, ref => ref
@@ -34,7 +42,7 @@ export class OrderService {
     else
     return this.firestore.collection(collection, ref => ref
       // .limit(limit)
-      .orderBy('order', 'asc')
+      .orderBy('date', 'desc')
     ).get();
   }
 

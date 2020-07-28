@@ -1,0 +1,28 @@
+<!-- <div class="dialog">
+<h2 mat-dialog-title>Details order: {{data.order.data.orderId}}</h2>
+<mat-dialog-content >
+  <app-card-item  *ngFor="let item of data.order.data.items"
+  [item]="item"
+  ></app-card-item>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button type="button" (click)="onNoClick()" class="btn btn-danger pull-left">Close</button>
+
+</mat-dialog-actions>
+</div> -->
+<div class="">
+<div class="col-md-12 mx-auto">
+  <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+      <div [@animate] class="card">
+          <div class="card-header card-header-danger">
+              <h4 class="card-title mt-0">Details order: {{data.order.data.orderId}}</h4>
+          </div>
+          <div class="card-body menu">
+              <app-card-item  *ngFor="let item of data.order.data.items"
+              [item]="item"
+              ></app-card-item>
+          </div>
+      </div>
+      <button type="button" (click)="onNoClick()" class="btn btn-danger pull-left">Close</button>
+  </div>
+</div>

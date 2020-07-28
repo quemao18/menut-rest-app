@@ -54,7 +54,8 @@
               "app/forgot-password/forgot-password.component",
               "@firebase/auth",
               "ngx-lightbox",
-              "qrcode"
+              "qrcode",
+              "@zxing/library"
             ]
           },
           "configurations": {

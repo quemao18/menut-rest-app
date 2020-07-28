@@ -28,6 +28,9 @@ import { ComponentsCustomerModule } from './customer/components/components-custo
 
 import { HttpClientModule } from '@angular/common/http';
 import { ShoppingCartService } from './services/shopping-cart/shopping-cart.service';
+import { HomeComponent } from './waiters/home/home/home.component';
+import { ComponentsWaiterModule } from './waiters/components/components-waiter.module';
+import { WaiterLayoutComponent } from './layouts/waiter-layout/waiter-layout.component';
 
 @NgModule({
   imports: [
@@ -37,6 +40,7 @@ import { ShoppingCartService } from './services/shopping-cart/shopping-cart.serv
     HttpModule,
     ComponentsModule,
     ComponentsCustomerModule,
+    ComponentsWaiterModule,
     RouterModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -51,6 +55,7 @@ import { ShoppingCartService } from './services/shopping-cart/shopping-cart.serv
     AdminLayoutComponent,
     HomeLayoutComponent,
     CustomerLayoutComponent,
+    WaiterLayoutComponent,
   ],
   providers: [
     AuthService, 

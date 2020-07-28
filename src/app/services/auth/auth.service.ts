@@ -185,7 +185,7 @@ export class AuthService {
           this.setUserLoggedIn(doc.data());
           if(doc.data().isAdmin){
             this.ngZone.run(() => {
-              this.router.navigate(['dashboard']);
+              this.router.navigate(['orders']);
             });
           }else{
             this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );

@@ -32,14 +32,7 @@ import { Lightbox } from 'ngx-lightbox';
 export class MenuCardItemLargeComponent implements OnInit {
 
   @Input() public lang: string;
-  @Input() public photoBG: string;
-  @Input() public photoPF: string;
-  @Input() public ref: any;
-  @Input() public nameEs: string;
-  @Input() public nameEn: string;
-  @Input() public descriptionEs: string;
-  @Input() public descriptionEn: string;
-  @Input() public status: boolean;
+  @Input() public item: any;
 
     constructor(
       private _lightbox: Lightbox

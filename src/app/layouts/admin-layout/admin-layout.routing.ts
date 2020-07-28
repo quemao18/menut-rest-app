@@ -10,12 +10,14 @@ import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { WizardComponent } from 'app/wizard/wizard.component';
 import { MenusComponent } from 'app/menus/menus.component';
 import { DishesComponent } from 'app/dishes/dishes.component';
+import { OrdersComponent } from 'app/orders/orders/orders.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent, },
     { path: 'menus',          component: MenusComponent, },
     { path: 'dishes/:id',     component: DishesComponent, },
     { path: 'dishes',         component: DishesComponent, },
+    { path: 'orders',         component: OrdersComponent, },
 
 
     { path: 'user-profile',   component: UserProfileComponent },

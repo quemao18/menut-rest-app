@@ -1,0 +1,13 @@
+
+<div class="col-md-12">
+  <div class="card card-stats">
+    <div class="card-header card-header-info card-header-icon">
+      <img src="{{item.data.photoPF}}" (click)="open(item.data.name.es, item.data.photoPF); $event.stopPropagation()" class="card-icon-2 " style="width:70px; height: 70px;">
+      <div class="card-body" >
+        <!-- <p class="card-category">{{item.data.description.es}}</p> -->
+        <h3 class="card-title">{{item.data.name.es}} <small class="card-category"> x{{item.qty}}</small> </h3>
+        <!-- <span class="card-category text-info">{{item.data.price}}$</span> -->
+      </div>
+    </div>
+  </div>
+</div>

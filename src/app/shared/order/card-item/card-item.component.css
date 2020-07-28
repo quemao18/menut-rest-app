@@ -1,0 +1,138 @@
+
+.card-title, .media-body h4{
+    text-transform: uppercase;
+    margin: 0px;
+    padding-bottom: 10px;
+    font-size: 1.5rem;
+}
+.card{
+    background-color: white;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.less{
+    left: 75%;
+    position: absolute;
+    bottom: 27px;
+    height: 36px;
+    width: 36px;
+}
+.less2{
+    position: absolute;
+    left: 68%;
+    margin-top: 3px;
+    height: 36px;
+    width: 36px;
+}
+.plus{
+    left: 85%;
+    position: absolute;
+    bottom: 27px;
+    height: 36px;
+    width: 36px;
+}
+.btn-icon{
+    height: 36px;
+    width: 36px;
+}
+.plus2{
+    position: absolute;
+    left: 86%;
+    margin-top: 3px;
+    height: 36px;
+    width: 36px;
+}
+
+.qty{
+    color: black;
+    /* margin-left: 36px; */
+    left: 80%;
+    position: absolute;
+    bottom: 27px;
+}
+
+.qty2{
+    position: absolute;
+    left: 81%;
+    margin-top: 2px;
+    color: black;
+}
+
+.btn2m{
+    margin: -14px 0px 0px -3px;
+    position: absolute;
+}
+.btn2p{
+    margin: -14px 0px 0px -5px;
+    position: absolute;
+}
+
+.card-body{
+    margin: 15px !important;
+    padding: 0;
+}
+
+img{
+    cursor: pointer;
+}
+
+.disabled{
+    cursor: not-allowed;
+}
+
+.enabled{
+    cursor: pointer;
+}
+
+/* Top right text */
+.top-right {
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    cursor: pointer;
+    color: blue;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Top right text */
+.top-right2 {
+    position: absolute;
+    top: 4px;
+    right: 0px;
+    cursor: pointer;
+    color: blue;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+.lang {
+    position: absolute;
+    /* top: 4px; */
+    right: 5%;
+    cursor: pointer;
+    color: blue;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.card-icon{
+    background: linear-gradient(60deg, #fde401, #dbca2d) !important;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(45, 202, 219, 0.4);
+}
+
+.card-icon-2{
+  border-radius: 3px;
+  background-color: black;
+  padding: 1px;
+  margin-top: -20px;
+  margin-right: 15px;
+  float: left;
+}
+
+.card-category{
+    padding-top: 10px;
+}

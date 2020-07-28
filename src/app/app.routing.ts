@@ -12,8 +12,11 @@ import { CustomerLayoutComponent } from './layouts/customer-layout/customer-layo
 import { CustomerLayoutModule } from './layouts/customer-layout/customer-layout.module';
 import { HomeLayoutModule } from './layouts/home-layout/home-layout.module';
 import { AdminLayoutModule } from './layouts/admin-layout/admin-layout.module';
+import { WaiterLayoutComponent } from './layouts/waiter-layout/waiter-layout.component';
+import { WaiterLayoutModule } from './layouts/waiter-layout/waiter-layout.module';
+
 const redirectUnauthorizedToLanding = () => redirectUnauthorizedTo(['login']);
-const redirectUnauthorizedToLandingCustomer = () => redirectUnauthorizedTo(['menu']);
+// const redirectUnauthorizedToLandingCustomer = () => redirectUnauthorizedTo(['menu']);
 
 
 
@@ -27,6 +30,22 @@ const routes: Routes =[
       { path: '', loadChildren: () => CustomerLayoutModule },
     ]
   },
+  { path: 'home', redirectTo: 'login', pathMatch: 'full', }, 
+  { 
+    path: '', component: HomeLayoutComponent,
+    children: [
+      // {path: '', loadChildren: './layouts/home-layout/home-layout.module#HomeLayoutModule'},
+      { path: '', loadChildren: () => HomeLayoutModule }
+    ]
+  },
+  { path: 'waiter', redirectTo: 'waiter', pathMatch: 'full', }, 
+  { 
+    path: '', component: WaiterLayoutComponent,
+    children: [
+      // {path: '', loadChildren: './layouts/home-layout/home-layout.module#HomeLayoutModule'},
+      { path: '', loadChildren: () => WaiterLayoutModule }
+    ]
+  },
   { path: 'dashboard', redirectTo: 'dashboard', pathMatch: 'full', }, 
   {
     path: '',
@@ -35,14 +54,6 @@ const routes: Routes =[
     children: [
       // {path: '', loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'}
       { path: '', loadChildren: () => AdminLayoutModule }
-    ]
-  },
-  { path: 'home', redirectTo: 'login', pathMatch: 'full', }, 
-  { 
-    path: '', component: HomeLayoutComponent,
-    children: [
-      // {path: '', loadChildren: './layouts/home-layout/home-layout.module#HomeLayoutModule'},
-      { path: '', loadChildren: () => HomeLayoutModule }
     ]
   },
   

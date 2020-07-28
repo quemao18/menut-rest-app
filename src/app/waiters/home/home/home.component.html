@@ -1,0 +1,35 @@
+<div class="main-content">
+    <div class="container-fluid top">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+            <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                <div [@animate] class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 *ngIf="qrResultString==null" class="card-title mt-0">Home</h4>
+                        <h4 *ngIf="qrResultString" class="card-title mt-0">Order: {{orderIdShort}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <zxing-scanner *ngIf="show" (scanSuccess)="onCodeResult($event)"></zxing-scanner>
+                        
+                        <app-card-item  *ngFor="let item of items"
+                        [item]="item"
+                        ></app-card-item>
+
+                        <!-- <section class="results" *ngIf="qrResultString">
+                        <div>
+                            <small>Result</small>
+                            <strong>{{ qrResultString }}</strong>
+                            {{order | json}}
+                        </div>
+                        <button mat-icon-button (click)="clearResult()">&times;</button>
+                        </section> -->
+                        <input *ngIf="qrResultString" (click)="changeStatus(); clearResult()"  type="button" class="btn btn-danger btn-link btn-lg" value="Listo">
+                        <input *ngIf="qrResultString==null" (click)="scanQR()"  type="button" class="btn btn-danger btn-link btn-lg" value="Escanear QR">
+                    </div>
+                   
+                </div>
+            </div>
+    </div>
+</div>
+
+  

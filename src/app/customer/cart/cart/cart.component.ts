@@ -50,7 +50,7 @@ export class CartComponent implements OnInit {
   orderId: string = '';
 
   ngOnInit(): void {
-    // var id = this.randomStringCharset(5, "CHACITOBchacito0123456789");
+    // var id = this.randomStringCharset(6, "ASERTCHBasertchb0123456789");
     // console.log(id)
     this.shoppingCartService.getTotalAmount().subscribe(total=> this.totalPrice = total);
     this.shoppingCartItems$ = this
@@ -69,8 +69,13 @@ export class CartComponent implements OnInit {
     console.log('New Order');
     this.spinner.show();
     // var id  = '' + Math.random().toString(36).toUpperCase().substr(2, 6);
-    var id = this.randomStringCharset(5, "CHATOBchato0123456789");
-    await this.orderService.create({orderId: id, date: Date.now(), items:this.shoppingCartItems}).then((doc) => {
+    var id = this.randomStringCharset(6, "ASERTCHBasertchb0123456789");
+    let data = {
+      orderId: id, 
+      date: Date.now(), 
+      status: 'Pending',
+      items: this.shoppingCartItems}
+    await this.orderService.create(data).then((doc) => {
       console.log('Order created successs', doc.id);
       this.orderId = id;
       this.spinner.hide();

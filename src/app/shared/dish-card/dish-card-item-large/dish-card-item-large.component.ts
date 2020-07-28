@@ -100,9 +100,9 @@ export class DishCardItemLargeComponent implements OnInit {
       qty: 1
     } 
     this.item = item;
-    this.lang == 'es' ?
-    this.notification.showNotification('top', 'right', 'success', 'check', 'Agregado!'):
-    this.notification.showNotification('top', 'right', 'success', 'check', 'Added!');
+    // this.lang == 'es' ?
+    // this.notification.showNotification('top', 'right', 'success', 'check', 'Agregado!'):
+    // this.notification.showNotification('top', 'right', 'success', 'check', 'Added!');
 
     this.shoppingCartService.addToCart(item, 1);
     this.shoppingCartService.getTotalAmount().subscribe(total=> this.totalPrice = total);
@@ -118,9 +118,9 @@ export class DishCardItemLargeComponent implements OnInit {
   }
 
   remove(item: Product){
-    this.lang == 'es' ?
-    this.notification.showNotification('top', 'right', 'danger', 'warning', 'Eliminado!'):
-    this.notification.showNotification('top', 'right', 'danger', 'warning', 'Deleted!');
+    // this.lang == 'es' ?
+    // this.notification.showNotification('top', 'right', 'danger', 'warning', 'Eliminado!'):
+    // this.notification.showNotification('top', 'right', 'danger', 'warning', 'Deleted!');
     // this.shoppingCartService.removeFromCart(this.item);
     // console.log(id)
     this.shoppingCartService.removeFromCart(item);

@@ -1,0 +1,61 @@
+<div class="main-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div [@animate] class="card card-plain">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title mt-0">Orders
+                        <a (click)="ngOnInit();" class="link-white" title="Refresh" [routerLink]="">
+                          <i class="material-icons" >refresh</i>
+                        </a>
+                    </h4>
+                    <mat-form-field class="search2 card-title mt-0">
+                      <input type="text" #queryString matInput class="search" placeholder="Search" >
+                    </mat-form-field>  
+                    <p class="card-category"> Last orders </p>
+                </div>
+              
+                <div class="card-body">
+                  <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                     <div style="min-height: 550px;" class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="">
+                                <th style="text-align: center;">OrderID</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </thead>
+                            <tbody>
+                                <tr (click)="openDialog(order)"  class="enabled" [@animate] *ngFor="let order of orders | filterOrder: {search: queryString.value} | paginate: config "> 
+                                    <td style="text-align: center;">
+                                        {{order.data.orderId}}
+                                    </td>
+                                    <td>
+                                        {{order.data.date | date: 'dd/MM/yy hh:mm aaa'}}
+                                    </td>
+                                    <td>
+                                        {{order.data.status}} 
+                                    </td>
+                                    <td>
+                                        {{order.total}}$ 
+                                    </td>
+                                    <td> 
+                                        <!-- <a (click)="changeStatus(menu.id, menu.data.status); $event.stopPropagation()" [routerLink]="" [title]="!menu.data.status ? 'Active' : 'Desactive'">
+                                          <i class="material-icons">{{!menu.data.status ? 'check': 'power_settings_new'}}</i>
+                                        </a> -->
+                                        <!-- <a (click)="edit(menu.id); $event.stopPropagation()" title="Edit" [routerLink]=""><i class="material-icons" >edit</i></a> -->
+                                        <a (click)="delete(order.id); $event.stopPropagation()" class="link-danger" title="Delete" [routerLink]=""><i class="material-icons" >delete</i></a>
+                                    </td>  
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination-controls style="text-align: center;" (pageChange)="pageChanged($event)"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
