@@ -114,9 +114,8 @@ export class MenuPdfComponent implements OnInit {
 
   public downloadPDF():void {
     let DATA = this.htmlData.nativeElement;
-    let doc = new jsPDF('landscape','pt', 'a4');
-    // var pdf = new jsPDF('p', 'pt', 'letter');
-    // doc.addPage('a3', 'portrait');
+    let doc = new jsPDF('p','pt', 'letter');
+    // doc.internal.scaleFactor = 1.1;
     doc.addHTML(DATA, 
     function save() {
       doc.save('chacaitoba-menu.pdf');
