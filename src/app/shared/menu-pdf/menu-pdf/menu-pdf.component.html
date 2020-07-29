@@ -1,0 +1,72 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="col-md-12 mx-auto" style="cursor: pointer; left: 10%;">
+        <span *ngIf="lang=='en'"  (click)="lang='es'" class="">ESPAÑOL</span>
+        <span *ngIf="lang=='es'"  (click)="lang='en'" class="">ENGLISH</span>
+        </div>
+        <div style="width: 80%;" class="col-md-12 mx-auto">
+        <div *ngIf="lang=='es'" id="htmlData" #htmlData>
+            <div class="card yellow">
+                <div class="brown font-yellow"  >
+                    <h1 class="card-title text-yellow">MENÚ</h1>
+                </div>
+                <div [@flip] class="card-body">
+                    <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                    <div id="typography">
+                        <div class="card-title">
+                            <div class="row">
+                                <div *ngFor="let menu of menus; let i = index" class="col-md-6">
+                                    <h4 class="card-title">{{menu.menu.name.es}}:</h4>
+                                    <p class="card-category">{{menu.menu.description.es}}</p>
+                                    <ul *ngFor="let dish of menu.dishes">
+                                        <li>
+                                        {{dish.dish.name.es}}
+                                        <span *ngIf="dish.dish.status" class="float-right text-black">{{dish.dish.price}}$</span>
+                                        <span *ngIf="!dish.dish.status" class="float-right text-danger">Agotado</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <img src="./assets/img/metro.png" style="height: 100%; width: 100%;">
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="lang=='en'" id="htmlData" #htmlData>
+            <div class="card yellow">
+                <div class="brown font-yellow">
+                    <h1 class="card-title">MENÚ</h1>
+                </div>
+                <div [@flip] class="card-body">
+                    <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                    <div id="typography">
+                        <div class="card-title">
+                            <div class="row">
+                                <div *ngFor="let menu of menus" class="col-md-6">
+                                    <h4 class="card-title">{{menu.menu.name.en}}:</h4>
+                                    <p class="card-category">{{menu.menu.description.en}}</p>
+                                    <ul *ngFor="let dish of menu.dishes">
+                                        <li>
+                                        {{dish.dish.name.es}}
+                                        <span *ngIf="dish.dish.status" class="float-right text-black">{{dish.dish.price}}$</span>
+                                        <span *ngIf="!dish.dish.status" class="float-right text-danger">Unavailable</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <img src="./assets/img/metro.png" style="height: 100%; width: 100%;">
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="justify-content-center">
+            <!-- <input (click)="openPDF()"  type="button" class="btn btn-danger  btn-lg" value="Ver PDF"> -->
+            <input [disabled]="disabled" (click)="downloadPDF()" type="button" class="btn btn-danger btn-lg" value="Donwload PDF">
+        </div>
+    </div>
+</div>
+  

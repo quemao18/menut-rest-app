@@ -4,8 +4,8 @@
             <div class="col-md-6 mx-auto">
                 <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
                     <div [@animate] class="card">
-                        <div class="card-header card-header-danger">
-                            <h4 class="card-title mt-0">Pedido</h4>
+                        <div class="card-header card-header-brown">
+                            <h4 class="card-title mt-0 text-yellow">Pedido</h4>
                             <h6 style="cursor: pointer; float: right; color: white; margin-top: -21px; margin-right: 0px;" title="Menú" [routerLink]="['/menu']" 
                             class="">
                             <i style="position: absolute; right: 64px; top: 12px" class="material-icons" >menu_book</i>
@@ -30,7 +30,7 @@
                             <div class="card-footer justify-content-center">
                                 <input (click)="checkout()" [disabled]="shoppingCartItems.length==0"  type="button" class="btn btn-danger btn-link btn-lg" value="Procesar">
                                 <input [routerLink]="['/menu']" type="button" class="btn btn-danger btn-link btn-lg" value="Menú">
-                              </div>
+                            </div>
                         </div>
                      
                     </div>

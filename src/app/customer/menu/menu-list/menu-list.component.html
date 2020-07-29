@@ -4,8 +4,8 @@
             <div *ngIf="menuTitle==''" class="col-md-6 mx-auto">
             <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
                 <div [@animate]="disable" class="card">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title mt-0">Menú</h4>
+                    <div class="card-header card-header-brown">
+                        <h4 class="card-title mt-0 text-yellow">Menú</h4>
                     </div>
                     <div class="card-body menu">
                         <app-menu-card-item-medium *ngFor="let menu of menus"
@@ -14,7 +14,7 @@
                         (click) = "showMenu(menu); $event.stopPropagation();"
                         ></app-menu-card-item-medium>
                     </div>
-                    <button *ngIf="totalItemsCart>0" [routerLink]="['/cart']" class="float" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
+                    <button *ngIf="totalItemsCart>0" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >article</i>
                         <span class="badge badge-light">{{totalItemsCart}}</span>
                     </button>
 
@@ -24,8 +24,8 @@
             <div *ngIf="menuTitle!=''" class="col-md-6 mx-auto">
                 <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
                     <div [@animate]="!disable" class="card">
-                        <div class="card-header card-header-danger">
-                            <h4 class="card-title mt-0">{{menuTitle}}</h4>
+                        <div class="card-header card-header-brown">
+                            <h4 class="card-title mt-0 text-yellow">{{menuTitle}}</h4>
                             <h6 (click)="ngOnInit()" style="cursor: pointer; float: right; color: white; margin-top: -36px; margin-right: 0px;" 
                             title="Menú" 
                                 class="">
@@ -41,7 +41,10 @@
                             (inCartItem)="inCartItem($event)"
                             ></app-dish-card-item-large>
                         </div>
-                        <button *ngIf="totalItemsCart>0" (click)="$event.stopPropagation();" [routerLink]="['/cart']" class="float" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
+                        <button [title]="lang=='es' ? 'Volver': 'Back'" (click)="ngOnInit(); $event.stopPropagation();" class="float-left" mat-mini-fab color="warn">
+                            <i class="material-icons" >undo</i>
+                        </button>
+                        <button *ngIf="totalItemsCart>0" (click)="$event.stopPropagation();" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >article</i>
                             <span class="badge badge-light">{{totalItemsCart}}</span>
                         </button>
                     </div>

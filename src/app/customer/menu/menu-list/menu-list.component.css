@@ -17,10 +17,16 @@
     transition: none !important;
  }
 
- .float{
+ .float-right{
     position: absolute;
-    top: 90%;
-    left: 85%;
+    top: 88%;
+    left: 87%;
+ }
+
+ .float-left{
+    position: absolute;
+    top: 88%;
+    right: 87%;
  }
 
  .badge{

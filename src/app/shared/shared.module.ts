@@ -8,13 +8,16 @@ import { DishCardItemMediumComponent } from './dish-card/dish-card-item-medium/d
 import { QrCardComponent } from './order/qr-card/qr-card.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { CardItemComponent } from './order/card-item/card-item.component';
+import { MenuPdfComponent } from './menu-pdf/menu-pdf/menu-pdf.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    QRCodeModule
+    QRCodeModule,
+    NgxSpinnerModule
   ],
   declarations: [
     MenuCardItemLargeComponent,
@@ -22,7 +25,8 @@ import { CardItemComponent } from './order/card-item/card-item.component';
     DishCardItemLargeComponent,
     DishCardItemMediumComponent,
     QrCardComponent,
-    CardItemComponent
+    CardItemComponent,
+    MenuPdfComponent
   ],
   exports: [
     MenuCardItemLargeComponent,
@@ -30,7 +34,8 @@ import { CardItemComponent } from './order/card-item/card-item.component';
     DishCardItemLargeComponent,
     DishCardItemMediumComponent,
     QrCardComponent,
-    CardItemComponent
+    CardItemComponent,
+    MenuPdfComponent
 
   ]
 })

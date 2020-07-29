@@ -7234,6 +7234,12 @@ a.text-warning:hover, a.text-warning:focus {
 .text-danger {
   color: #f44336 !important; }
 
+.text-yellow {
+  color: #f4eb60 !important; }
+
+a.text-yellow:hover, a.text-yellow:focus {
+  color: #ea1c0d !important; }
+
 a.text-danger:hover, a.text-danger:focus {
   color: #ea1c0d !important; }
 
@@ -8879,6 +8885,13 @@ button:focus {
   .card.card-rotate.bg-danger .front,
   .card.card-rotate.bg-danger .back {
     background: linear-gradient(60deg, #ef5350, #e53935); }
+  /* .card .card-header-brown .card-icon,
+  .card .card-header-brown .card-text,
+  .card .card-header-brown:not(.card-header-icon):not(.card-header-text), .card.bg-brown,
+  .card.card-rotate.bg-brown .front,
+  .card.card-rotate.bg-brown .back {
+    background: linear-gradient(60deg, #855143, #6f3728); } */
+
   .card .card-header-rose .card-icon,
   .card .card-header-rose .card-text,
   .card .card-header-rose:not(.card-header-icon):not(.card-header-text), .card.bg-rose,
@@ -13047,6 +13060,11 @@ h2.title {
       background-color: #fff171;
       -webkit-box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(172, 169, 44, 0.4);
               box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(208, 212, 0, 0.4); }
+  .sidebar[data-color="brown"] li.active > a {
+    background-color: #fff171;
+    -webkit-box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(172, 169, 44, 0.4);
+            box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(208, 212, 0, 0.4); }
+
   .sidebar[data-color="purple"] li.active > a {
     background-color: #9c27b0;
     -webkit-box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
@@ -13080,6 +13098,7 @@ h2.title {
     opacity: 1;
     -webkit-box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(60, 72, 88, 0.4);
             box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(60, 72, 88, 0.4); }
+
     .sidebar[data-color="white"] .nav .nav-item.active > a:not([data-toggle="collapse"]) i {
       color: rgba(60, 72, 88, 0.8); }
   .sidebar[data-background-color="red"] .nav .nav-item .nav-link {

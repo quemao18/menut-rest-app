@@ -1,0 +1,34 @@
+.card{
+    text-transform: uppercase;
+}
+#typography, .card-title{
+    font-family: 'Cablegram', Arial, Helvetica, sans-serif;
+
+}
+.yellow{
+    background: #f4eb60 !important;
+}
+.brown{
+    background: #6f3728 !important;
+    /* background-color: linear-gradient(60deg, #6f3728, #6f3728) !important; */
+
+}
+p{
+    line-height: 0px;
+}
+
+span{
+    font-weight: bold;
+}
+
+.top{
+    margin-top: -60px;
+    margin-right: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+.font-yellow h1{
+    padding: 10px; 
+    color: #f4eb60 !important
+}

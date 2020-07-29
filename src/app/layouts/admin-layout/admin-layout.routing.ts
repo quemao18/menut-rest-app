@@ -11,6 +11,7 @@ import { WizardComponent } from 'app/wizard/wizard.component';
 import { MenusComponent } from 'app/menus/menus.component';
 import { DishesComponent } from 'app/dishes/dishes.component';
 import { OrdersComponent } from 'app/orders/orders/orders.component';
+import { MenuPdfComponent } from 'app/shared/menu-pdf/menu-pdf/menu-pdf.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent, },
@@ -18,6 +19,8 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'dishes/:id',     component: DishesComponent, },
     { path: 'dishes',         component: DishesComponent, },
     { path: 'orders',         component: OrdersComponent, },
+    { path: 'menu-pdf',       component: MenuPdfComponent, },
+
 
 
     { path: 'user-profile',   component: UserProfileComponent },

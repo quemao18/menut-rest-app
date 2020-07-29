@@ -4,12 +4,16 @@
             <div class="col-md-6 mx-auto">
             <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
                 <div [@animate] class="card">
-                    <div class="card-header card-header-danger">
-                        <h4 *ngIf="qrResultString==null" class="card-title mt-0">Home</h4>
-                        <h4 *ngIf="qrResultString" class="card-title mt-0">Order: {{orderIdShort}}</h4>
+                    <div class="card-header card-header-brown">
+                        <h4 *ngIf="qrResultString==null" class="card-title mt-0 text-yellow">Home</h4>
+                        <h4 *ngIf="qrResultString" class="card-title mt-0 text-yellow">Order: {{orderIdShort}}</h4>
                     </div>
                     <div class="card-body">
-                        <zxing-scanner *ngIf="show" (scanSuccess)="onCodeResult($event)"></zxing-scanner>
+                        <zxing-scanner
+                         *ngIf="show" 
+                         [enable]="show"
+                         (scanSuccess)="onCodeResult($event)"
+                         ></zxing-scanner>
                         
                         <app-card-item  *ngFor="let item of items"
                         [item]="item"
@@ -23,8 +27,9 @@
                         </div>
                         <button mat-icon-button (click)="clearResult()">&times;</button>
                         </section> -->
-                        <input *ngIf="qrResultString" (click)="changeStatus(); clearResult()"  type="button" class="btn btn-danger btn-link btn-lg" value="Listo">
-                        <input *ngIf="qrResultString==null" (click)="scanQR()"  type="button" class="btn btn-danger btn-link btn-lg" value="Escanear QR">
+                        <input *ngIf="show" (click)="scanQR()"  type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">
+                        <input *ngIf="qrResultString" (click)="changeStatus(); clearResult()"  type="button" class="btn btn-danger btn-link btn-lg" value="Ok">
+                        <input *ngIf="qrResultString==null && !show" (click)="scanQR()"  type="button" class="btn btn-danger btn-link btn-lg" value="Escanear QR">
                     </div>
                    
                 </div>

@@ -19,8 +19,8 @@
                     Menus <i class="material-icons" >undo</i>
                 </a>
                 <div [@animate] class="card card-plain">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title mt-0">Dishes 
+                    <div class="card-header card-header-brown">
+                        <h4 class="card-title mt-0 text-yellow">Dishes 
                             <a (click)="new();" class="link-white" title="Add" [routerLink]="">
                               <i class="material-icons" >add</i>
                             </a>
@@ -87,8 +87,8 @@
         <div class="row">
             <div class="col-md-8">
                 <div [@animate] class="card card-plain flip" >
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title">Dish</h4>
+                    <div class="card-header card-header-brown">
+                        <h4 class="card-title text-yellow">Dish</h4>
                         <p class="card-category">Complete data for the dish</p>
                     </div>
                     <div class="card-body">
@@ -197,7 +197,7 @@
                              
                               </div>
                               <hr>
-                              Status: <input type="checkbox" #status formControlName= "status" >
+                              Status: <input (click)="onChanges()" type="checkbox" #status formControlName= "status" >
                                <!-- <button [ngClass]="{'button': true, 'is-success': true, 'is-large': true, 'is-loading': porcentaje > 0 && porcentaje < 100}" [disabled]="!profileForm.valid && (porcentaje > 0 && porcentaje < 100)">Subir archivo</button> -->
                             <button mat-raised-button (click)="scrollDiv(scroll)" [disabled]="!form.valid" type="submit" class="btn btn-danger pull-right">Save</button>
                             <button (click) = "showForm=!showForm; reset()" mat-raised-button type="button" class="btn btn-link pull-right">Cancel</button>
