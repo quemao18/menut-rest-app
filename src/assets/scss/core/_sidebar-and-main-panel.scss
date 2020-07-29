@@ -305,7 +305,7 @@
 
     
     &[data-color="chacaitoba"]{
-        @include set-background-color-button($brand-primary);
+        @include set-background-color-button($brand-yellow);
         @include sidebar-active-color($black-color);
     }
     &[data-color="purple"]{

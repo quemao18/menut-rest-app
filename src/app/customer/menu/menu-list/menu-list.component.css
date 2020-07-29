@@ -8,6 +8,10 @@
     background-color: ghostwhite;
 }
 
+.yellow{
+    background: #f4eb60 !important;
+}
+
 .top{
     margin-top: -40px;
 }

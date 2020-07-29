@@ -7231,15 +7231,15 @@ a.text-info:hover, a.text-info:focus {
 a.text-warning:hover, a.text-warning:focus {
   color: #ffe608 !important; }
 
-.text-danger {
-  color: #f44336 !important; }
-
 .text-yellow {
   color: #f4eb60 !important; }
 
 a.text-yellow:hover, a.text-yellow:focus {
-  color: #ea1c0d !important; }
+  color: #f7e711 !important; }
 
+.text-danger {
+  color: #f44336 !important; }
+    
 a.text-danger:hover, a.text-danger:focus {
   color: #ea1c0d !important; }
 
