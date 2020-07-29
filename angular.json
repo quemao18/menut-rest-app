@@ -55,7 +55,8 @@
               "@firebase/auth",
               "ngx-lightbox",
               "qrcode",
-              "@zxing/library"
+              "@zxing/library",
+              "jspdf"
             ]
           },
           "configurations": {

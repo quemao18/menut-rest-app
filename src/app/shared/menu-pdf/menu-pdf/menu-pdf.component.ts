@@ -69,7 +69,7 @@ export class MenuPdfComponent implements OnInit {
             dishes: this.dishes
           });
         });
-        console.log(this.menus)
+        // console.log(this.menus)
         // this.spinner.hide();
       }).catch((error) => {
         // window.alert(error)
@@ -114,14 +114,14 @@ export class MenuPdfComponent implements OnInit {
 
   public downloadPDF():void {
     let DATA = this.htmlData.nativeElement;
-    let doc = new jsPDF('landscape','pt', 'letter');
+    let doc = new jsPDF('landscape','pt', 'a4');
     // var pdf = new jsPDF('p', 'pt', 'letter');
     // doc.addPage('a3', 'portrait');
     doc.addHTML(DATA, 
     function save() {
       doc.save('chacaitoba-menu.pdf');
       // window.open(doc.output('bloburl'));
-    } )
+    });
   }
 
 }

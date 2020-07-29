@@ -5,12 +5,12 @@
         <span *ngIf="lang=='es'"  (click)="lang='en'" class="">ENGLISH</span>
         </div>
         <div style="width: 80%;" class="col-md-12 mx-auto">
-        <div *ngIf="lang=='es'" id="htmlData" #htmlData>
+        <div [@flip] *ngIf="lang=='es'" id="htmlData" #htmlData>
             <div class="card yellow">
                 <div class="brown font-yellow"  >
                     <h1 class="card-title text-yellow">MENÚ</h1>
                 </div>
-                <div [@flip] class="card-body">
+                <div class="card-body">
                     <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
                     <div id="typography">
                         <div class="card-title">
@@ -26,7 +26,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <img src="./assets/img/metro.png" style="height: 100%; width: 100%;">
+                                <img src="./assets/img/metro2.png" style="height: 100%; width: 100%;">
                             </div>
                             
                         </div>
@@ -34,12 +34,12 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="lang=='en'" id="htmlData" #htmlData>
+        <div [@flip] *ngIf="lang=='en'" id="htmlData" #htmlData>
             <div class="card yellow">
                 <div class="brown font-yellow">
                     <h1 class="card-title">MENÚ</h1>
                 </div>
-                <div [@flip] class="card-body">
+                <div class="card-body">
                     <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
                     <div id="typography">
                         <div class="card-title">
@@ -55,7 +55,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <img src="./assets/img/metro.png" style="height: 100%; width: 100%;">
+                                <img src="./assets/img/metro2.png" style="height: 100%; width: 100%;">
                             </div>
                             
                         </div>
