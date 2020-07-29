@@ -18,9 +18,18 @@
             </p> 
             <p class="card-description text-success">{{item.data.price}}$</p>
             <p class="text-danger" *ngIf="!item.data.status">Agotado</p>
-            <a *ngIf="!inCart" (click)="addToCart()" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Agregar</a>
             <a *ngIf="inCart" (click)="remove(item)" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Quitar</a>
-       
+            <a (click)="addToCart()" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">
+                Agregar<span *ngIf="productExistInCart.qty>0" class="badge badge-light">{{productExistInCart.qty}}</span>
+            </a>      
+            <!-- <button *ngIf="inCart" (click)="remove(item)" mat-raised-button type="button" color="warn">
+                Quitar
+            </button> -->
+            <!-- <button (click)="addToCart()" mat-mini-fab type="button" color="warn">
+                <i class="material-icons" >plus_one</i>
+                <span *ngIf="productExistInCart.qty>0" class="badge badge-light">{{productExistInCart.qty}}</span>
+            </button> -->
+
         </div>
     </div>
 </div>
@@ -46,9 +55,11 @@
             </p> 
             <p class="card-description text-success">{{item.data.price}}$</p>
             <p class="text-danger" *ngIf="!item.data.status">No Stock</p>
-            <a *ngIf="!inCart" (click)="addToCart()" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Add</a>
-            <a *ngIf="inCart" (click)="remove(item.id)" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Remove</a>
-       </div>
+            <a *ngIf="inCart" (click)="remove(item)" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Remove</a>
+            <a (click)="addToCart()" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">
+                Add<span *ngIf="productExistInCart.qty>0" class="badge badge-en badge-light">{{productExistInCart.qty}}</span>
+            </a>    
+        </div>
     </div>
 </div>
 <!-- en -->

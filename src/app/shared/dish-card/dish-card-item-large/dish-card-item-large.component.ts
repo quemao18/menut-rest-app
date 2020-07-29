@@ -47,7 +47,7 @@ export class DishCardItemLargeComponent implements OnInit {
   totalItemsCart = 0;
   public shoppingCartItems$: Observable<Product[]> = of([]);
   public shoppingCartItems: Product[] = [];
-  
+  productExistInCart:any = { qty:0 };
     constructor(
       private _lightbox: Lightbox,
       private shoppingCartService: ShoppingCartService,
@@ -110,6 +110,8 @@ export class DishCardItemLargeComponent implements OnInit {
     .shoppingCartService
     .getItems();
     this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);
+    this.productExistInCart = this.shoppingCartItems.find(({id}) => id === this.item.id); 
+    //console.log(productExistInCart.qty)
     // this.shoppingCartService.addProductToCart(item, 1);
     // this.shoppingCartItems = this.shoppingCartService.getItemsInCart();
     this.totalItems.emit(this.shoppingCartItems.length);
@@ -119,6 +121,7 @@ export class DishCardItemLargeComponent implements OnInit {
 
   remove(item: Product){
     // this.lang == 'es' ?
+    this.productExistInCart.qty = 0;
     // this.notification.showNotification('top', 'right', 'danger', 'warning', 'Eliminado!'):
     // this.notification.showNotification('top', 'right', 'danger', 'warning', 'Deleted!');
     // this.shoppingCartService.removeFromCart(this.item);
@@ -129,6 +132,7 @@ export class DishCardItemLargeComponent implements OnInit {
     .shoppingCartService
     .getItems();
     this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);
+    // this.productExistInCart = this.shoppingCartItems.find(({id}) => id === this.item.id); 
     // this.shoppingCartItems = this.shoppingCartService.getItemsInCart();
     this.totalItems.emit(this.shoppingCartItems.length);
     this.inCartItem.emit(false);

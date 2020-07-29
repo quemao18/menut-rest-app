@@ -14,7 +14,7 @@
                         (click) = "showMenu(menu); $event.stopPropagation();"
                         ></app-menu-card-item-medium>
                     </div>
-                    <button *ngIf="totalItemsCart>0" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >article</i>
+                    <button *ngIf="totalItemsCart>0" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
                         <span class="badge badge-light">{{totalItemsCart}}</span>
                     </button>
 
@@ -29,7 +29,7 @@
                             <h6 (click)="ngOnInit()" style="cursor: pointer; float: right; color: white; margin-top: -36px; margin-right: 0px;" 
                             title="Menú" 
                                 class="">
-                                <i style="position: relative; top: 4px;" class="material-icons" >menu_book</i>
+                                <i style="position: relative; top: 4px;" class="material-icons" >restaurant_menu</i>
                                 Menú
                             </h6>
                         </div>
@@ -44,7 +44,7 @@
                         <button [title]="lang=='es' ? 'Volver': 'Back'" (click)="ngOnInit(); $event.stopPropagation();" class="float-left" mat-mini-fab color="warn">
                             <i class="material-icons" >undo</i>
                         </button>
-                        <button *ngIf="totalItemsCart>0" (click)="$event.stopPropagation();" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >article</i>
+                        <button *ngIf="totalItemsCart>0" (click)="$event.stopPropagation();" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
                             <span class="badge badge-light">{{totalItemsCart}}</span>
                         </button>
                     </div>
