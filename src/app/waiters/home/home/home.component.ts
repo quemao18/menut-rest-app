@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.onCodeResult('80A1tB')
+    // this.onCodeResult('5ASA3t')
   }
 
   scanQR(){
