@@ -369,12 +369,14 @@ export class MenusComponent implements OnInit, AfterViewInit {
     }
     imageCropped(event: ImageCroppedEvent, type: string) {
       if(type == 'profile'){
-      this.croppedImagePF = event.base64;
-      this.photoPF = event.base64;
+        this.croppedImagePF = event.base64;
+        this.photoPF = event.base64;
+        this.item.data.photoPF = this.photoPF;
       }
       if(type == 'background'){
         this.croppedImageBG = event.base64;
         this.photoBG = event.base64;
+        this.item.data.photoBG = this.photoBG;
       }
     }
     imageLoaded() {

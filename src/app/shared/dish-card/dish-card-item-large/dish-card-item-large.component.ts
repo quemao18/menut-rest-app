@@ -66,10 +66,11 @@ export class DishCardItemLargeComponent implements OnInit {
 
       if(this.shoppingCartItems){
       const productExistInCart = this.shoppingCartItems.find(({id}) => id === this.item.id);
-      // console.log(productExistInCart)
       if(productExistInCart) 
-      this.inCart = true; 
-      else
+      {
+        this.productExistInCart.qty = productExistInCart.qty;
+        this.inCart = true; 
+      }else
       this.inCart = false;
       }
       // console.log(this.inCart)
@@ -92,48 +93,35 @@ export class DishCardItemLargeComponent implements OnInit {
     this._lightbox.close();
   }
 
-  addToCart(){
+  addToCart(qty: number){
     let item = {
       data: this.item.data,
       // lang: this.lang,
       id: this.item.id,
-      qty: 1
+      qty: qty
     } 
     this.item = item;
-    // this.lang == 'es' ?
-    // this.notification.showNotification('top', 'right', 'success', 'check', 'Agregado!'):
-    // this.notification.showNotification('top', 'right', 'success', 'check', 'Added!');
-
-    this.shoppingCartService.addToCart(item, 1);
+    this.shoppingCartService.addToCart(item, qty);
     this.shoppingCartService.getTotalAmount().subscribe(total=> this.totalPrice = total);
     this.shoppingCartItems$ = this
     .shoppingCartService
     .getItems();
     this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);
     this.productExistInCart = this.shoppingCartItems.find(({id}) => id === this.item.id); 
-    //console.log(productExistInCart.qty)
-    // this.shoppingCartService.addProductToCart(item, 1);
-    // this.shoppingCartItems = this.shoppingCartService.getItemsInCart();
+    if(this.productExistInCart.qty ==0) this.remove(item);
     this.totalItems.emit(this.shoppingCartItems.length);
     this.inCartItem.emit(true);
     this.inCart = true;
   }
 
   remove(item: Product){
-    // this.lang == 'es' ?
     this.productExistInCart.qty = 0;
-    // this.notification.showNotification('top', 'right', 'danger', 'warning', 'Eliminado!'):
-    // this.notification.showNotification('top', 'right', 'danger', 'warning', 'Deleted!');
-    // this.shoppingCartService.removeFromCart(this.item);
-    // console.log(id)
     this.shoppingCartService.removeFromCart(item);
     this.shoppingCartService.getTotalAmount().subscribe(total=> this.totalPrice = total);
     this.shoppingCartItems$ = this
     .shoppingCartService
     .getItems();
     this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);
-    // this.productExistInCart = this.shoppingCartItems.find(({id}) => id === this.item.id); 
-    // this.shoppingCartItems = this.shoppingCartService.getItemsInCart();
     this.totalItems.emit(this.shoppingCartItems.length);
     this.inCartItem.emit(false);
     this.inCart = false;

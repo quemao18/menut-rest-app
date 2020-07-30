@@ -44,3 +44,60 @@
     color: white;
     border-radius: 60%;
  }
+
+ .less{
+    left: 75%;
+    position: absolute;
+    bottom: 27px;
+    height: 36px;
+    width: 36px;
+}
+.less2{
+    position: absolute;
+    left: 68%;
+    margin-top: 3px;
+    height: 36px;
+    width: 36px;
+}
+.plus{
+    left: 85%;
+    position: absolute;
+    bottom: 27px;
+    height: 36px;
+    width: 36px;
+}
+.btn-icon{
+    height: 36px;
+    width: 36px;
+}
+.plus2{
+    position: absolute;
+    left: 86%;
+    margin-top: 3px;
+    height: 36px;
+    width: 36px;
+}
+
+.qty{
+    color: black;
+    /* margin-left: 36px; */
+    left: 80%;
+    position: absolute;
+    bottom: 27px;
+}
+
+.qty2{
+    position: absolute;
+    left: 81%;
+    margin-top: 2px;
+    color: black;
+}
+
+.btn2m{
+    margin: -14px 0px 0px -3px;
+    position: absolute;
+}
+.btn2p{
+    margin: -14px 0px 0px -5px;
+    position: absolute;
+}

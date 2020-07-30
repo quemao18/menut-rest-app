@@ -18,17 +18,14 @@
             </p> 
             <p class="card-description text-success">{{item.data.price}}$</p>
             <p class="text-danger" *ngIf="!item.data.status">Agotado</p>
-            <a *ngIf="inCart" (click)="remove(item)" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Quitar</a>
+            <!-- <a *ngIf="inCart" (click)="remove(item)" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Quitar</a>
             <a (click)="addToCart()" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">
                 Agregar<span *ngIf="productExistInCart.qty>0" class="badge badge-light">{{productExistInCart.qty}}</span>
-            </a>      
-            <!-- <button *ngIf="inCart" (click)="remove(item)" mat-raised-button type="button" color="warn">
-                Quitar
-            </button> -->
-            <!-- <button (click)="addToCart()" mat-mini-fab type="button" color="warn">
-                <i class="material-icons" >plus_one</i>
-                <span *ngIf="productExistInCart.qty>0" class="badge badge-light">{{productExistInCart.qty}}</span>
-            </button> -->
+            </a>       -->
+             <button [disabled]="productExistInCart.qty<=0" href="javascript:void(0)"  style="margin-top: -10px;" (click)="addToCart(-1)" class="btn-icon btn btn-danger btn-round float" type="button"><span class="btn2m">-</span></button>
+             <a style="width: 30px;height: 5px;" class="" id="more"><span style="font-size: x-large;margin-left: 10px;margin-right: 10px; margin-top: -5px;">{{productExistInCart.qty}}</span></a>
+             <button [disabled]="!item.data.status" style="margin-top: -10px; margin-right: 10px;" (click)="addToCart(1)" class="btn-icon btn btn-danger btn-round " type="button" ><span class="btn2p">+</span></button>
+
 
         </div>
     </div>
@@ -55,10 +52,14 @@
             </p> 
             <p class="card-description text-success">{{item.data.price}}$</p>
             <p class="text-danger" *ngIf="!item.data.status">No Stock</p>
-            <a *ngIf="inCart" (click)="remove(item)" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Remove</a>
+            <!-- <a *ngIf="inCart" (click)="remove(item)" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Remove</a>
             <a (click)="addToCart()" [ngClass]="!item.data.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">
                 Add<span *ngIf="productExistInCart.qty>0" class="badge badge-en badge-light">{{productExistInCart.qty}}</span>
-            </a>    
+            </a>     -->
+            <button [disabled]="productExistInCart.qty<=0" href="javascript:void(0)"  style="margin-top: -10px;" (click)="addToCart(-1)" class="btn-icon btn btn-danger btn-round float" type="button"><span class="btn2m">-</span></button>
+            <a style="width: 30px;height: 5px;" class="" id="more"><span style="font-size: x-large;margin-left: 10px;margin-right: 10px; margin-top: -5px;">{{productExistInCart.qty}}</span></a>
+            <button [disabled]="!item.data.status" style="margin-top: -10px; margin-right: 10px;" (click)="addToCart(1)" class="btn-icon btn btn-danger btn-round " type="button" ><span class="btn2p">+</span></button>
+
         </div>
     </div>
 </div>

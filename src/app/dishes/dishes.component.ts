@@ -422,10 +422,12 @@ export class DishesComponent implements OnInit, AfterViewInit {
       if(type == 'profile'){
       this.croppedImagePF = event.base64;
       this.photoPF = event.base64;
+      this.item.data.photoPF = this.photoPF;
       }
       if(type == 'background'){
         this.croppedImageBG = event.base64;
         this.photoBG = event.base64;
+        this.item.data.photoBG = this.photoBG;
       }
     }
     imageLoaded() {
