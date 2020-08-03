@@ -34,6 +34,7 @@
                         <input *ngIf="qrResultString" (click)="changeStatus(); clearResult()"  type="button" class="btn btn-danger btn-link btn-lg" value="Ok">
                         <div class="text-center" *ngIf="!show && qrResultString==null">
                         <input 
+                        style="width: 30%;"
                         *ngFor="let table of arrayN(); let i = index"
                         (click)="scanQR(i+1)"  type="button" class="btn btn-danger btn-link btn-lg" 
                         value="{{i+1}}">
