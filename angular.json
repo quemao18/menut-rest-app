@@ -49,7 +49,6 @@
               "hammerjs",
               "jquery",
               "firebase/app",
-              "app/wizard/wizard.component",
               "app/menus/menus.component",
               "app/forgot-password/forgot-password.component",
               "@firebase/auth",

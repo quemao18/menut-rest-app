@@ -28,7 +28,6 @@ import { ComponentsCustomerModule } from './customer/components/components-custo
 
 import { HttpClientModule } from '@angular/common/http';
 import { ShoppingCartService } from './services/shopping-cart/shopping-cart.service';
-import { HomeComponent } from './waiters/home/home/home.component';
 import { ComponentsWaiterModule } from './waiters/components/components-waiter.module';
 import { WaiterLayoutComponent } from './layouts/waiter-layout/waiter-layout.component';
 
