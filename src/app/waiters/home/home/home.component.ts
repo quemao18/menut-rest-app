@@ -41,11 +41,12 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.onCodeResult('5ASA3t')
+    // this.onCodeResult('443HE9')
   }
 
-  scanQR(){
+  scanQR(num: number){
     this.show = !this.show;
+    this.tableSelect = num;
   }
 
   qrResultString: string;
@@ -55,13 +56,16 @@ export class HomeComponent implements OnInit {
   orderId: string;
   orderIdShort: string;
   status: string;
+  tables: number = 10;
+  tableSelect: number;
 
   clearResult(): void {
     this.qrResultString = null;
   }
 
-  onCodeResult(resultString: string) {
+  onCodeResult(resultString: string, tableSelect: number) {
     this.qrResultString = resultString;
+    this.tableSelect = tableSelect;
     this.show = false;
       // this.dishes = this.dishes.filter(obj => obj.data.menuId == menuId);
       console.log(this.qrResultString);
@@ -74,14 +78,13 @@ export class HomeComponent implements OnInit {
               this.orderId = data.id;
               this.status = data.data().status;
               this.orderIdShort = data.data().orderId;
-
               this.order.push({
                 id: data.id,
                 status: data.data().status,
                 items: data.data()
               });
             });
-            console.log(this.order.length)
+            // console.log(this.order.length)
             if(this.status == 'Pending')
             this.items = this.order[0].items.items;
             else{
@@ -102,11 +105,20 @@ export class HomeComponent implements OnInit {
 
   async changeStatus(){
     this.spinner.show();
-    await this.orderService.update(this.orderId, {'status': 'Readed'}).then(() => {
+    await this.orderService.update(this.orderId, 
+      {
+        'status': 'Readed',
+        'table': this.tableSelect
+      
+      }).then(() => {
       console.log('Changed Status');
       this.spinner.hide();
       this.items = null;
     });
+  }
+
+  arrayN(){
+    return Array(this.tables);
   }
 
 }

@@ -9,10 +9,13 @@
                         <h4 *ngIf="qrResultString" class="card-title mt-0 text-yellow">Order: {{orderIdShort}}</h4>
                     </div>
                     <div class="card-body menu">
+                        <h6 style="font-size: small; font-family: Arial, Helvetica, sans-serif;" class="text-center" *ngIf="!show && qrResultString==null">Selecciona la mesa</h6>
+                        <h6 style="font-size: small; font-family: Arial, Helvetica, sans-serif;" class="text-center" *ngIf="show">Escanee el código QR para la mesa <strong>{{tableSelect}}</strong></h6>
+                        <h6 style="font-size: small; font-family: Arial, Helvetica, sans-serif;" class="text-center" *ngIf="!show && qrResultString!=null">Mesa <strong>{{tableSelect}}</strong></h6>
                         <zxing-scanner
                          *ngIf="show" 
                          [enable]="show"
-                         (scanSuccess)="onCodeResult($event)"
+                         (scanSuccess)="onCodeResult($event, tableSelect)"
                          ></zxing-scanner>
                         
                         <app-card-item  *ngFor="let item of items"
@@ -27,9 +30,14 @@
                         </div>
                         <button mat-icon-button (click)="clearResult()">&times;</button>
                         </section> -->
-                        <input *ngIf="show" (click)="scanQR()"  type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">
+                        <input *ngIf="show" (click)="scanQR(0)"  type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">
                         <input *ngIf="qrResultString" (click)="changeStatus(); clearResult()"  type="button" class="btn btn-danger btn-link btn-lg" value="Ok">
-                        <input *ngIf="qrResultString==null && !show" (click)="scanQR()"  type="button" class="btn btn-danger btn-link btn-lg" value="Escanear QR">
+                        <div class="text-center" *ngIf="!show && qrResultString==null">
+                        <input 
+                        *ngFor="let table of arrayN(); let i = index"
+                        (click)="scanQR(i+1)"  type="button" class="btn btn-danger btn-link btn-lg" 
+                        value="{{i+1}}">
+                        </div>
                     </div>
                    
                 </div>

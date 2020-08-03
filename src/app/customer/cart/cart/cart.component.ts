@@ -74,7 +74,9 @@ export class CartComponent implements OnInit {
       orderId: id, 
       date: Date.now(), 
       status: 'Pending',
-      items: this.shoppingCartItems}
+      // table: 0,
+      items: this.shoppingCartItems
+    }
     await this.orderService.create(data).then((doc) => {
       console.log('Order created successs', doc.id);
       this.orderId = id;
