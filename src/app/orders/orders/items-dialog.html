@@ -18,7 +18,7 @@
               <h4 class="card-title mt-0 text-yellow">Details order: {{data.order.data.orderId}}</h4>
           </div>
           <div class="card-body menu">
-            <p *ngIf="data.order.data.table" style="font-size: large;" class="text-center">Mesa <strong>{{data.order.data.table}}</strong></p>
+            <p *ngIf="data.order.data.table" style="font-size: large;" class="text-center">Table <strong>{{data.order.data.table}}</strong></p>
               <app-card-item  *ngFor="let item of data.order.data.items"
               [item]="item"
               ></app-card-item>
