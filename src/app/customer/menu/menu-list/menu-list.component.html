@@ -11,7 +11,7 @@
                         <app-menu-card-item-medium *ngFor="let menu of menus"
                         [lang]="lang" 
                         [item]="menu"
-                        (click) = "showMenu(menu); $event.stopPropagation();"
+                        (click) = "filterDishes(menu); $event.stopPropagation();"
                         ></app-menu-card-item-medium>
                     </div>
                     <button *ngIf="totalItemsCart>0" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
@@ -26,12 +26,12 @@
                     <div [@animate]="!disable" class="card">
                         <div class="card-header card-header-brown">
                             <h4 class="card-title mt-0 text-yellow">{{menuTitle}}</h4>
-                            <h6 (click)="ngOnInit()" style="cursor: pointer; float: right; color: white; margin-top: -36px; margin-right: 0px;" 
+                            <!-- <h6 (click)="ngOnInit()"
                             title="Menú" 
                                 class="">
                                 <i style="position: relative; top: 4px;" class="material-icons" >restaurant_menu</i>
                                 Menú
-                            </h6>
+                            </h6> -->
                         </div>
                         <div class="card-body menu">
                             <app-dish-card-item-large  *ngFor="let dish of dishes"

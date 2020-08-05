@@ -6,6 +6,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { DishService } from 'app/services/dishes/dish.service';
 import { interval, Observable, of } from 'rxjs';
 import { ShoppingCartService, Product } from 'app/services/shopping-cart/shopping-cart.service';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-menu-list',
@@ -64,24 +65,21 @@ export class MenuListComponent implements OnInit {
   itemsCart: any;
 
   async ngOnInit(){
-    // this.shoppingCartItems = this.shoppingCartService.getItemsInCart();
-    // this.shoppingCartService.getTotalAmount().subscribe(total=> this.totalPrice = total);
     this.shoppingCartItems$ = this
     .shoppingCartService
     .getItems();
     this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);    
     this.totalItemsCart = this.shoppingCartItems.length;
-    // console.log(this.totalItemsCart)
+    this.getDishesAll();
     this.menuId = '';
     this.getMenu(true);
     setInterval(()=>{
+      console.log('Updating dishes and menu...');
       if(this.menuId == '')
         this.getMenu(false);
       if(this.menuId!='')
-        this.getDishes();
-      // this.disable = true; //disable animation
-      console.log('Updating dishes and menu...');
-    },60*1000*2);
+        this.getDishesAll();
+    },60*1000*environment.updateMinutes); //update every 2 minutes
 
   }
 
@@ -96,39 +94,37 @@ export class MenuListComponent implements OnInit {
     // return item;
   }
 
-  async showMenu(menu:any){
-    // this.dishes = this.dishes.filter(obj => obj.data.menuId == menuId);
-    setTimeout(async () => {  
-      if(menu.data.status){
-        this.menuId = menu.id;
-        this.spinner.show();
-        await this.dishService.getsByMenuId(this.menuId).toPromise().then(
-          (docs) => {
-          this.dishes = []; 
-          docs.forEach((data: any) => {
-            this.dishes.push({
-              id: data.id,
-              data: data.data()
-            });
-          });
-          // this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
-          this.spinner.hide();
-        }).catch((error) => {
-          // window.alert(error)
-          console.log(error);
-          this.spinner.hide();
-          this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
-        });
-        this.menuTitle = this.lang == 'es' ? menu.data.name.es : menu.data.name.en;
-      }
-    }, 100);
+  // async showMenu(menu:any){
+  //   // this.dishes = this.dishes.filter(obj => obj.data.menuId == menuId);
+  //   setTimeout(async () => {  
+  //     if(menu.data.status){
+  //       this.menuId = menu.id;
+  //       this.spinner.show();
+  //       await this.dishService.getsByMenuId(this.menuId).toPromise().then(
+  //         (docs) => {
+  //         this.dishes = []; 
+  //         docs.forEach((data: any) => {
+  //           this.dishes.push({
+  //             id: data.id,
+  //             data: data.data()
+  //           });
+  //         });
+  //         // this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
+  //         this.spinner.hide();
+  //       }).catch((error) => {
+  //         // window.alert(error)
+  //         console.log(error);
+  //         this.spinner.hide();
+  //         this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
+  //       });
+  //       this.menuTitle = this.lang == 'es' ? menu.data.name.es : menu.data.name.en;
+  //     }
+  //   }, 100);
 
-  }
+  // }
 
   getMenu(spinner?:boolean){
-
     setTimeout(async () => {  
-
       if(spinner)
       this.spinner.show();
       await this.menuService.gets().toPromise().then(
@@ -151,9 +147,31 @@ export class MenuListComponent implements OnInit {
     }, 100);
   }
 
-  getDishes(){
+  // getDishes(){
+  //   setTimeout(async () => {  
+  //     await this.dishService.getsByMenuId(this.menuId).toPromise().then(
+  //       (docs) => {
+  //       this.dishes = []; 
+  //       docs.forEach((data: any) => {
+  //         this.dishes.push({
+  //           id: data.id,
+  //           data: data.data()
+  //         });
+  //       });
+  //       // this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
+  //       this.spinner.hide();
+  //     }).catch((error) => {
+  //       // window.alert(error)
+  //       console.log(error);
+  //       this.spinner.hide();
+  //       this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
+  //     });
+  //   }, 100);
+  // }
+
+  getDishesAll(){
     setTimeout(async () => {  
-      await this.dishService.getsByMenuId(this.menuId).toPromise().then(
+      await this.dishService.gets().toPromise().then(
         (docs) => {
         this.dishes = []; 
         docs.forEach((data: any) => {
@@ -162,7 +180,8 @@ export class MenuListComponent implements OnInit {
             data: data.data()
           });
         });
-        // this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
+        if(this.menuId!='')
+          this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
         this.spinner.hide();
       }).catch((error) => {
         // window.alert(error)
@@ -171,6 +190,14 @@ export class MenuListComponent implements OnInit {
         this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
       });
     }, 100);
+  }
+
+  filterDishes(menu: any){
+      if(menu.data.status){
+        this.menuId = menu.id;
+        this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
+        this.menuTitle = this.lang == 'es' ? menu.data.name.es : menu.data.name.en;
+      }
   }
 
 }
