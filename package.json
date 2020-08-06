@@ -11,7 +11,7 @@
     "e2e": "ng e2e",
     "install-clean": "rm -r node_modules && rm -r package-lock.json && npm install && ng serve -o",
     "post-build": "node ./build/post-build.js",
-    "build-fire-prod": "ng build --prod && npm run post-build && firebase deploy -P default",
+    "build-fire-prod": "ng build --prod && npm run post-build && firebase deploy -P prod",
     "build-fire-dev": "ng build --outputHashing=all && npm run post-build && firebase deploy -P dev ",
     "deploy": "ng build && firebase deploy"
   },

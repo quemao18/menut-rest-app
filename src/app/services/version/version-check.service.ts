@@ -10,7 +10,7 @@ export class VersionCheckService {
     // this will be replaced by actual hash post-build.js
     private currentHash = '{{POST_BUILD_ENTERS_HASH_HERE}}';
 
-    constructor(private http: HttpClient, private route: Router) {}
+    constructor(private http: HttpClient, private router: Router) {}
 
     /**
      * Checks in every set frequency the version of frontend application
@@ -26,7 +26,7 @@ export class VersionCheckService {
     }
 
     public reload(){
-        alert()
+        // alert()
         location.reload(true);
     }
 
@@ -109,6 +109,7 @@ export class VersionCheckService {
                 enter: 'animated fadeInDown',
                 exit: 'animated fadeOutUp'
             },
+            onclick:console.log('holll'),
             onShow: null,
             onShown: null,
             onClose: null,

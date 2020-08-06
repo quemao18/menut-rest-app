@@ -80,7 +80,7 @@ export class MenuPdfComponent implements OnInit {
     }, 300);
   }
 
-  async getDishes(menuId){
+  async getDishes(menuId: string){
     // setTimeout(() => {
     this.spinner.show();
     await this.dishService.getsByMenuId(menuId).toPromise().then(

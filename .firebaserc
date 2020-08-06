@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "chacaitobaires",
+    "prod": "chacaitobaires",
     "dev": "chacaitobaires-dev"
   }
 }

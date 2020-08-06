@@ -57,6 +57,7 @@ export class MenuListComponent implements OnInit {
   public shoppingCartItems: Product[] = [];
   menus: any [];
   dishes: any [];
+  dishesCopy: any [];
   lang: string = 'es';
   menuTitle: string = '';
   disable: boolean = false;
@@ -78,7 +79,7 @@ export class MenuListComponent implements OnInit {
       if(this.menuId == '')
         this.getMenu(false);
       if(this.menuId!='')
-        this.getDishesAll();
+        this.getDishes();
     },60*1000*environment.updateMinutes); //update every 2 minutes
 
   }
@@ -147,29 +148,36 @@ export class MenuListComponent implements OnInit {
     }, 100);
   }
 
-  // getDishes(){
-  //   setTimeout(async () => {  
-  //     await this.dishService.getsByMenuId(this.menuId).toPromise().then(
-  //       (docs) => {
-  //       this.dishes = []; 
-  //       docs.forEach((data: any) => {
-  //         this.dishes.push({
-  //           id: data.id,
-  //           data: data.data()
-  //         });
-  //       });
-  //       // this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
-  //       this.spinner.hide();
-  //     }).catch((error) => {
-  //       // window.alert(error)
-  //       console.log(error);
-  //       this.spinner.hide();
-  //       this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
-  //     });
-  //   }, 100);
-  // }
+  back(){
+    this.menuId = '';
+    this.menuTitle = '';
+    this.dishes = this.dishesCopy;
+  }
+
+  getDishes(){
+    setTimeout(async () => {  
+      await this.dishService.getsByMenuId(this.menuId).toPromise().then(
+        (docs) => {
+        this.dishes = []; 
+        docs.forEach((data: any) => {
+          this.dishes.push({
+            id: data.id,
+            data: data.data()
+          });
+        });
+        // this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
+        this.spinner.hide();
+      }).catch((error) => {
+        // window.alert(error)
+        console.log(error);
+        this.spinner.hide();
+        this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
+      });
+    }, 100);
+  }
 
   getDishesAll(){
+    // this.disable = true;
     setTimeout(async () => {  
       await this.dishService.gets().toPromise().then(
         (docs) => {
@@ -180,6 +188,7 @@ export class MenuListComponent implements OnInit {
             data: data.data()
           });
         });
+        this.dishesCopy = this.dishes;
         if(this.menuId!='')
           this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
         this.spinner.hide();

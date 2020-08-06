@@ -1,23 +1,9 @@
-.menu{
-    background-color: ghostwhite;
-    /* max-height: 570px; */
-    max-height: -moz-calc(100vh - 170px);
-    max-height: -webkit-calc(100vh - 170px);
-    max-height: calc(100vh - 170px);
-    overflow-y: auto;
-}
-
 .card{
     background-color: ghostwhite;
-    max-height: 570px;
 }
 
 .dish-card.card{
     height: 150px;
-}
-
-.top{
-    margin-top: -40px;
 }
 
 .no-animate {

@@ -15,7 +15,7 @@ export class CardItemComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('item',this.item)
+    // console.log('item',this.item)
   }
 
   open(name: string, photo: string): void {

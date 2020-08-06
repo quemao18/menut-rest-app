@@ -1,9 +1,9 @@
 <div class="main-content">
     <div class="container-fluid top">
         <div class="row">
-            <div *ngIf="menuTitle==''" class="col-md-6 mx-auto">
+            <div [@.disabled]="disable" *ngIf="menuTitle==''" class="col-md-6 mx-auto">
             <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
-                <div [@animate]="disable" class="card">
+                <div [@animate] class="card">
                     <div class="card-header card-header-brown">
                         <h4 class="card-title mt-0 text-yellow">Menú</h4>
                     </div>
@@ -21,9 +21,9 @@
                 </div>
             </div>
 
-            <div *ngIf="menuTitle!=''" class="col-md-6 mx-auto">
+            <div [@.disabled]="disable" *ngIf="menuTitle!=''" class="col-md-6 mx-auto">
                 <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
-                    <div [@animate]="!disable" class="card">
+                    <div [@animate] class="card">
                         <div class="card-header card-header-brown">
                             <h4 class="card-title mt-0 text-yellow">{{menuTitle}}</h4>
                             <!-- <h6 (click)="ngOnInit()"
@@ -41,7 +41,7 @@
                             (inCartItem)="inCartItem($event)"
                             ></app-dish-card-item-large>
                         </div>
-                        <button [title]="lang=='es' ? 'Volver': 'Back'" (click)="ngOnInit(); $event.stopPropagation();" class="float-left" mat-mini-fab color="warn">
+                        <button [title]="lang=='es' ? 'Volver': 'Back'" (click)="back(); $event.stopPropagation();" class="float-left" mat-mini-fab color="warn">
                             <i class="material-icons" >undo</i>
                         </button>
                         <button *ngIf="totalItemsCart>0" (click)="$event.stopPropagation();" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>

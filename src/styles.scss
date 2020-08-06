@@ -1,2 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
+
+.menu{
+    background-color: ghostwhite;
+    /* max-height: 570px; */
+    max-height: -moz-calc(100vh - 200px);
+    max-height: -webkit-calc(100vh - 200px);
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.top{
+    margin-top: -45px;
+}

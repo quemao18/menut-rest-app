@@ -22,14 +22,6 @@
                         [item]="item"
                         ></app-card-item>
 
-                        <!-- <section class="results" *ngIf="qrResultString">
-                        <div>
-                            <small>Result</small>
-                            <strong>{{ qrResultString }}</strong>
-                            {{order | json}}
-                        </div>
-                        <button mat-icon-button (click)="clearResult()">&times;</button>
-                        </section> -->
                         <input *ngIf="show" (click)="scanQR(0)"  type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">
                         <input *ngIf="qrResultString" (click)="changeStatus(); clearResult()"  type="button" class="btn btn-danger btn-link btn-lg" value="Ok">
                         <div class="text-center" *ngIf="!show && qrResultString==null">
@@ -40,7 +32,6 @@
                         value="{{i+1}}">
                         </div>
                     </div>
-                   
                 </div>
             </div>
     </div>
