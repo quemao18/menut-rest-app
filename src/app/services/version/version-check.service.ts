@@ -109,7 +109,6 @@ export class VersionCheckService {
                 enter: 'animated fadeInDown',
                 exit: 'animated fadeOutUp'
             },
-            onclick:console.log('holll'),
             onShow: null,
             onShown: null,
             onClose: null,
