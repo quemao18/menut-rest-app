@@ -9,6 +9,7 @@ import { NotificationService } from 'app/services/notification/notification.serv
 
 import { Lightbox } from 'ngx-lightbox';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { AuthService } from 'app/services/auth/auth.service';
 
 
 @Component({
@@ -47,7 +48,8 @@ export class MenusComponent implements OnInit, AfterViewInit {
     public spinner: NgxSpinnerService,
     private afStorage: AngularFireStorage,
     private notificationService: NotificationService,
-    private _lightbox: Lightbox
+    private _lightbox: Lightbox,
+    private authService: AuthService
     ) {
 
      }
@@ -128,14 +130,14 @@ export class MenusComponent implements OnInit, AfterViewInit {
     setTimeout(async () => {
       this.spinner.show();
       await this.menuService.gets().toPromise().then(
-        (docs) => {
-        this.menus = []; 
-        docs.forEach((data: any) => {
-          this.menus.push({
-            id: data.id,
-            data: data.data()
-          });
-        });
+        (docs) => { 
+        this.menus = docs; 
+        // docs.forEach((data: any) => {
+        //   this.menus.push({
+        //     id: data.id,
+        //     data: data.data()
+        //   });
+        // });
         this.config.totalItems =  this.menus.length;
         this.spinner.hide();
       }).catch((error) => {
@@ -177,7 +179,7 @@ export class MenusComponent implements OnInit, AfterViewInit {
       }
       if (this.currentStatus == 1) {
         console.log('New Doc');
-        await this.menuService.create(data).then(() => {
+        await this.menuService.create(data).toPromise().then(() => {
           console.log('Doc created successs');
           setTimeout(() => {
             this.ngOnInit();
@@ -186,12 +188,17 @@ export class MenusComponent implements OnInit, AfterViewInit {
           this.notificationService.showNotification('top', 'right', 'success','check', 'Save success');
         }, (error) => {
           console.error(error);
-          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error saving');
           this.spinner.hide();
+          if(error.status == 401) {
+            this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please login again...');
+            this.authService.signOut();
+          }else{
+            this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error saving');
+          }
         });
       } else {
         console.log('Edit Doc');
-        return await this.menuService.update(documentId, data).then(() => {
+        return await this.menuService.update(documentId, data).toPromise().then(() => {
           this.currentStatus = 1;
           console.log('Doc edited success');
           setTimeout(async () => {  
@@ -201,8 +208,13 @@ export class MenusComponent implements OnInit, AfterViewInit {
           this.notificationService.showNotification('top', 'right', 'success','check', 'Edited success');
         }, (error) => {
           console.log(error);
-          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error editing');
           this.spinner.hide();
+          if(error.status == 401) {
+            this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please Login Again...');
+            this.authService.signOut();
+          }else{
+            this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error editing');
+          }
         });
       }
       
@@ -221,50 +233,53 @@ export class MenusComponent implements OnInit, AfterViewInit {
       this.showForm = true;
       this.reset();
       this.spinner.show();
-        this.menuService.getById(documentId).subscribe((menu) => {
+        this.menuService.getById(documentId).toPromise().then((menu: any) => {
         this.currentStatus = 2;
         this.documentId = documentId;
-        this.status = menu.payload.data()['status'],
-        this.photoPF = menu.payload.data()['photoPF'];
-        this.photoBG = menu.payload.data()['photoBG'];
+        this.status = menu.data.status,
+        this.photoPF = menu.data.photoPF;
+        this.photoBG = menu.data.photoBG;
         this.item = {
-          data: {
-            photoBG: menu.payload.data()['photoBG'],
-            photoPF: menu.payload.data()['photoPF'],
-            status: menu.payload.data()['status'],
+          data: {  
+            photoBG: menu.data.photoBG,
+            photoPF: menu.data.photoPF,
+            status: menu.data.status,
             name: {
-              es: menu.payload.data()['name']['es'],
-              en: menu.payload.data()['name']['en'],
+              es: menu.data.name.es,
+              en: menu.data.name.en,
             },
             description: {
-              es: menu.payload.data()['description']['es'],
-              en: menu.payload.data()['description']['en'],
+              es: menu.data.description.es,
+              en: menu.data.description.en,
             },
-            ref: menu.payload.data()['ref'],
-            order: menu.payload.data()['order'],
+            ref: menu.data.ref,
+            order: menu.data.order,
           }
         };
         // console.log(this.item)
         this.form.patchValue({
           id: documentId,
           name: {
-            es: menu.payload.data()['name']['es'],
-            en: menu.payload.data()['name']['en'],
+            es: menu.data.name.es,
+            en: menu.data.name.en,
           },
           description: {
-            es: menu.payload.data()['description']['es'],
-            en: menu.payload.data()['description']['en'],
+            es: menu.data.description.es,
+            en: menu.data.description.en,
           },
-          order: menu.payload.data()['order'],
-          status: menu.payload.data()['status'],
-          ref: menu.payload.data()['ref'],
+          ref: menu.data.ref,
+          order: menu.data.order,
+          status: menu.data.status,
         });
         // editSubscribe.unsubscribe();
         this.spinner.hide();
 
       },
       (error) => 
-        this.notificationService.showNotification('top', 'right', 'danger','danger', error.message)
+        {
+          console.log(error);
+          this.notificationService.showNotification('top', 'right', 'danger','danger', error.message)
+        }
       )//.unsubscribe();
     }
 
@@ -301,7 +316,7 @@ export class MenusComponent implements OnInit, AfterViewInit {
 
     async delete(documentId: string) {
       this.spinner.show();
-      await this.menuService.delete(documentId).then((menu) => {
+      await this.menuService.delete(documentId).toPromise().then((menu) => {
         console.log('deleted');
         this.notificationService.showNotification('top', 'right', 'success','check', 'Delete success');
         this.menus = this.menus.filter(obj => obj.id !== documentId);
@@ -312,8 +327,13 @@ export class MenusComponent implements OnInit, AfterViewInit {
         this.spinner.hide();
       }, (error) => {
         console.log(error);
-        this.notificationService.showNotification('top', 'right', 'danger','danger', 'Error deleting');
         this.spinner.hide();
+        if(error.status == 401) {
+          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please Login Again...');
+          this.authService.signOut();
+        }else{
+          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error deleting');
+        }
       });
     }
 
@@ -322,7 +342,7 @@ export class MenusComponent implements OnInit, AfterViewInit {
       let data = {
         status: !status 
       }
-     await this.menuService.update(documentId, data).then(() => {
+     await this.menuService.update(documentId, data).toPromise().then(() => {
         console.log('Edited');
         this.notificationService.showNotification('top', 'right', 'success','check', 'Status changed success');
         this.menus.forEach(x =>  {
@@ -331,8 +351,13 @@ export class MenusComponent implements OnInit, AfterViewInit {
        this.spinner.hide();
       }, (error) => {
         console.log(error);
-        this.notificationService.showNotification('top', 'right', 'danger','danger', 'Error changing status');
         this.spinner.hide();
+        if(error.status == 401) {
+          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please Login Again...');
+          this.authService.signOut();
+        }else{
+          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error changing status');
+        }
       });
     }
   

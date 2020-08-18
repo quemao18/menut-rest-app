@@ -18,6 +18,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'dishes/:id',     component: DishesComponent, },
     { path: 'dishes',         component: DishesComponent, },
     { path: 'orders',         component: OrdersComponent, },
+    { path: 'orders/:id',     component: OrdersComponent, },
     { path: 'menu-pdf',       component: MenuPdfComponent, },
 
 

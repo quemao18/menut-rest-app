@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.onCodeResult('443HE9')
+    // this.onCodeResult('2AS13A', 5)
   }
 
   scanQR(num: number){
@@ -73,20 +73,20 @@ export class HomeComponent implements OnInit {
         if(this.qrResultString){
           this.spinner.show();
           await this.orderService.getByOrderId(this.qrResultString).toPromise().then(
-            (docs) => {
-            docs.forEach((data: any) => {
+            (docs: any) => {
+              this.order = [];
+              docs.forEach((data: any) => {
               this.orderId = data.id;
-              this.status = data.data().status;
-              this.orderIdShort = data.data().orderId;
+              this.status = data.data.status;
+              this.orderIdShort = data.data.orderId;
               this.order.push({
                 id: data.id,
-                status: data.data().status,
-                items: data.data()
+                status: data.data.status,
+                items: data.data.items
               });
             });
-            // console.log(this.order.length)
             if(this.status == 'Pending')
-            this.items = this.order[0].items.items;
+            this.items = this.order[0].items;
             else{
             this.notificationService.showNotification('top', 'right', 'danger', 'warning', 'Orden ya leída!');
             this.clearResult();
@@ -110,7 +110,7 @@ export class HomeComponent implements OnInit {
         'status': 'Readed',
         'table': this.tableSelect
       
-      }).then(() => {
+      }).toPromise().then(() => {
       console.log('Changed Status');
       this.spinner.hide();
       this.items = null;

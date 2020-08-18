@@ -8,7 +8,8 @@ import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { NotificationService } from '../notification/notification.service';
 
-import { take } from 'rxjs/operators';
+import { environment } from 'environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 declare var $: any;
 
@@ -22,6 +23,8 @@ export class AuthService {
   isAdmin: boolean = false;
   userDB: any ;
   userLogged: any = null;
+  userExist: boolean = false;
+  token: any;
 
   constructor(
     public afs: AngularFirestore,   // Inject Firestore service
@@ -29,34 +32,38 @@ export class AuthService {
     public router: Router,  
     public ngZone: NgZone, // NgZone service to remove outside scope warning
     public notification: NotificationService,
-    public spinner: NgxSpinnerService
+    public spinner: NgxSpinnerService,
+    private http: HttpClient
   ) {    
       // this.checkAuthFirebase();
   }
 
+  generateHeaders() {
+    console.log(this.getAccessToken());
+    const headers = new HttpHeaders( { authorization: `Bearer ${this.getAccessToken()}` } );
+    return headers;
+  }
+
+  getAccessToken() {
+    return (localStorage.getItem('access_token'));
+  }
 
   // Sign in with email/password
-  async signIn(email, password) {
+  async signIn(email: string, password: string) {
     this.spinner.show();
     return await firebase.auth().signInWithEmailAndPassword(email, password)
-      .then((result) => { 
-        this.getUserDB(result.user);
-        this.saveUserDB(result.user);
-        // this.ngZone.run(() => {
-        //   this.spinner.hide();
-        //   this.router.navigate(['dashboard']);
-        //   this.saveUserDB(result.user);
-        // }); 
-
+      .then(async (result) => { 
+        await result.user.getIdToken(false).then((token: any) => this.token = token); 
+        this.getUserDBApi(result.user);
+        this.saveUserDBApi(result.user);
       }).catch((error) => {
-        // window.alert(error.message)
         this.spinner.hide();
         this.notification.showNotification('top', 'center', 'danger', 'warning', error.message);
       })
   }
 
   // Sign up with email/password
-  async signUp(email, password) {
+  async signUp(email: string, password: string) {
     try {
       this.spinner.show();
       const result = await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -65,7 +72,8 @@ export class AuthService {
       this.spinner.hide();
       this.notification.showNotification('top', 'center', 'success', 'check', 'Register success!');
       this.sendVerificationMail();
-      this.saveUserDB(result.user);
+      await result.user.getIdToken(false).then((token: any) => this.token = token); 
+      this.saveUserDBApi(result.user);
     }
     catch (error) {
       // window.alert(error.message);
@@ -86,7 +94,7 @@ export class AuthService {
   }
 
   // Reset Forggot password
-  async forgotPassword(passwordResetEmail) {
+  async forgotPassword(passwordResetEmail: string) {
     this.spinner.show();
     return await firebase.auth().sendPasswordResetEmail(passwordResetEmail)
     .then(() => {
@@ -114,23 +122,24 @@ export class AuthService {
 
   }
   // Sign in with Google
-  googleAuth() {
-    return this.authLogin(new firebase.auth.GoogleAuthProvider());
+  async googleAuth() {
+    return await this.authLogin(new firebase.auth.GoogleAuthProvider());
   }
 
   // Sign in with Facebook
-  facebookAuth() {
-    return this.authLogin(new firebase.auth.FacebookAuthProvider());
+  async facebookAuth() {
+    return await this.authLogin(new firebase.auth.FacebookAuthProvider());
   }
 
   // Auth logic to run auth providers
-  async authLogin(provider) {
+  async authLogin(provider: firebase.auth.AuthProvider) {
     // this.spinner.show();
     return await firebase.auth().signInWithPopup(provider)
-    .then((result) => {
+    .then(async (result) => {
       // this.spinner.hide();
-      this.getUserDB(result.user);
-      this.saveUserDB(result.user);
+      await result.user.getIdToken(false).then((token: any) => this.token = token); 
+      await this.getUserDBApi(result.user);
+      await this.saveUserDBApi(result.user);
 
     }).catch((error) => {
       // window.alert(error)
@@ -143,8 +152,9 @@ export class AuthService {
   /* Setting up user data when sign in with username/password, 
   sign up with username/password and sign in with social auth  
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
-  async saveUserDB(user: any) {
+  /*async saveUserDB(user: any) {
     // const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.email}`);
+    console.log(user)
     const userData: User = {
       uid: user.uid,
       email: user.email,
@@ -172,9 +182,66 @@ export class AuthService {
           this.signOut();
         }
       );
+  }*/
+
+
+  async saveUserDBApi(user: any) {
+
+    const userData: User = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      emailVerified: user.emailVerified,
+    };
+
+      if(!this.userExist)
+        return await this.http.post(environment.apiUrl+'/users/',
+          userData, 
+          { headers: this.generateHeaders() }
+        )
+        .toPromise().then(
+          res => console.log(res)
+        );
+      else
+        return await this.http.put(environment.apiUrl+'/users/' + userData.email, 
+          userData,
+          { headers: this.generateHeaders() }
+        )
+        .toPromise().then(
+          res => console.log(res)
+        );
   }
 
-  async getUserDB(userData: any) {
+  async getUserDBApi(userData: any) {
+    this.spinner.show();
+    return await this.http.get(environment.apiUrl+'/users/' + userData.email)
+    .toPromise().then(
+      async (doc: any) => {
+        this.userExist = true;
+        this.setUserLoggedIn(doc.data);
+        if(doc.data.isAdmin){
+          this.ngZone.run(() => {
+            this.router.navigate(['orders']);
+          });
+        }else{
+          this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );
+          this.signOut();
+        }
+      }
+    ).catch(
+      (err) => {
+        console.log(err);
+        this.spinner.hide();
+        this.userExist = false;
+        console.log("No such document!");
+        this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not allowed to access!' );
+        this.signOut();
+      }
+    );
+  }
+
+  /*async getUserDB(userData: any) {
     this.spinner.show();
     var docRef = this.afs.collection('users').doc(userData.email);
     await docRef.get().pipe(take(1)).toPromise().then(
@@ -206,22 +273,23 @@ export class AuthService {
         this.signOut();
       }
     );
-  }
+  }*/
 
   getUserLoggedIn() {
     return JSON.parse(localStorage.getItem('user'));
     // return this.isUserLoggedIn;
   }
 
-  setUserLoggedIn(data) { 
+  setUserLoggedIn(data: firebase.firestore.DocumentData) { 
     // localStorage.removeItem('user');
     localStorage.setItem('user', JSON.stringify(data));
+    localStorage.setItem('access_token', this.token);
   }
 
   checkAuthFirebase() {
     console.log('check')
     if(this.getUserLoggedIn())
-    this.getUserDB(this.getUserLoggedIn())
+    this.getUserDBApi(this.getUserLoggedIn())
   }
 
   removeUserLocalStore(){
@@ -237,7 +305,6 @@ export class AuthService {
           this.spinner.hide();
           this.router.navigate(['login']);
         // }, 500);
-
       });
     });
   }

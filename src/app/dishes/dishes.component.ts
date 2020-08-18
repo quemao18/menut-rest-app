@@ -11,6 +11,7 @@ import { NotificationService } from 'app/services/notification/notification.serv
 import { Lightbox } from 'ngx-lightbox';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'app/services/auth/auth.service';
 
 
 @Component({
@@ -52,7 +53,8 @@ export class DishesComponent implements OnInit, AfterViewInit {
     private notificationService: NotificationService,
     private _lightbox: Lightbox,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
     ) {
 
      }
@@ -142,25 +144,25 @@ export class DishesComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.spinner.show();
       this.menuService.gets().subscribe(async (menus) => {
-        this.menus = []; 
-         menus.forEach((data: any) => {
-          this.menus.push({
-            id: data.id,
-            data: data.data()
-          });
-        });
+        this.menus = menus; 
+        //  menus.forEach((data: any) => {
+        //   this.menus.push({
+        //     id: data.id,
+        //     data: data.data()
+        //   });
+        // });
         this.menu = this.menus.filter(obj => obj.id === this.menuId)[0];
         // setTimeout(async () => {
           this.spinner.show();
           await this.dishService.getsByMenuId(this.menuId).toPromise().then(
             (docs) => {
-            this.dishes = []; 
-            docs.forEach((data: any) => {
-              this.dishes.push({
-                id: data.id,
-                data: data.data()
-              });
-            });
+            this.dishes = docs; 
+            // docs.forEach((data: any) => {
+            //   this.dishes.push({
+            //     id: data.id,
+            //     data: data.data()
+            //   });
+            // });
             // this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
             this.config.totalItems =  this.dishes.length;
             this.spinner.hide();
@@ -220,7 +222,7 @@ export class DishesComponent implements OnInit, AfterViewInit {
       }
       if (this.currentStatus == 1) {
         console.log('New Doc');
-        await this.dishService.create(data).then(() => {
+        await this.dishService.create(data).toPromise().then(() => {
           console.log('Doc created successs');
           setTimeout(() => {
             this.ngOnInit();
@@ -228,13 +230,18 @@ export class DishesComponent implements OnInit, AfterViewInit {
           }, 100);
           this.notificationService.showNotification('top', 'right', 'success','check', 'Save success');
         }, (error) => {
-          console.error(error);
-          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error saving');
+          console.log(error);
           this.spinner.hide();
+          if(error.status == 401) {
+            this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please Login Again...');
+            this.authService.signOut();
+          }else{
+            this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error saving');
+          }
         });
       } else {
         console.log('Edit Doc');
-        return await this.dishService.update(documentId, data).then(() => {
+        return await this.dishService.update(documentId, data).toPromise().then(() => {
           this.currentStatus = 1;
           console.log('Doc edited success');
           setTimeout(async () => {  
@@ -244,8 +251,13 @@ export class DishesComponent implements OnInit, AfterViewInit {
           this.notificationService.showNotification('top', 'right', 'success','check', 'Edited success');
         }, (error) => {
           console.log(error);
-          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error editing');
           this.spinner.hide();
+          if(error.status == 401) {
+            this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please Login Again...');
+            this.authService.signOut();
+          }else{
+            this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error editing');
+          }
         });
       }
       
@@ -264,48 +276,48 @@ export class DishesComponent implements OnInit, AfterViewInit {
       this.showForm = true;
       this.reset();
       this.spinner.show();
-        this.dishService.getById(documentId).subscribe((menu) => {
+        this.dishService.getById(documentId).toPromise().then((menu: any) => {
         this.currentStatus = 2;
         this.documentId = documentId;
 
-        this.status = menu.payload.data()['status'],
-        this.photoPF = menu.payload.data()['photoPF'];
-        this.photoBG = menu.payload.data()['photoBG'];
+        this.status = menu.data.status,
+        this.photoPF = menu.data.photoPF;
+        this.photoBG = menu.data.photoBG;
         this.item = {
-          data: {
-            photoBG: menu.payload.data()['photoBG'],
-            photoPF: menu.payload.data()['photoPF'],
-            status: menu.payload.data()['status'],
+          data: {  
+            photoBG: menu.data.photoBG,
+            photoPF: menu.data.photoPF,
+            status: menu.data.status,
             name: {
-              es: menu.payload.data()['name']['es'],
-              en: menu.payload.data()['name']['en'],
+              es: menu.data.name.es,
+              en: menu.data.name.en,
             },
             description: {
-              es: menu.payload.data()['description']['es'],
-              en: menu.payload.data()['description']['en'],
+              es: menu.data.description.es,
+              en: menu.data.description.en,
             },
-            ref: menu.payload.data()['ref'],
-            order: menu.payload.data()['order'],
-            price: menu.payload.data()['price'],
-            menuId: menu.payload.data()['menuId'],
+            ref: menu.data.ref,
+            order: menu.data.order,
+            price: menu.data.price,
+            menuId: menu.data.menuId
           }
         };
 
         this.form.patchValue({
           id: documentId,
           name: {
-            es: menu.payload.data()['name']['es'],
-            en: menu.payload.data()['name']['en'],
+            es: menu.data.name.es,
+            en: menu.data.name.en,
           },
           description: {
-            es: menu.payload.data()['description']['es'],
-            en: menu.payload.data()['description']['en'],
+            es: menu.data.description.es,
+            en: menu.data.description.en,
           },
-          order: menu.payload.data()['order'],
-          status: menu.payload.data()['status'],
-          ref: menu.payload.data()['ref'],
-          menuId: menu.payload.data()['menuId'],
-          price: menu.payload.data()['price']
+          ref: menu.data.ref,
+          order: menu.data.order,
+          status: menu.data.status,
+          menuId: menu.data.menuId,
+          price: menu.data.price
         });
         // editSubscribe.unsubscribe();
         this.spinner.hide();
@@ -352,7 +364,7 @@ export class DishesComponent implements OnInit, AfterViewInit {
 
     async delete(documentId: string) {
       this.spinner.show();
-      await this.dishService.delete(documentId).then((menu) => {
+      await this.dishService.delete(documentId).toPromise().then((menu) => {
         console.log('deleted');
         this.notificationService.showNotification('top', 'right', 'success','check', 'Delete success');
         this.dishes = this.dishes.filter(obj => obj.id !== documentId);
@@ -363,8 +375,13 @@ export class DishesComponent implements OnInit, AfterViewInit {
         this.spinner.hide();
       }, (error) => {
         console.log(error);
-        this.notificationService.showNotification('top', 'right', 'danger','danger', 'Error deleting');
         this.spinner.hide();
+        if(error.status == 401) {
+          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please Login Again...');
+          this.authService.signOut();
+        }else{
+          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error deleting');
+        }
       });
     }
 
@@ -373,7 +390,7 @@ export class DishesComponent implements OnInit, AfterViewInit {
       let data = {
         status: !status 
       }
-     await this.dishService.update(documentId, data).then(() => {
+     await this.dishService.update(documentId, data).toPromise().then(() => {
         console.log('Edited');
         this.notificationService.showNotification('top', 'right', 'success','check', 'Status changed success');
         this.dishes.forEach(x =>  {
@@ -382,8 +399,13 @@ export class DishesComponent implements OnInit, AfterViewInit {
        this.spinner.hide();
       }, (error) => {
         console.log(error);
-        this.notificationService.showNotification('top', 'right', 'danger','danger', 'Error changing status');
         this.spinner.hide();
+        if(error.status == 401) {
+          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please Login Again...');
+          this.authService.signOut();
+        }else{
+          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error changing status');
+        }
       });
     }
   

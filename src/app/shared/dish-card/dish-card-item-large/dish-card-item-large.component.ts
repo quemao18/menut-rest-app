@@ -59,9 +59,7 @@ export class DishCardItemLargeComponent implements OnInit {
     setTimeout(() => {
       // this.shoppingCartItems = this.shoppingCartService.getItemsInCart();
       this.shoppingCartService.getTotalAmount().subscribe(total=> this.totalPrice = total);
-      this.shoppingCartItems$ = this
-      .shoppingCartService
-      .getItems();
+      this.shoppingCartItems$ = this.shoppingCartService.getItems();
       this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);
 
       if(this.shoppingCartItems){
@@ -101,11 +99,10 @@ export class DishCardItemLargeComponent implements OnInit {
       qty: qty
     } 
     this.item = item;
+
     this.shoppingCartService.addToCart(item, qty);
     this.shoppingCartService.getTotalAmount().subscribe(total=> this.totalPrice = total);
-    this.shoppingCartItems$ = this
-    .shoppingCartService
-    .getItems();
+    this.shoppingCartItems$ = this.shoppingCartService.getItems();
     this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);
     this.productExistInCart = this.shoppingCartItems.find(({id}) => id === this.item.id); 
     if(this.productExistInCart.qty ==0) this.remove(item);

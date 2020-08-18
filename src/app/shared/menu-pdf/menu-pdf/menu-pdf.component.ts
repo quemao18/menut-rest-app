@@ -60,15 +60,15 @@ export class MenuPdfComponent implements OnInit {
     this.spinner.show();
       await this.menuService.gets().toPromise().then(
         (docs) => {
-        this.menus = []; 
-        docs.forEach(async(data: any) => {
-          await this.getDishes(data.id);
-          this.menus.push({
-            id: data.id,
-            menu: data.data(),
-            dishes: this.dishes
-          });
-        });
+        this.menus = docs; 
+        // docs.forEach(async(data: any) => {
+        //   await this.getDishes(data.id);
+        //   this.menus.push({
+        //     id: data.id,
+        //     menu: data.data(),
+        //     dishes: this.dishes
+        //   });
+        // });
         // console.log(this.menus)
         // this.spinner.hide();
       }).catch((error) => {
@@ -85,13 +85,13 @@ export class MenuPdfComponent implements OnInit {
     this.spinner.show();
     await this.dishService.getsByMenuId(menuId).toPromise().then(
         (docs) => {
-        this.dishes = []; 
-        docs.forEach((data: any) => {
-          this.dishes.push({
-            id: data.id,
-            dish: data.data()
-          });
-        });
+        this.dishes = docs; 
+        // docs.forEach((data: any) => {
+        //   this.dishes.push({
+        //     id: data.id,
+        //     dish: data.data()
+        //   });
+        // });
         this.spinner.hide();
         this.disabled = false;
       }).catch((error) => {

@@ -22,17 +22,21 @@ We are very excited to share this dashboard with you and we look forward to hear
 ### create environments
 
 export const environment = {
-  production: false,
-  firebaseConfig: {
+  production: true,
+  firebaseConfig : {
     apiKey: "",
-    authDomain: "",
-    databaseURL: "",
-    projectId: "",
-    storageBucket: "",
+    authDomain: "project.firebaseapp.com",
+    databaseURL: "project.firebaseio.com",
+    projectId: "chacaitobaires-dev-api",
+    storageBucket: "project.appspot.com",
     messagingSenderId: "",
     appId: "",
     measurementId: ""
-  }
+  },
+  versionCheckURL : 'https://project.web.app/version.json',
+  web: 'https://project.web.app',
+  updateMinutes: 5,
+  apiUrl: 'https://us-central1-project.cloudfunctions.net/api',
 };
 
 ### hosting 

@@ -21,6 +21,7 @@ export class ShoppingCartService {
   }
 
   public addToCart(item: Product, qty: number) {
+    this.itemsInCartSubject.subscribe(_ => this.itemsInCart = _);
     const productExistInCart = this.itemsInCart.find(({id}) => id === item.id); 
     if(!productExistInCart){
       this.itemsInCartSubject.next([...this.itemsInCart, item]);
@@ -29,6 +30,7 @@ export class ShoppingCartService {
       productExistInCart.qty += qty
       // this.itemsInCartSubject.next([...this.itemsInCart, productExistInCart]);
     }   
+
   }
 
   // addProductToCart(item: Product, qty?:number) {

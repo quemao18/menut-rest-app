@@ -5,6 +5,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'app/services/notification/notification.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
+import { AuthService } from 'app/services/auth/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export interface DialogData {
   orderId: string;
@@ -45,9 +47,16 @@ export class OrdersComponent implements OnInit {
     private orderService: OrderService, 
     private notificationService: NotificationService,
     public dialog: MatDialog,
-    ) { }
+    private authService: AuthService,
+    private activatedRoute: ActivatedRoute
+    ) { 
+      this.activatedRoute.params.subscribe(params => {
+        this.orderId = params['id'];
+      });
+    }
 
-  orders = [];
+  orders: any = [];
+  orderId: string = '';
   config: any =  {
     itemsPerPage: 10,
     currentPage: 1,
@@ -59,25 +68,24 @@ export class OrdersComponent implements OnInit {
     setTimeout(async () => {
       await this.orderService.gets().toPromise().then(
         (docs) => {
-        this.orders = []; 
-        docs.forEach((data: any) => {
-          let sum = data.data().items.reduce(function (total: any, currentValue: { qty: number, data: { price: any; }; }) {
-            return currentValue.data.price ? total + currentValue.data.price * currentValue.qty : 0;
-          }, 0);
-          this.orders.push({
-            id: data.id,
-            data: data.data(), 
-            total: sum
-          });
-        });
-        // console.log(this.orders)
+        this.orders = docs;
         this.config.totalItems =  this.orders.length;
+        if(this.orderId !== ''){
+          let order = this.orders.filter((obj: any) => obj.data.orderId === this.orderId)[0];
+          console.log(order)
+          this.openDialog(order);
+        }
         this.spinner.hide();
       }).catch((error) => {
         // window.alert(error)
         console.log(error);
         this.spinner.hide();
+        if(error.status == 401) {
+          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please Login Again...');
+          this.authService.signOut();
+        }else{
         this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
+        }
       });
     }, 500);
   }
@@ -88,26 +96,32 @@ export class OrdersComponent implements OnInit {
 
   async delete(documentId: string) {
     this.spinner.show();
-    await this.orderService.delete(documentId).then((menu) => {
+    await this.orderService.delete(documentId).toPromise().then((menu) => {
       console.log('deleted');
       this.notificationService.showNotification('top', 'right', 'success','check', 'Delete success');
-      this.orders = this.orders.filter(obj => obj.id !== documentId);
+      this.orders = this.orders.filter((obj: any) => obj.id !== documentId);
       this.config.totalItems =  this.orders.length;
       // setTimeout(() => {
       //   this.ngOnInit();
       // }, 100);
       this.spinner.hide();
     }, (error) => {
-      console.log(error);
-      this.notificationService.showNotification('top', 'right', 'danger','danger', 'Error deleting');
-      this.spinner.hide();
+        console.log(error);
+        this.spinner.hide();
+        if(error.status == 401) {
+          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please Login Again...');
+          this.authService.signOut();
+        }else{
+          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error deleting');
+        }
     });
   }
   
   data = [];
   openDialog(order: any) {
+    if(order == null) return;
+    
     const dialogConfig = new MatDialogConfig();
-
     dialogConfig.disableClose = false;
     dialogConfig.width = '620px';
     dialogConfig.maxHeight = '690px';

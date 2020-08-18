@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { interval } from 'rxjs';
+import { OrderService } from 'app/services/orders/order.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-qr-card',
@@ -30,11 +33,32 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 })
 export class QrCardComponent implements OnInit {
 
-  @Input() public orderId: string;
+  @Input() public orderId: string = '';
   
-  constructor() { }
-
+  constructor(private orderService: OrderService, private router: Router) { }
+  order: any = [];
+  status: string = '';
+  public intervallTimer = interval(1000);
+  private subscription: any;
   ngOnInit(): void {
+    if(this.orderId!=='')
+    this.subscription = this.intervallTimer.subscribe(async() => {
+      // something
+        await this.orderService.getByOrderId(this.orderId).toPromise().then((docs:any)=>{
+            docs.forEach((data: any) => {
+            this.status = data.data.status;
+          });
+          if(this.status == 'Readed'){
+            this.router.navigateByUrl('/menu');
+            this.stop();
+          }
+        });
+      });
+    
+  }
+
+  stop() {
+    this.subscription.unsubscribe();
   }
 
 }

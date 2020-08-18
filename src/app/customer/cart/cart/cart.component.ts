@@ -53,9 +53,7 @@ export class CartComponent implements OnInit {
     // var id = this.randomStringCharset(6, "ASERTCHBasertchb0123456789");
     // console.log(id)
     this.shoppingCartService.getTotalAmount().subscribe(total=> this.totalPrice = total);
-    this.shoppingCartItems$ = this
-    .shoppingCartService
-    .getItems();
+    this.shoppingCartItems$ = this.shoppingCartService.getItems();
     this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);
     // this.totalItemsCart = this.shoppingCartItems.length;
   }
@@ -77,13 +75,14 @@ export class CartComponent implements OnInit {
       // table: 0,
       items: this.shoppingCartItems
     }
-    await this.orderService.create(data).then((doc) => {
+    await this.orderService.create(data).toPromise().then(async (doc: any) => {
       console.log('Order created successs', doc.id);
       this.orderId = id;
       this.spinner.hide();
       this.notificationService.showNotification('top', 'right', 'success','check', 'Checkout success!');
       this.shoppingCartService.clearCart();
       this.shoppingCartItems = [];
+      await this.sendWa(this.orderId);
     }, (error) => {
       console.error(error);
       this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error Checkout');
@@ -92,6 +91,11 @@ export class CartComponent implements OnInit {
 
   }
 
+  async sendWa(orderId: string){
+    await this.orderService.sendWa2(orderId).toPromise().then((doc: any) => {
+      console.log(doc);
+    });
+  }
   randomString(len: number, an?: string){
       //an = "A" alfa "N" number
       an = an&&an.toLowerCase();

@@ -55,9 +55,9 @@ export class MenuListComponent implements OnInit {
 
   public shoppingCartItems$: Observable<Product[]> = of([]);
   public shoppingCartItems: Product[] = [];
-  menus: any [];
-  dishes: any [];
-  dishesCopy: any [];
+  menus: any = [];
+  dishes: any = [];
+  dishesCopy: any = [];
   lang: string = 'es';
   menuTitle: string = '';
   disable: boolean = false;
@@ -80,6 +80,7 @@ export class MenuListComponent implements OnInit {
         this.getMenu(false);
       if(this.menuId!='')
         this.getDishes();
+      this.getDishesAll();
     },60*1000*environment.updateMinutes); //update every 2 minutes
 
   }
@@ -130,13 +131,13 @@ export class MenuListComponent implements OnInit {
       this.spinner.show();
       await this.menuService.gets().toPromise().then(
         (docs) => {
-        this.menus = []; 
-        docs.forEach((data: any) => {
-          this.menus.push({
-            id: data.id,
-            data: data.data()
-          });
-        });
+        this.menus = docs; 
+        // docs.forEach((data: any) => {
+        //   this.menus.push({
+        //     id: data.id,
+        //     data: data.data()
+        //   });
+        // });
         this.spinner.hide();
         this.menuTitle = '';
       }).catch((error) => {
@@ -158,13 +159,13 @@ export class MenuListComponent implements OnInit {
     setTimeout(async () => {  
       await this.dishService.getsByMenuId(this.menuId).toPromise().then(
         (docs) => {
-        this.dishes = []; 
-        docs.forEach((data: any) => {
-          this.dishes.push({
-            id: data.id,
-            data: data.data()
-          });
-        });
+        this.dishes = docs; 
+        // docs.forEach((data: any) => {
+        //   this.dishes.push({
+        //     id: data.id,
+        //     data: data.data()
+        //   });
+        // });
         // this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
         this.spinner.hide();
       }).catch((error) => {
@@ -181,13 +182,13 @@ export class MenuListComponent implements OnInit {
     setTimeout(async () => {  
       await this.dishService.gets().toPromise().then(
         (docs) => {
-        this.dishes = []; 
-        docs.forEach((data: any) => {
-          this.dishes.push({
-            id: data.id,
-            data: data.data()
-          });
-        });
+        this.dishes = docs; 
+        // docs.forEach((data: any) => {
+        //   this.dishes.push({
+        //     id: data.id,
+        //     data: data.data()
+        //   });
+        // });
         this.dishesCopy = this.dishes;
         if(this.menuId!='')
           this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
