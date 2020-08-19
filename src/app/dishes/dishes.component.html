@@ -96,7 +96,6 @@
                         <form (keypress)="onChanges()" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
                             <div class="row">
                                 <input hidden #id formControlName= "id" >
-                                <!-- <input hidden #menuId formControlName= "menuId" > -->
                                 <div class="col-md-2">
                                   <mat-form-field class="example-full-width">
                                     <input min="1" max={{config.totalItems}} type="number" matInput #order formControlName= "order" placeholder="Order">
@@ -111,13 +110,14 @@
 
                                 <div class="col-md-2">
                                     <mat-form-field class="example-full-width">
-                                      <input type="number" matInput #price formControlName= "price" placeholder="Price">
+                                      <input type="number" matInput #price required formControlName= "price" placeholder="Price">
+                                      <mat-error>Required</mat-error>
                                     </mat-form-field>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <mat-form-field >
-                                        <mat-label>Select a menú</mat-label>
+                                    <mat-form-field>
+                                        <mat-label>Select a menú*</mat-label>
                                         <mat-select #menuId formControlName= "menuId"  >
                                           <mat-option *ngFor="let menu of menus" [value]="menu.id">
                                             {{menu.data.name.en}}/{{menu.data.name.es}}
@@ -132,12 +132,14 @@
 
                                   <div class="col-md-6" formGroupName = "name">
                                       <mat-form-field class="example-full-width">
-                                        <input matInput #nameEs formControlName= "es" placeholder="Nombre">
+                                        <input matInput #nameEs required formControlName= "es" placeholder="Nombre">
+                                        <mat-error>Required</mat-error>
                                       </mat-form-field>
                                   </div>
                                   <div class="col-md-6" formGroupName = "name">
                                       <mat-form-field class="example-full-width">
-                                        <input matInput #nameEn formControlName= "en" placeholder="Name">
+                                        <input matInput #nameEn required formControlName= "en" placeholder="Name">
+                                        <mat-error>Required</mat-error>
                                       </mat-form-field>
                                   </div>
 
@@ -197,7 +199,8 @@
                              
                               </div>
                               <hr>
-                              Status: <input (click)="onChanges()" type="checkbox" #status formControlName= "status" >
+                              Active: <input (click)="onChanges()" type="checkbox" #status formControlName= "status" >
+                              <span style="float: right;margin-right: 5px;margin-top: -3px">*Required</span><br>
                                <!-- <button [ngClass]="{'button': true, 'is-success': true, 'is-large': true, 'is-loading': porcentaje > 0 && porcentaje < 100}" [disabled]="!profileForm.valid && (porcentaje > 0 && porcentaje < 100)">Subir archivo</button> -->
                             <button mat-raised-button (click)="scrollDiv(scroll)" [disabled]="!form.valid" type="submit" class="btn btn-danger pull-right">Save</button>
                             <button (click) = "showForm=!showForm; reset()" mat-raised-button type="button" class="btn btn-link pull-right">Cancel</button>
