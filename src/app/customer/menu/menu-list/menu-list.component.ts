@@ -66,15 +66,13 @@ export class MenuListComponent implements OnInit {
   itemsCart: any;
 
   async ngOnInit(){
-    this.shoppingCartItems$ = this
-    .shoppingCartService
-    .getItems();
+    this.shoppingCartItems$ = this.shoppingCartService.getItems();
     this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);    
     this.totalItemsCart = this.shoppingCartItems.length;
     this.getDishesAll();
     this.menuId = '';
     this.getMenu(true);
-    setInterval(()=>{
+    setInterval(async()=>{
       console.log('Updating dishes and menu...');
       if(this.menuId == '')
         this.getMenu(false);
