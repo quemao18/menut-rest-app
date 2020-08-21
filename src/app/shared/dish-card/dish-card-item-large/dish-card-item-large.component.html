@@ -2,8 +2,10 @@
 <div *ngIf="lang=='es'">
     <div [@flip] class="card card-profile">
         <div class="image">
-            <img src="{{item.data.photoBG}}" alt="..."/>
-            <div (click)="lang = 'en'" title="English" class="top-right">EN</div>
+            <img style="filter:brightness(0.85)" src="{{item.data.photoBG}}" alt="..."/>
+            <div (click)="lang = 'en'" title="English" class="top-right">
+                <img src="./assets/img/icons8-usa-48.png" style="margin-top: -4px;margin-right: -10px;"/>
+            </div>
         </div>
         <div class="card-avatar">
             <a href="javascript:void(0)" (click)="open(item.data.name.es, item.data.photoPF)">
@@ -35,8 +37,10 @@
 <div *ngIf="lang=='en'">
     <div [@flip] class="card card-profile" >
         <div class="image">
-        <img src="{{item.data.photoBG}}" alt="..."/>
-        <div (click)="lang = 'es'" title="Español" class="top-right">ES</div>
+        <img style="filter:brightness(0.85)" src="{{item.data.photoBG}}" alt="..."/>
+        <div (click)="lang = 'es'" title="Español" class="top-right">
+            <img src="./assets/img/icons8-argentina-48.png" style="margin-top: -4px;margin-right: -10px;"/>
+        </div>
         </div>
         <div class="card-avatar">
             <a href="javascript:void(0)" (click)="open(item.data.name.en, item.data.photoPF)">

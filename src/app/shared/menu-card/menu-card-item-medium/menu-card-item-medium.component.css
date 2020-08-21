@@ -10,8 +10,8 @@
     margin-right: auto;
 }
 .card-body{
-    margin: 15px !important;
-    padding: 0;
+    margin-top: 5px !important;
+    position: unset;
 }
 
 img{
