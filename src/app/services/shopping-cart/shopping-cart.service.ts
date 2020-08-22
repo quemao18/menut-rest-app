@@ -71,6 +71,7 @@ export class ShoppingCartService {
   clearCart() {
     this.itemsInCartSubject = new BehaviorSubject([]);;
     this.itemsInCart = [];
+    this.itemsInCartSubject.subscribe(_ => this.itemsInCart = _);
   }
 
 }

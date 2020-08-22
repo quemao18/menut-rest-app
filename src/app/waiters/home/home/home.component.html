@@ -5,31 +5,67 @@
             <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
                 <div [@animate] class="card">
                     <div class="card-header card-header-brown">
-                        <h4 *ngIf="qrResultString==null" class="card-title mt-0 text-yellow">Home</h4>
-                        <h4 *ngIf="qrResultString" class="card-title mt-0 text-yellow">Order: {{orderIdShort}}</h4>
+                        <h4 class="card-title mt-0 text-yellow">Waiter</h4>
+                        <!-- <h4 *ngIf="qrResultString" class="card-title mt-0 text-yellow">Order: {{orderIdShort}}</h4> -->
                     </div>
                     <div class="card-body menu">
-                        <h6 style="font-size: small; font-family: Arial, Helvetica, sans-serif;" class="text-center" *ngIf="!show && qrResultString==null">Selecciona la mesa</h6>
-                        <h6 style="font-size: small; font-family: Arial, Helvetica, sans-serif;" class="text-center" *ngIf="show">Escanee el código QR para la mesa <strong>{{tableSelect}}</strong></h6>
-                        <h6 style="font-size: small; font-family: Arial, Helvetica, sans-serif;" class="text-center" *ngIf="!show && qrResultString!=null">Mesa <strong>{{tableSelect}}</strong></h6>
-                        <zxing-scanner
-                         *ngIf="show" 
-                         [enable]="show"
-                         (scanSuccess)="onCodeResult($event, tableSelect)"
-                         ></zxing-scanner>
+                        <div *ngIf="showScanner">
+                            <h6 class="text-center">Escanee el código QR para la mesa <strong>{{tableSelect}}</strong></h6>
+                            <zxing-scanner
+                            [enable]="showScanner"
+                            (scanSuccess)="onCodeResult($event, tableSelect)"
+                            ></zxing-scanner>
+                            <div class="text-center">
+                                <input (click)="reset()" *ngIf="ordersTable == null" type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">
+                                <input (click)="showScanner = false; showOrdersTable = true" *ngIf="ordersTable != null && newScan"  type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">
+                            </div>
+                        </div>
                         
-                        <app-card-item  *ngFor="let item of items"
-                        [item]="item"
-                        ></app-card-item>
+                        <div *ngIf="showItems">
+                            <h6>Mesa: {{tableSelect}}. Orden <span style="text-transform: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{orderIdShort}}</span></h6>
+                            <app-card-item  *ngFor="let item of items"
+                            [item]="item"
+                            ></app-card-item>
+                            <div class="text-center">
+                                <input (click)="changeStatus('Finished'); clearResult(); finish(order); "  type="button" class="btn btn-danger btn-link btn-lg" value="Procesar">
+                                <input (click)="reset()"  *ngIf="ordersTable == null"   type="button" class="btn btn-danger btn-link btn-lg" value="Mesas">
+                                <input (click)="getTable(tableSelect)" *ngIf="ordersTable"  type="button" class="btn btn-danger btn-link btn-lg" value="Volver">
+                            </div>
+                        </div>
 
-                        <input *ngIf="show" (click)="scanQR(0)"  type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">
-                        <input *ngIf="qrResultString" (click)="changeStatus(); clearResult()"  type="button" class="btn btn-danger btn-link btn-lg" value="Ok">
-                        <div class="text-center" *ngIf="!show && qrResultString==null">
-                        <input 
-                        style="width: 30%;"
-                        *ngFor="let table of arrayN(); let i = index"
-                        (click)="scanQR(i+1)"  type="button" class="btn btn-danger btn-link btn-lg" 
-                        value="{{i+1}}">
+                        <div *ngIf="showOrdersTable" class="card-body">
+                            <h6>Ordenes en mesa {{tableSelect}}</h6>
+                            <div style="max-height: 570px;" class="table-responsive">
+                            <table class="table ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">OrderId</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr (click)="showOrder(orderExist)" *ngFor="let orderExist of ordersTable; let i = index">
+                                        <td>{{orderExist.orderId}}</td>
+                                        <td>{{orderExist.date | date: 'dd/MM hh:mm aaa'}}</td>
+                                        <td>{{orderExist.status}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                            <div class="text-center">
+                                <input (click)="showScanner=!showScanner; showOrdersTable=false; newScan = true;"  type="button" class="btn btn-danger btn-link btn-lg" value="Escanear QR">
+                                <input (click)="reset()"  type="button" class="btn btn-danger btn-link btn-lg" value="Mesas">
+                            </div>
+                        </div>
+
+                        <div class="text-center" *ngIf="showTables">
+                            <h6 class="text-center">Selecciona la mesa</h6>
+                            <input 
+                            style="width: 30%;"
+                            *ngFor="let table of arrayN(); let i = index"
+                            (click)="getTable(i+1)"  type="button" class="btn btn-danger btn-link btn-lg" 
+                            value="{{i+1}}">
                         </div>
                     </div>
                 </div>

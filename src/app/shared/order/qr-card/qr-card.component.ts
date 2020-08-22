@@ -3,6 +3,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { interval } from 'rxjs';
 import { OrderService } from 'app/services/orders/order.service';
 import { Router } from '@angular/router';
+import { ShoppingCartService } from 'app/services/shopping-cart/shopping-cart.service';
 
 @Component({
   selector: 'app-qr-card',
@@ -35,7 +36,7 @@ export class QrCardComponent implements OnInit {
 
   @Input() public orderId: string = '';
   
-  constructor(private orderService: OrderService, private router: Router) { }
+  constructor(private orderService: OrderService, private router: Router, public shoppingCartService: ShoppingCartService) { }
   order: any = [];
   status: string = '';
   public intervallTimer = interval(1000);
@@ -50,6 +51,7 @@ export class QrCardComponent implements OnInit {
           });
           if(this.status == 'Readed'){
             this.router.navigateByUrl('/menu');
+            this.shoppingCartService.clearCart();
             this.stop();
           }
         });

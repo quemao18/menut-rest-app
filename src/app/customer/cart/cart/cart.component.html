@@ -15,12 +15,13 @@
                         <div class="card-body menu">
                             <h3 *ngIf="shoppingCartItems.length == 0 && orderId == ''" style="text-align: center;" class="card-category">Nada agregado</h3>
 
+                            <div *ngIf="!edit">
                             <app-dish-card-item-medium class="dish-card" *ngFor="let item of shoppingCartItems"
                             [lang]="'es'" 
                             [item]="item"
                             (totalPrice)="totalPriceCart($event)"
                             ></app-dish-card-item-medium>
-                            
+                            </div>
                             <app-qr-card *ngIf="orderId!=''" [orderId]= "orderId">
                             </app-qr-card>
 
@@ -28,7 +29,8 @@
                             <hr>
                             <div class="card-footer justify-content-center">
                                 <input [routerLink]="['/menu']" type="button" class="btn btn-danger btn-link btn-lg" value="Menú">
-                                <input (click)="checkout()" [disabled]="shoppingCartItems.length==0"  type="button" class="btn btn-danger btn-link btn-lg" value="Procesar">
+                                <input *ngIf="!edit" (click)="checkout()" [disabled]="shoppingCartItems.length==0"  type="button" class="btn btn-danger btn-link btn-lg" value="Procesar">
+                                <input *ngIf="edit" (click)="remove()" [routerLink]="['/menu']" type="button" class="btn btn-danger btn-link btn-lg" value="Modificar">
                             </div>
                         </div>
                      

@@ -67,6 +67,12 @@ export class OrderService {
     );
   }
 
+  public getByTable(table: number) {
+    return this.http.get(environment.apiUrl+ `/${collection}/table/` + table, 
+    { headers: this.generateHeaders() }
+    );
+  }
+
   public gets(status?: boolean) {
     // if(status)
     // return this.firestore.collection(collection, ref => ref

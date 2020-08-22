@@ -44,29 +44,101 @@ export class HomeComponent implements OnInit {
     // this.onCodeResult('2AS13A', 5)
   }
 
-  scanQR(num: number){
-    this.show = !this.show;
-    this.tableSelect = num;
-  }
-
   qrResultString: string;
   order: any = [];
-  items: any = [];
-  show: boolean = false;
+  ordersTable: any;
+  items: any;
+  showScanner: boolean = false;
+  showItems: boolean = false;
+  showTables: boolean = true;
+  showOrdersTable: boolean = false;
   orderId: string;
   orderIdShort: string;
   status: string;
   tables: number = 10;
   tableSelect: number;
 
+  async getTable(num: number){
+    // this.show = !this.show;
+    this.spinner.show();
+    this.tableSelect = num;
+    this.items = null;
+    await this.orderService.getByTable(num).toPromise().then(
+        (docs: any) => {
+          this.ordersTable = [];
+          docs.forEach((data: any) => {
+          // this.orderId = data.id;
+          // this.status = data.data.status;
+          // this.orderIdShort = data.data.orderId;
+          this.ordersTable.push({
+            id: data.id,
+            status: data.data.status,
+            items: data.data.items,
+            orderId: data.data.orderId,
+            date: data.data.date,
+            table: data.data.table
+          });
+        });
+        if(this.ordersTable.length == 0) {
+          this.showScanner = true;
+          this.showItems = false;
+          this.showTables = false;
+          this.showOrdersTable = false;
+          this.ordersTable = null;
+        }else{
+          this.showOrdersTable = true;
+          this.showItems = false;
+          this.showTables = false;
+          this.showScanner = false;
+        }
+
+        this.spinner.hide();
+      }).catch((error) => {
+        // window.alert(error)
+        console.log(error);
+        this.spinner.hide();
+        this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
+      });
+  }
+
   clearResult(): void {
     this.qrResultString = null;
+  }
+
+  finish(){
+    this.items = null;
+    this.ordersTable = this.ordersTable.filter((obj: any) => obj.id !== this.orderId);
+    if(this.ordersTable.length == 0) {
+      this.reset();
+    }else{
+      this.showOrdersTable = true;
+      this.showItems = false;
+    }
+  }
+
+  showOrder(order: any){
+    this.items = order.items;
+    // this.order = order;
+    this.orderIdShort = order.orderId;
+    this.orderId = order.id;
+    // this.qrResultString = order.orderIdShort;
+    this.showOrdersTable = false;
+    this.showItems = true;
+  }
+
+  reset(){
+    this.showOrdersTable = false;
+    this.showItems = false;
+    this.showTables = true;
+    this.showScanner = false;
+    this.ordersTable = null;
+    this.items = null;
   }
 
   onCodeResult(resultString: string, tableSelect: number) {
     this.qrResultString = resultString;
     this.tableSelect = tableSelect;
-    this.show = false;
+    this.showScanner = false;
       // this.dishes = this.dishes.filter(obj => obj.data.menuId == menuId);
       console.log(this.qrResultString);
       setTimeout(async () => {  
@@ -82,15 +154,21 @@ export class HomeComponent implements OnInit {
               this.order.push({
                 id: data.id,
                 status: data.data.status,
-                items: data.data.items
+                items: data.data.items,
+                orderId: data.data.orderId
               });
             });
-            if(this.status == 'Pending')
-            this.items = this.order[0].items;
-            else{
-            this.notificationService.showNotification('top', 'right', 'danger', 'warning', 'Orden ya leída!');
-            this.clearResult();
+
+            if(this.status == 'Pending'){
+              this.changeStatus('Readed');
+              this.items = this.order[0].items;
+              this.showItems = true;
+              this.showScanner = false;
             }
+            // else{
+            // this.notificationService.showNotification('top', 'right', 'danger', 'warning', 'Orden ya leída!');
+            // this.clearResult();
+            // }
             this.spinner.hide();
           }).catch((error) => {
             // window.alert(error)
@@ -103,18 +181,19 @@ export class HomeComponent implements OnInit {
   
   }
 
-  async changeStatus(){
+  async changeStatus(status: string){
     this.spinner.show();
+    console.log(this.orderId)
     await this.orderService.update(this.orderId, 
       {
-        'status': 'Readed',
+        'status': status,
         'table': this.tableSelect
       
       }).toPromise().then(() => {
       console.log('Changed Status');
       this.spinner.hide();
-      this.items = null;
-    });
+      // this.items = null;
+    }).catch(() => this.spinner.hide() );
   }
 
   arrayN(){

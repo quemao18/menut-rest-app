@@ -48,6 +48,8 @@ export class CartComponent implements OnInit {
   shoppingCartItems$: Observable<Product[]> = of([]);
   shoppingCartItems: Product[] = [];
   orderId: string = '';
+  documentId: string = '';
+  edit: boolean = false;
 
   ngOnInit(): void {
     // var id = this.randomStringCharset(6, "ASERTCHBasertchb0123456789");
@@ -66,6 +68,7 @@ export class CartComponent implements OnInit {
   async checkout(){
     console.log('New Order');
     this.spinner.show();
+    this.edit = true;
     // var id  = '' + Math.random().toString(36).toUpperCase().substr(2, 6);
     var id = this.randomStringCharset(6, "ASERTCHBasertchb0123456789");
     let data = {
@@ -78,17 +81,21 @@ export class CartComponent implements OnInit {
     await this.orderService.create(data).toPromise().then(async (doc: any) => {
       console.log('Order created successs', doc.id);
       this.orderId = id;
+      this.documentId = doc.id;
       this.spinner.hide();
       this.notificationService.showNotification('top', 'right', 'success','check', 'Checkout success!');
-      this.shoppingCartService.clearCart();
-      this.shoppingCartItems = [];
-      await this.sendWa(this.orderId);
+      // this.shoppingCartService.clearCart();
+      // this.shoppingCartItems = [];
+      // await this.sendWa(this.orderId);
     }, (error) => {
       console.error(error);
       this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error Checkout');
       this.spinner.hide();
     });
+  }
 
+  async remove(){
+    await this.orderService.delete(this.documentId).toPromise().then(()=> console.log('order remove'));
   }
 
   async sendWa(orderId: string){
