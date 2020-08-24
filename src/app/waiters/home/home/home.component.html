@@ -51,7 +51,7 @@
                             [item]="item"
                             ></app-card-item>
                             <div class="text-center">
-                                <input (click)="changeStatus('Finished'); clearResult(); finish(order); "  type="button" class="btn btn-danger btn-link btn-lg" value="Procesar">
+                                <input (click)="changeStatus('Finished'); clearResult(); finish(); "  type="button" class="btn btn-danger btn-link btn-lg" value="Procesar">
                                 <input (click)="reset()"  *ngIf="ordersTable == null"   type="button" class="btn btn-danger btn-link btn-lg" value="Mesas">
                                 <input (click)="getTable(tableSelect)" *ngIf="ordersTable"  type="button" class="btn btn-danger btn-link btn-lg" value="Volver">
                             </div>

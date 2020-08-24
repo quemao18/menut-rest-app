@@ -114,9 +114,7 @@ export class HomeComponent implements OnInit {
     this.items = null;
     this.ordersTable = this.ordersTable.filter((obj: any) => obj.id !== this.orderId);
     if(this.ordersTable.length == 0) {
-      setTimeout(() => {
-        this.reset();
-      }, 500);
+      this.reset();
     }else{
       this.showOrdersTable = true;
       this.showItems = false;
