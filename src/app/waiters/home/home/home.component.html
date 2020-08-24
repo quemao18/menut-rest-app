@@ -14,7 +14,31 @@
                             <zxing-scanner
                             [enable]="showScanner"
                             (scanSuccess)="onCodeResult($event, tableSelect)"
+                            [(device)]="currentDevice"
+                            (camerasFound)="onCamerasFound($event)"
+                            (permissionResponse)="onHasPermission($event)"
                             ></zxing-scanner>
+                            <ng-container *ngIf="hasPermission === undefined">
+                                <h6>Waiting for permissions.</h6>
+                                <blockquote>
+                                  If your device does not has cameras, no permissions will be asked.
+                                </blockquote>
+                            </ng-container>
+                            <ng-container *ngIf="hasPermission === false">
+                                <h6>You denied the camera permission, we can't scan anything without it. 😪</h6>
+                              </ng-container>
+                              <ng-container *ngIf="hasDevices === undefined">
+                                <h6>Couldn't check for devices.</h6>
+                                <blockquote>
+                                  This may be caused by some security error.
+                                </blockquote>
+                              </ng-container>
+                              <ng-container *ngIf="hasDevices === false">
+                                <h6>No devices were found.</h6>
+                                <blockquote>
+                                  I believe your device has no media devices attached to.
+                                </blockquote>
+                              </ng-container>
                             <div class="text-center">
                                 <input (click)="reset()" *ngIf="ordersTable == null" type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">
                                 <input (click)="showScanner = false; showOrdersTable = true" *ngIf="ordersTable != null && newScan"  type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">

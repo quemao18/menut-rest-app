@@ -26,24 +26,24 @@ const routes: Routes =[
   { 
     path: '', component: CustomerLayoutComponent,
     children: [
-      // { path: '', loadChildren: './layouts/customer-layout/customer-layout.module#CustomerLayoutModule'},
-      { path: '', loadChildren: () => CustomerLayoutModule },
+      { path: '', loadChildren: './layouts/customer-layout/customer-layout.module#CustomerLayoutModule'},
+      // { path: '', loadChildren: () => CustomerLayoutModule },
     ]
   },
   { path: 'home', redirectTo: 'login', pathMatch: 'full', }, 
   { 
     path: '', component: HomeLayoutComponent,
     children: [
-      // {path: '', loadChildren: './layouts/home-layout/home-layout.module#HomeLayoutModule'},
-      { path: '', loadChildren: () => HomeLayoutModule }
+      {path: '', loadChildren: './layouts/home-layout/home-layout.module#HomeLayoutModule'},
+      // { path: '', loadChildren: () => HomeLayoutModule }
     ]
   },
   { path: 'waiter', redirectTo: 'waiter', pathMatch: 'full', }, 
   { 
     path: '', component: WaiterLayoutComponent,
     children: [
-      // {path: '', loadChildren: './layouts/home-layout/home-layout.module#HomeLayoutModule'},
-      { path: '', loadChildren: () => WaiterLayoutModule }
+      {path: '', loadChildren: './layouts/waiter-layout/waiter-layout.module#WaiterLayoutModule'},
+      // { path: '', loadChildren: () => WaiterLayoutModule }
     ]
   },
   { path: 'dashboard', redirectTo: 'dashboard', pathMatch: 'full', }, 
@@ -52,8 +52,8 @@ const routes: Routes =[
     component: AdminLayoutComponent,
     ...canActivate(redirectUnauthorizedToLanding),
     children: [
-      // {path: '', loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'}
-      { path: '', loadChildren: () => AdminLayoutModule }
+      {path: '', loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'}
+      // { path: '', loadChildren: () => AdminLayoutModule }
     ]
   },
   

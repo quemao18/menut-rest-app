@@ -28,7 +28,7 @@
                             <h6 *ngIf="totalPrice>0 && orderId == ''" style="text-align: right; margin-right: 20px;" class="card-category">Total: {{totalPrice}}$</h6>
                             <hr>
                             <div class="card-footer justify-content-center">
-                                <input [routerLink]="['/menu']" type="button" class="btn btn-danger btn-link btn-lg" value="Menú">
+                                <input *ngIf="!edit" [routerLink]="['/menu']" type="button" class="btn btn-danger btn-link btn-lg" value="Menú">
                                 <input *ngIf="!edit" (click)="checkout()" [disabled]="shoppingCartItems.length==0"  type="button" class="btn btn-danger btn-link btn-lg" value="Procesar">
                                 <input *ngIf="edit" (click)="remove()" [routerLink]="['/menu']" type="button" class="btn btn-danger btn-link btn-lg" value="Modificar">
                             </div>

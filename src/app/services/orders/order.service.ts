@@ -42,26 +42,14 @@ export class OrderService {
     );
   }
 
-  public sendWa(orderId: string) {
-    // return this.firestore.collection(collection).doc(documentId).snapshotChanges();
-    return this.http.get(environment.apiUrl+ `/${collection}/sendwa/` + orderId, 
-    { headers: this.generateHeaders() }
-    );
-  }
-
-  public sendWa2(orderId: string) {
-    // return this.firestore.collection(collection).doc(documentId).snapshotChanges();
-    return this.http.get(environment.apiUrl+ `/${collection}/sendwa2/` + orderId, 
+  public sendWa(data: any) {
+    // return this.firestore.collection(collection).add(data);
+    return this.http.post(environment.apiUrl+ `/${collection}/sendWa`, data, 
     { headers: this.generateHeaders() }
     );
   }
 
   public getByOrderId(orderId: string) {
-    // return this.firestore.collection(collection, ref => ref
-    //   // .limit(limit)
-    //   .orderBy('date', 'desc')
-    //   .where('orderId', '==', orderId)
-    // ).get();
     return this.http.get(environment.apiUrl+ `/${collection}/orderId/` + orderId, 
     { headers: this.generateHeaders() }
     );
@@ -74,17 +62,6 @@ export class OrderService {
   }
 
   public gets(status?: boolean) {
-    // if(status)
-    // return this.firestore.collection(collection, ref => ref
-    //   // .limit(limit)
-    //   .orderBy('order', 'asc')
-    //   .where('status', '==', status)
-    // ).get();
-    // else
-    // return this.firestore.collection(collection, ref => ref
-    //   // .limit(limit)
-    //   .orderBy('date', 'desc')
-    // ).get();
     if(status)
     return this.http.get(environment.apiUrl+ `/${collection}/status/`+ status, 
     { headers: this.generateHeaders() }

@@ -4,6 +4,7 @@ import { OrderService } from 'app/services/orders/order.service';
 import { NgxSpinner } from 'ngx-spinner/lib/ngx-spinner.enum';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'app/services/notification/notification.service';
+import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 
 @Component({
   selector: 'app-home',
@@ -33,7 +34,7 @@ import { NotificationService } from 'app/services/notification/notification.serv
   ]
 })
 export class HomeComponent implements OnInit {
-  
+
   constructor(
     private orderService: OrderService,
     private spinner: NgxSpinnerService,
@@ -57,6 +58,10 @@ export class HomeComponent implements OnInit {
   status: string;
   tables: number = 10;
   tableSelect: number;
+  currentDevice: MediaDeviceInfo = null;
+  availableDevices: MediaDeviceInfo[];
+  hasDevices: boolean;
+  hasPermission: boolean;
 
   async getTable(num: number){
     // this.show = !this.show;
@@ -109,7 +114,9 @@ export class HomeComponent implements OnInit {
     this.items = null;
     this.ordersTable = this.ordersTable.filter((obj: any) => obj.id !== this.orderId);
     if(this.ordersTable.length == 0) {
-      this.reset();
+      setTimeout(() => {
+        this.reset();
+      }, 500);
     }else{
       this.showOrdersTable = true;
       this.showItems = false;
@@ -183,7 +190,7 @@ export class HomeComponent implements OnInit {
 
   async changeStatus(status: string){
     this.spinner.show();
-    console.log(this.orderId)
+    console.log(this.orderId);
     await this.orderService.update(this.orderId, 
       {
         'status': status,
@@ -194,10 +201,35 @@ export class HomeComponent implements OnInit {
       this.spinner.hide();
       // this.items = null;
     }).catch(() => this.spinner.hide() );
+
+    let data = {
+      orderId: this.orderIdShort, 
+      date: Date.now(), 
+      status: status,
+      table: this.tableSelect,
+      // table: 0,
+      items: this.items
+    };
+    await this.sendWa(data);
+  }
+
+  async sendWa(data: any){
+    await this.orderService.sendWa(data).toPromise().then((doc: any) => {
+      console.log(doc);
+    });
   }
 
   arrayN(){
     return Array(this.tables);
+  }
+
+  onCamerasFound(devices: MediaDeviceInfo[]): void {
+    this.availableDevices = devices;
+    this.hasDevices = Boolean(devices && devices.length);
+  }
+
+  onHasPermission(has: boolean) {
+    this.hasPermission = has;
   }
 
 }

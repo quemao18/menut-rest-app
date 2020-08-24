@@ -3,7 +3,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { DishService } from 'app/services/dishes/dish.service';
 import { MenuService } from 'app/services/menus/menu.service';
 import { NotificationService } from 'app/services/notification/notification.service';
-import * as jsPDF from 'jspdf'
+import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import { trigger, state, style, transition, animate } from '@angular/animations';
 

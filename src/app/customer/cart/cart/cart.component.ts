@@ -83,10 +83,8 @@ export class CartComponent implements OnInit {
       this.orderId = id;
       this.documentId = doc.id;
       this.spinner.hide();
-      this.notificationService.showNotification('top', 'right', 'success','check', 'Checkout success!');
-      // this.shoppingCartService.clearCart();
-      // this.shoppingCartItems = [];
-      // await this.sendWa(this.orderId);
+      // this.notificationService.showNotification('top', 'right', 'success','check', 'Checkout success!');
+      await this.sendWa(data);
     }, (error) => {
       console.error(error);
       this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error Checkout');
@@ -95,14 +93,23 @@ export class CartComponent implements OnInit {
   }
 
   async remove(){
+    let data = {
+      orderId: this.orderId, 
+      date: Date.now(), 
+      status: 'Deleted',
+      // table: 0,
+      items: this.shoppingCartItems
+    }
     await this.orderService.delete(this.documentId).toPromise().then(()=> console.log('order remove'));
+    await this.sendWa(data);
   }
 
-  async sendWa(orderId: string){
-    await this.orderService.sendWa2(orderId).toPromise().then((doc: any) => {
+  async sendWa(data: any){
+    await this.orderService.sendWa(data).toPromise().then((doc: any) => {
       console.log(doc);
     });
   }
+
   randomString(len: number, an?: string){
       //an = "A" alfa "N" number
       an = an&&an.toLowerCase();
@@ -114,6 +121,7 @@ export class CartComponent implements OnInit {
       return str;
   }
 
+  //in use
   randomStringCharset(len: number, charSet?: string) {
     charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var randomString = '';
