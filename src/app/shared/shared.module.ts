@@ -16,6 +16,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MainPipeModule } from 'app/pipes/pipes.module';
+import { ArraySortPipe } from 'app/pipes/pipes.pipe';
 
 
 @NgModule({
@@ -31,6 +33,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
+    MainPipeModule
   ],
   declarations: [
     MenuCardItemLargeComponent,
@@ -39,7 +42,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     DishCardItemMediumComponent,
     QrCardComponent,
     CardItemComponent,
-    MenuPdfComponent
+    MenuPdfComponent,
   ],
   exports: [
     MenuCardItemLargeComponent,
@@ -48,8 +51,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     DishCardItemMediumComponent,
     QrCardComponent,
     CardItemComponent,
-    MenuPdfComponent
-
+    MenuPdfComponent,
   ]
 })
 export class SharedModule { }

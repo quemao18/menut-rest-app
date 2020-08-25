@@ -63,16 +63,15 @@ export class OrdersComponent implements OnInit {
     totalItems: 0
   };
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.spinner.show();
-    setTimeout(async () => {
+    // setTimeout(async () => {
       await this.orderService.gets().toPromise().then(
         (docs) => {
         this.orders = docs;
         this.config.totalItems =  this.orders.length;
         if(this.orderId !== ''){
           let order = this.orders.filter((obj: any) => obj.data.orderId === this.orderId)[0];
-          console.log(order)
           this.openDialog(order);
         }
         this.spinner.hide();
@@ -87,7 +86,7 @@ export class OrdersComponent implements OnInit {
         this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
         }
       });
-    }, 500);
+    // }, 500);
   }
 
   pageChanged(event: any){

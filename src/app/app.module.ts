@@ -30,7 +30,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ShoppingCartService } from './services/shopping-cart/shopping-cart.service';
 import { ComponentsWaiterModule } from './waiters/components/components-waiter.module';
 import { WaiterLayoutComponent } from './layouts/waiter-layout/waiter-layout.component';
-import { OrderByPipe, ArraySortPipe } from './pipes/pipes.pipe';
+import { MainPipeModule } from './pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -56,8 +56,6 @@ import { OrderByPipe, ArraySortPipe } from './pipes/pipes.pipe';
     HomeLayoutComponent,
     CustomerLayoutComponent,
     WaiterLayoutComponent,
-    ArraySortPipe,
-    OrderByPipe
   ],
   providers: [
     AuthService, 

@@ -141,29 +141,16 @@ export class DishesComponent implements OnInit, AfterViewInit {
     this.activatedRoute.params.subscribe(params => {
       this.menuId = params['id'];
     });
-    setTimeout(() => {
+    // setTimeout(() => {
       this.spinner.show();
       this.menuService.gets().subscribe(async (menus) => {
         this.menus = menus; 
-        //  menus.forEach((data: any) => {
-        //   this.menus.push({
-        //     id: data.id,
-        //     data: data.data()
-        //   });
-        // });
         this.menu = this.menus.filter(obj => obj.id === this.menuId)[0];
         // setTimeout(async () => {
           this.spinner.show();
           await this.dishService.getsByMenuId(this.menuId).toPromise().then(
             (docs) => {
             this.dishes = docs; 
-            // docs.forEach((data: any) => {
-            //   this.dishes.push({
-            //     id: data.id,
-            //     data: data.data()
-            //   });
-            // });
-            // this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
             this.config.totalItems =  this.dishes.length;
             this.spinner.hide();
           }).catch((error) => {
@@ -180,7 +167,7 @@ export class DishesComponent implements OnInit, AfterViewInit {
         this.spinner.hide();
         this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
       });
-    }, 500);
+    // }, 500);
   }
 
   ngAfterViewInit(): void {
@@ -200,9 +187,9 @@ export class DishesComponent implements OnInit, AfterViewInit {
   
   async onSubmit(form: any, documentId = this.documentId) {
       // console.log(`Status: ${this.currentStatus}`);
-      setTimeout(() => {
+      // setTimeout(() => {
       this.spinner.show();
-      }, 200);
+      // }, 200);
       let data = {
         order: form.order,
         menuId: form.menuId,

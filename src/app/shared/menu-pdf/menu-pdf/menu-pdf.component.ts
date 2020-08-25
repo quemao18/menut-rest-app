@@ -50,50 +50,55 @@ export class MenuPdfComponent implements OnInit {
   lang: string = 'es';
   disabled: boolean = true;
   
-  ngOnInit(){
-    this.getMenu();
-  }
-
-  getMenu(){
-    // if(spinner)
-    setTimeout(async () => {  
+  async ngOnInit(){
     this.spinner.show();
+    await this.getDishes('');
+    await this.getMenu();
+    this.disabled = false;
+    this.spinner.hide();
+  }
+  
+
+  async getMenu(){
+    // if(spinner)
+    // setTimeout(async () => {  
       await this.menuService.gets().toPromise().then(
-        (docs) => {
-        this.menus = docs; 
-        // docs.forEach(async(data: any) => {
-        //   await this.getDishes(data.id);
-        //   this.menus.push({
-        //     id: data.id,
-        //     menu: data.data(),
-        //     dishes: this.dishes
-        //   });
-        // });
-        // console.log(this.menus)
-        // this.spinner.hide();
+        (docs: any) => {
+        this.menus = []; 
+        docs.forEach(async(data: any) => {
+          // await this.getDishes(data.id);
+          const dishes = this.dishes.filter((obj: any) =>  obj.menuId === data.id);
+          this.menus.push({
+            id: data.id,
+            menu: data.data,
+            dishes: dishes,
+            order: data.data.order
+          });
+        });
       }).catch((error) => {
         // window.alert(error)
         console.log(error);
         this.spinner.hide();
         this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
       });
-    }, 300);
+    // }, 300);
+
+
+
   }
 
   async getDishes(menuId: string){
     // setTimeout(() => {
-    this.spinner.show();
     await this.dishService.getsByMenuId(menuId).toPromise().then(
-        (docs) => {
-        this.dishes = docs; 
-        // docs.forEach((data: any) => {
-        //   this.dishes.push({
-        //     id: data.id,
-        //     dish: data.data()
-        //   });
-        // });
-        this.spinner.hide();
-        this.disabled = false;
+        (docs: any) => {
+        this.dishes = []; 
+        docs.forEach((data: any) => {
+          this.dishes.push({
+            id: data.id,
+            dish: data.data,
+            menuId: data.data.menuId
+          });
+        });
       }).catch((error) => {
         // window.alert(error)
         console.log(error);

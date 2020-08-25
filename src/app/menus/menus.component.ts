@@ -127,7 +127,7 @@ export class MenusComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit() {
-    setTimeout(async () => {
+    // setTimeout(async () => {
       this.spinner.show();
       await this.menuService.gets().toPromise().then(
         (docs) => { 
@@ -146,7 +146,7 @@ export class MenusComponent implements OnInit, AfterViewInit {
         this.spinner.hide();
         this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
       });
-    }, 500);
+    // }, 500);
   }
 
   ngAfterViewInit(): void {
@@ -159,9 +159,9 @@ export class MenusComponent implements OnInit, AfterViewInit {
   
   async onSubmit(form: any, documentId = this.documentId, status = this.status) {
       // console.log(`Status: ${this.currentStatus}`);
-      setTimeout(() => {
+      // setTimeout(() => {
       this.spinner.show();
-      }, 200);
+      // }, 200);
       let data = {
         order: form.order,
         ref: form.ref,

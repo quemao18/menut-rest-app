@@ -44,7 +44,7 @@
                     <div id="typography">
                         <div class="card-title">
                             <div class="row">
-                                <div *ngFor="let menu of menus" class="col-md-6">
+                                <div *ngFor="let menu of menus | sort:'order'" class="col-md-6">
                                     <h4 class="card-title">{{menu.menu.name.en}}:</h4>
                                     <p class="card-category">{{menu.menu.description.en}}</p>
                                     <ul *ngFor="let dish of menu.dishes">
