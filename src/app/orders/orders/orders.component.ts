@@ -120,7 +120,7 @@ export class OrdersComponent implements OnInit {
   data = [];
   openDialog(order: any) {
     if(order == null) return;
-    
+    console.log(order)
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.width = '620px';

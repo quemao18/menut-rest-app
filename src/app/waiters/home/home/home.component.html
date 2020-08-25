@@ -27,25 +27,25 @@
                             <ng-container *ngIf="hasPermission === false">
                                 <h6>You denied the camera permission, we can't scan anything without it. 😪</h6>
                               </ng-container>
-                              <ng-container *ngIf="hasDevices === undefined">
+                              <!-- <ng-container *ngIf="hasDevices === undefined">
                                 <h6>Couldn't check for devices.</h6>
                                 <blockquote>
                                   This may be caused by some security error.
                                 </blockquote>
-                              </ng-container>
-                              <ng-container *ngIf="hasDevices === false">
+                              </ng-container> -->
+                              <!-- <ng-container *ngIf="hasDevices === false">
                                 <h6>No devices were found.</h6>
                                 <blockquote>
                                   I believe your device has no media devices attached to.
                                 </blockquote>
-                              </ng-container>
+                              </ng-container> -->
                             <div class="text-center">
                                 <input (click)="reset()" *ngIf="ordersTable == null" type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">
                                 <input (click)="showScanner = false; showOrdersTable = true" *ngIf="ordersTable != null && newScan"  type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">
                             </div>
                         </div>
                         
-                        <div *ngIf="showItems">
+                        <div *ngIf="showItems && items">
                             <h6>Mesa: {{tableSelect}}. Orden <span style="text-transform: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{orderIdShort}}</span></h6>
                             <app-card-item  *ngFor="let item of items"
                             [item]="item"

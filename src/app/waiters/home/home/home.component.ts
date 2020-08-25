@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { OrderService } from 'app/services/orders/order.service';
-import { NgxSpinner } from 'ngx-spinner/lib/ngx-spinner.enum';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'app/services/notification/notification.service';
-import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 
 @Component({
   selector: 'app-home',
@@ -112,7 +110,10 @@ export class HomeComponent implements OnInit {
 
   finish(){
     this.items = null;
+    if(this.ordersTable)
     this.ordersTable = this.ordersTable.filter((obj: any) => obj.id !== this.orderId);
+    else
+    this.ordersTable = [];
     if(this.ordersTable.length == 0) {
       this.reset();
     }else{
@@ -132,12 +133,12 @@ export class HomeComponent implements OnInit {
   }
 
   reset(){
-    this.showOrdersTable = false;
-    this.showItems = false;
-    this.showTables = true;
-    this.showScanner = false;
-    this.ordersTable = null;
-    this.items = null;
+      this.showOrdersTable = false;
+      this.showItems = false;
+      this.showTables = true;
+      this.showScanner = false;
+      this.ordersTable = null;
+      this.items = null;
   }
 
   onCodeResult(resultString: string, tableSelect: number) {
