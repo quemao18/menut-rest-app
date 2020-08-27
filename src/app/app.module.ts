@@ -30,7 +30,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { ShoppingCartService } from './services/shopping-cart/shopping-cart.service';
 import { ComponentsWaiterModule } from './waiters/components/components-waiter.module';
 import { WaiterLayoutComponent } from './layouts/waiter-layout/waiter-layout.component';
-import { MainPipeModule } from './pipes/pipes.module';
 
 @NgModule({
   imports: [

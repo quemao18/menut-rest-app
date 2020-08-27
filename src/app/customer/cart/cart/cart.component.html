@@ -14,7 +14,7 @@
                         </div>
                         <div class="card-body menu">
                             <h3 *ngIf="shoppingCartItems.length == 0 && orderId == ''" style="text-align: center;" class="card-category">Nada agregado</h3>
-
+                            
                             <div *ngIf="!edit">
                             <app-dish-card-item-medium class="dish-card" *ngFor="let item of shoppingCartItems"
                             [lang]="'es'" 

@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MainPipeModule } from 'app/pipes/pipes.module';
 import { ArraySortPipe } from 'app/pipes/pipes.pipe';
+import { HomeCardComponent } from './home/home-card/home-card.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { ArraySortPipe } from 'app/pipes/pipes.pipe';
     QrCardComponent,
     CardItemComponent,
     MenuPdfComponent,
+    HomeCardComponent,
   ],
   exports: [
     MenuCardItemLargeComponent,
@@ -52,6 +54,7 @@ import { ArraySortPipe } from 'app/pipes/pipes.pipe';
     QrCardComponent,
     CardItemComponent,
     MenuPdfComponent,
+    HomeCardComponent
   ]
 })
 export class SharedModule { }

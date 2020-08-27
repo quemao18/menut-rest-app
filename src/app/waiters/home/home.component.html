@@ -1,0 +1,25 @@
+<div class="main-content">
+    <div class="container-fluid top">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                    <div [@animate] class="card">
+                        <div class="card-header card-header-brown">
+                            <h4 class="card-title mt-0 text-yellow">Home</h4>
+                        </div>
+                        <div class="card-body menu">
+                         
+                            <app-card-home 
+                            [textButton]="'Mesas'" 
+                            [route]="['/waiter']">
+                
+                            </app-card-home>
+                            
+                        </div>
+                     
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+  

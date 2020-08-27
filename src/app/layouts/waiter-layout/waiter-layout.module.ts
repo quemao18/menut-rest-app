@@ -14,7 +14,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { LightboxModule } from 'ngx-lightbox';
 import { SharedModule } from 'app/shared/shared.module';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
-import { HomeComponent } from 'app/waiters/home/home/home.component';
+import { HomeComponent } from 'app/waiters/home/home.component';
+import { WaiterComponent } from 'app/waiters/waiter/waiter.component';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { HomeComponent } from 'app/waiters/home/home/home.component';
   declarations: [
     // CartComponent
     HomeComponent,
+    WaiterComponent
     
   ],
 })

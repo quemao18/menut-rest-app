@@ -54,8 +54,8 @@ export class AuthService {
     return await firebase.auth().signInWithEmailAndPassword(email, password)
       .then(async (result) => { 
         await result.user.getIdToken(false).then((token: any) => this.token = token); 
-        this.getUserDBApi(result.user);
-        this.saveUserDBApi(result.user);
+        await this.getUserDBApi(result.user);
+        await this.saveUserDBApi(result.user);
       }).catch((error) => {
         this.spinner.hide();
         this.notification.showNotification('top', 'center', 'danger', 'warning', error.message);
@@ -119,8 +119,14 @@ export class AuthService {
       // return (user !== null && user.emailVerified !== false && this.user.isAdmin !== false) ? true : false;
     // console.log(this.getUserLoggedIn());
     return (this.getUserLoggedIn() !== null && this.getUserLoggedIn().isAdmin === false) ? false : true;
-
   }
+
+  get isWaiterdIn(): boolean { 
+    // return (user !== null && user.emailVerified !== false && this.user.isAdmin !== false) ? true : false;
+  // console.log(this.getUserLoggedIn());
+  return (this.getUserLoggedIn() !== null && this.getUserLoggedIn().isAdmin === false) ? false : true;
+}
+
   // Sign in with Google
   async googleAuth() {
     return await this.authLogin(new firebase.auth.GoogleAuthProvider());
@@ -224,10 +230,13 @@ export class AuthService {
           this.ngZone.run(() => {
             this.router.navigate(['orders']);
           });
-        }else{
-          this.notification.showNotification('top', 'center', 'warning', 'warning', 'You are not aministrator user!' );
-          this.signOut();
         }
+        if(doc.data.isWaiter){
+          this.ngZone.run(() => {
+            this.router.navigate(['waiter-home']);
+          });
+        }
+      this.spinner.hide(); 
       }
     ).catch(
       (err) => {

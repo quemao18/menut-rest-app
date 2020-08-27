@@ -7,13 +7,9 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 ;
 import { HomeLayoutComponent } from './layouts/home-layout/home-layout.component';
 
-import { AngularFireAuthGuard, canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { CustomerLayoutComponent } from './layouts/customer-layout/customer-layout.component';
-import { CustomerLayoutModule } from './layouts/customer-layout/customer-layout.module';
-import { HomeLayoutModule } from './layouts/home-layout/home-layout.module';
-import { AdminLayoutModule } from './layouts/admin-layout/admin-layout.module';
 import { WaiterLayoutComponent } from './layouts/waiter-layout/waiter-layout.component';
-import { WaiterLayoutModule } from './layouts/waiter-layout/waiter-layout.module';
 
 const redirectUnauthorizedToLanding = () => redirectUnauthorizedTo(['login']);
 // const redirectUnauthorizedToLandingCustomer = () => redirectUnauthorizedTo(['menu']);
@@ -22,7 +18,7 @@ const redirectUnauthorizedToLanding = () => redirectUnauthorizedTo(['login']);
 
 const routes: Routes =[
   
-  { path: '', redirectTo: 'menu', pathMatch: 'full', }, 
+  { path: '', redirectTo: 'customer-home', pathMatch: 'full', }, 
   { 
     path: '', component: CustomerLayoutComponent,
     children: [
@@ -41,6 +37,7 @@ const routes: Routes =[
   { path: 'waiter', redirectTo: 'waiter', pathMatch: 'full', }, 
   { 
     path: '', component: WaiterLayoutComponent,
+    ...canActivate(redirectUnauthorizedToLanding),
     children: [
       {path: '', loadChildren: './layouts/waiter-layout/waiter-layout.module#WaiterLayoutModule'},
       // { path: '', loadChildren: () => WaiterLayoutModule }

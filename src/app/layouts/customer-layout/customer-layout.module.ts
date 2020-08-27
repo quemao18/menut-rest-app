@@ -14,11 +14,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LightboxModule } from 'ngx-lightbox';
-import { SidebarCustomerComponent } from 'app/customer/components/sidebar-customer/sidebar-customer.component';
-import { NavbarCustomerComponent } from 'app/customer/components/navbar-customer/navbar-customer.component';
-import { MenuCardItemLargeComponent } from 'app/shared/menu-card/menu-card-item-large/menu-card-item-large.component';
+
 import { SharedModule } from 'app/shared/shared.module';
 import { CartComponent } from 'app/customer/cart/cart/cart.component';
+import { HomeComponent } from 'app/customer/home/home.component';
 
 @NgModule({
   imports: [
@@ -40,7 +39,8 @@ import { CartComponent } from 'app/customer/cart/cart/cart.component';
   declarations: [
     MenuListComponent,
     DishListComponent,
-    CartComponent
+    CartComponent,
+    HomeComponent
   ],
 })
 export class CustomerLayoutModule { }
