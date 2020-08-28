@@ -203,7 +203,7 @@ export class MenuListComponent implements OnInit {
   filterDishes(menu: any){
       if(menu.data.status){
         this.menuId = menu.id;
-        this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
+        this.dishes = this.dishes.filter((obj:any) => obj.data.menuId == this.menuId);
         this.menuTitle = this.lang == 'es' ? menu.data.name.es : menu.data.name.en;
       }
   }

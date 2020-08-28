@@ -51,7 +51,7 @@
                             [item]="item"
                             ></app-card-item>
                             <div class="text-center">
-                                <input (click)="changeStatus('Finished'); clearResult(); finish(); "  type="button" class="btn btn-danger btn-link btn-lg" value="Procesar">
+                                <input (click)="changeStatus('Finished'); clearResult(); finish(); "  type="button" class="btn btn-danger btn-link btn-lg" value="Finalizar">
                                 <input (click)="reset()"  *ngIf="ordersTable == null"   type="button" class="btn btn-danger btn-link btn-lg" value="Mesas">
                                 <input (click)="getTable(tableSelect)" *ngIf="ordersTable"  type="button" class="btn btn-danger btn-link btn-lg" value="Volver">
                             </div>
@@ -63,16 +63,16 @@
                             <table class="table ">
                                 <thead>
                                     <tr>
-                                        <th scope="col">OrderId</th>
-                                        <th scope="col">Date</th>
+                                        <th scope="col">Order</th>
+                                        <th scope="col">Hour</th>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr (click)="showOrder(orderExist)" *ngFor="let orderExist of ordersTable; let i = index">
                                         <td>{{orderExist.orderId}}</td>
-                                        <td>{{orderExist.date | date: 'dd/MM hh:mm aaa'}}</td>
-                                        <td>{{orderExist.status}}</td>
+                                        <td>{{orderExist.date | date: 'hh:mm aaa'}}</td>
+                                        <td>{{orderExist.status == 'Readed' ? 'En espera para cargar en comanda': ''}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -88,6 +88,7 @@
                             <input 
                             style="width: 30%;"
                             *ngFor="let table of arrayN(); let i = index"
+                            [style.background-color] = "arrayTables[i] ? '#ffeb3b': ''"
                             (click)="getTable(i+1)"  type="button" class="btn btn-danger btn-link btn-lg" 
                             value="{{i+1}}">
                         </div>

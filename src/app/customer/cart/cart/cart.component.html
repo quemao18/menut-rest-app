@@ -3,26 +3,25 @@
         <div class="row">
             <div class="col-md-6 mx-auto">
                 <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+
                     <div [@animate] class="card">
                         <div class="card-header card-header-brown">
                             <h4 class="card-title mt-0 text-yellow">Pedido</h4>
-                            <!-- <h6 style="cursor: pointer; float: right; color: white; margin-top: -21px; margin-right: 0px;" title="Menú" [routerLink]="['/menu']" 
-                            class="">
-                            <i style="position: absolute; right: 64px; top: 12px" class="material-icons" >restaurant_menu</i>
-                            Menú
-                            </h6> -->
                         </div>
                         <div class="card-body menu">
                             <h3 *ngIf="shoppingCartItems.length == 0 && orderId == ''" style="text-align: center;" class="card-category">Nada agregado</h3>
                             
                             <div *ngIf="!edit">
-                            <app-dish-card-item-medium class="dish-card" *ngFor="let item of shoppingCartItems"
-                            [lang]="'es'" 
-                            [item]="item"
-                            (totalPrice)="totalPriceCart($event)"
-                            ></app-dish-card-item-medium>
+                                <app-dish-card-item-medium class="dish-card" *ngFor="let item of shoppingCartItems"
+                                [lang]="'es'" 
+                                [item]="item"
+                                (totalPrice)="totalPriceCart($event)"
+                                ></app-dish-card-item-medium>
                             </div>
-                            <app-qr-card *ngIf="orderId!=''" [orderId]= "orderId">
+      
+                            <app-qr-card *ngIf="orderId!=''" 
+                            [orderId]= "orderId" 
+                            >
                             </app-qr-card>
 
                             <h6 *ngIf="totalPrice>0 && orderId == ''" style="text-align: right; margin-right: 20px;" class="card-category">Total: {{totalPrice}}$</h6>

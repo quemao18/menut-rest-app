@@ -3,6 +3,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { OrderService } from 'app/services/orders/order.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'app/services/notification/notification.service';
+import { now } from 'jquery';
 
 @Component({
   selector: 'app-waiter',
@@ -39,13 +40,20 @@ export class WaiterComponent implements OnInit {
     private notificationService: NotificationService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(){
     // this.onCodeResult('2AS13A', 5)
+    this.spinner.show();
+    await this.checkTables();
+    this.spinner.hide();
+    setInterval(() => {
+      this.checkTables();
+    }, 60*1000*1); //checktables every minute
   }
 
   qrResultString: string;
   order: any = [];
   ordersTable: any;
+  allOrders: any;
   items: any;
   showScanner: boolean = false;
   showItems: boolean = false;
@@ -60,6 +68,7 @@ export class WaiterComponent implements OnInit {
   availableDevices: MediaDeviceInfo[];
   hasDevices: boolean;
   hasPermission: boolean;
+  arrayTables = [];
 
   async getTable(num: number){
     // this.show = !this.show;
@@ -73,6 +82,9 @@ export class WaiterComponent implements OnInit {
           // this.orderId = data.id;
           // this.status = data.data.status;
           // this.orderIdShort = data.data.orderId;
+          let hours = Math.abs(data.data.date - now()) / 36e5;
+          // console.log(hours)
+          if(hours <= 24)
           this.ordersTable.push({
             id: data.id,
             status: data.data.status,
@@ -139,6 +151,7 @@ export class WaiterComponent implements OnInit {
       this.showScanner = false;
       this.ordersTable = null;
       this.items = null;
+      this.checkTables();
   }
 
   onCodeResult(resultString: string, tableSelect: number) {
@@ -229,6 +242,27 @@ export class WaiterComponent implements OnInit {
 
   onHasPermission(has: boolean) {
     this.hasPermission = has;
+  }
+
+  async checkTables(){
+    this.arrayTables = [];
+    await this.orderService.gets().toPromise().then(
+      (docs: any) => {
+        this.allOrders = docs;
+      }
+    );
+    this.allOrders = this.allOrders.filter((obj: any) => obj.data.status === 'Readed');
+    this.allOrders = this.allOrders.filter((obj: any) => {
+      let hours = Math.abs(obj.data.date - now()) / 36e5;
+      return hours <= 24;
+    });
+
+    for (let index = 0; index <= this.tables; index++) {
+    this.arrayTables[index] = this.allOrders.filter((obj: any) => {
+      return obj.data.table === index+1 ? true : false;
+    }).length;
+    }
+    // console.log(this.arrayTables)
   }
 
 }

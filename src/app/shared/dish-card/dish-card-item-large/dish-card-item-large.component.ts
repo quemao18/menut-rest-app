@@ -36,6 +36,7 @@ export class DishCardItemLargeComponent implements OnInit {
 
   @Input() public lang: string;
   @Input() public item: any;
+  @Input() public menuTitle: string;
 
   @Output()
   totalItems = new EventEmitter<number>();
@@ -94,6 +95,7 @@ export class DishCardItemLargeComponent implements OnInit {
   addToCart(qty: number){
     let item = {
       data: this.item.data,
+      menuTitle: this.menuTitle,
       // lang: this.lang,
       id: this.item.id,
       qty: qty

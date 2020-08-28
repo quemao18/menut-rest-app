@@ -43,7 +43,7 @@ const routes: Routes =[
       // { path: '', loadChildren: () => WaiterLayoutModule }
     ]
   },
-  { path: 'dashboard', redirectTo: 'dashboard', pathMatch: 'full', }, 
+  { path: 'dashboard', redirectTo: 'orders', pathMatch: 'full', }, 
   {
     path: '',
     component: AdminLayoutComponent,

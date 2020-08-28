@@ -37,6 +37,7 @@
                             <app-dish-card-item-large  *ngFor="let dish of dishes"
                             [lang]="lang" 
                             [item]="dish"
+                            [menuTitle]="menuTitle"
                             (totalItems)="totalItems($event)"
                             (inCartItem)="inCartItem($event)"
                             ></app-dish-card-item-large>

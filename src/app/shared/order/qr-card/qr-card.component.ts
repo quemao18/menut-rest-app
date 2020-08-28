@@ -4,6 +4,7 @@ import { interval } from 'rxjs';
 import { OrderService } from 'app/services/orders/order.service';
 import { Router } from '@angular/router';
 import { ShoppingCartService } from 'app/services/shopping-cart/shopping-cart.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-qr-card',
@@ -35,28 +36,36 @@ import { ShoppingCartService } from 'app/services/shopping-cart/shopping-cart.se
 export class QrCardComponent implements OnInit {
 
   @Input() public orderId: string = '';
-  
-  constructor(private orderService: OrderService, private router: Router, public shoppingCartService: ShoppingCartService) { }
+
+  constructor(
+    private spinner: NgxSpinnerService,
+    private orderService: OrderService, private router: Router, public shoppingCartService: ShoppingCartService) { }
   order: any = [];
   status: string = '';
   public intervallTimer = interval(1000);
   private subscription: any;
+  items: any;
+
   ngOnInit(): void {
-    if(this.orderId!=='')
-    this.subscription = this.intervallTimer.subscribe(async() => {
-      // something
-        await this.orderService.getByOrderId(this.orderId).toPromise().then((docs:any)=>{
-            docs.forEach((data: any) => {
-            this.status = data.data.status;
+    if(this.orderId!==''){
+      this.spinner.show();
+      this.subscription = this.intervallTimer.subscribe(async() => {
+        // something
+          await this.orderService.getByOrderId(this.orderId).toPromise().then((docs:any)=>{
+              docs.forEach((data: any) => {
+              this.status = data.data.status;
+              this.items = data.data.items;
+            });
+            if(this.status == 'Readed'){
+              this.router.navigateByUrl('/menu');
+              this.shoppingCartService.clearCart();
+              this.stop();
+            }
+            this.spinner.hide();
           });
-          if(this.status == 'Readed'){
-            this.router.navigateByUrl('/menu');
-            this.shoppingCartService.clearCart();
-            this.stop();
-          }
         });
-      });
-    
+    } 
+    console.log(this.items)
   }
 
   stop() {
