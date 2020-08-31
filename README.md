@@ -42,8 +42,8 @@ export const environment = {
     appId: "",
     measurementId: ""
   },
-  versionCheckURL : 'https://project.web.app/version.json',
-  web: 'https://project.web.app',
+  versionCheckURL :  web+'/version.json',
+  web: web,
   updateMinutes: 5,
   apiUrl: 'https://us-central1-project.cloudfunctions.net/api',
 };
