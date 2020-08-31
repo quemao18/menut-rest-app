@@ -7,6 +7,14 @@
     </a>
 </div>
 <div class="sidebar-wrapper">
+    <ul class="nav">
+        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+            <a class="nav-link" [routerLink]="[menuItem.path]" >
+                <i class="material-icons">{{menuItem.icon}}</i>
+                <p>{{menuItem.title}}</p>
+            </a>
+        </li>
+    </ul>
   <div *ngIf="isMobileMenu()">
     <!-- <form class="navbar-form">
       <span class="bmd-form-group">
@@ -45,21 +53,13 @@
             </div>
         </li> -->
         <!-- <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0)">
-                <i class="material-icons">person</i>
+            <a class="nav-link" href="javascript:void(0)" (click)="authService.signOut()">
+                <i class="material-icons">exit_to_app</i>
                 <p>
-                    <span class="d-lg-none d-md-block">Account</span>
+                    <span class="d-lg-none d-md-block">Salir</span>
                 </p>
             </a>
         </li> -->
     </ul>
   </div>
-    <ul class="nav">
-        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
-            <a class="nav-link" [routerLink]="[menuItem.path]" >
-                <i class="material-icons">{{menuItem.icon}}</i>
-                <p>{{menuItem.title}}</p>
-            </a>
-        </li>
-    </ul>
 </div>

@@ -21,6 +21,15 @@ We are very excited to share this dashboard with you and we look forward to hear
 
 ### create environments
 
+const web = 
+window.location.hostname === 'admin.chacaitoba.com' ? 
+'https://admin.chacaitoba.com': 
+window.location.hostname === 'mesonero.chacaitoba.com' ? 
+'https://mesonero.chacaitoba.com':
+window.location.hostname === 'menu.chacaitoba.com' ? 
+'https://menu.chacaitoba.com':
+'https://chacaitobaires.web.app';
+
 export const environment = {
   production: true,
   firebaseConfig : {

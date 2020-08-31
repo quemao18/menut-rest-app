@@ -9,9 +9,9 @@
 </div> -->
 
 <div [@flip] class="card-body text-center" *ngIf="items">
-    <h3>ÓRDEN: {{orderId}}</h3>
+    <!-- <h3>ÓRDEN: {{orderId}}</h3> -->
     <p class="card-description text-center"  style="border: black solid; width: 190px; margin: auto">
-        <qrcode [margin]="1" [qrdata]="orderId" [width]="166" [errorCorrectionLevel]="'L'"></qrcode>
+        <qrcode [margin]="1" [qrdata]="orderId" [width]="176" [errorCorrectionLevel]="'L'"></qrcode>
     </p> 
     <div style="max-height: 570px;" class="table-responsive">
     <table class="table ">

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'app/services/auth/auth.service';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -9,8 +10,8 @@ declare interface RouteInfo {
     class: string;
 }
 export const ROUTES: RouteInfo[] = [
-    { path: '/waiter-home', title: 'Home',  icon: 'home', class: '' },
-    { path: '/waiter', title: 'Tables',  icon: 'restaurant', class: '' },
+    { path: '/waiter-home', title: 'Inicio',  icon: 'home', class: '' },
+    { path: '/tables', title: 'Mesas',  icon: 'restaurant', class: '' },
 ];
 
 @Component({
@@ -21,7 +22,7 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarWaiterComponent implements OnInit {
   menuItems: any[];
 
-  constructor(public router: Router) { }
+  constructor(public router: Router, public authService: AuthService) { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);

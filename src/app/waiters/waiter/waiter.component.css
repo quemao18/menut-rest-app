@@ -1,3 +1,12 @@
 tr{
     cursor: pointer;
+    background-color: white;
 }
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: whitesmoke;
+ }
+
+ .table{
+     border: lightgrey solid;
+ }

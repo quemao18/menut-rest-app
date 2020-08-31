@@ -46,7 +46,8 @@ export class WaiterComponent implements OnInit {
     await this.checkTables();
     this.spinner.hide();
     setInterval(() => {
-      this.checkTables();
+      if(this.showTables)
+        this.checkTables(true);
     }, 60*1000*1); //checktables every minute
   }
 
@@ -151,7 +152,7 @@ export class WaiterComponent implements OnInit {
       this.showScanner = false;
       this.ordersTable = null;
       this.items = null;
-      this.checkTables();
+      this.checkTables(true);
   }
 
   onCodeResult(resultString: string, tableSelect: number) {
@@ -244,8 +245,9 @@ export class WaiterComponent implements OnInit {
     this.hasPermission = has;
   }
 
-  async checkTables(){
+  async checkTables(spinner?: boolean){
     this.arrayTables = [];
+    if(spinner) this.spinner.show();
     await this.orderService.gets().toPromise().then(
       (docs: any) => {
         this.allOrders = docs;
@@ -262,6 +264,7 @@ export class WaiterComponent implements OnInit {
       return obj.data.table === index+1 ? true : false;
     }).length;
     }
+    this.spinner.hide();
     // console.log(this.arrayTables)
   }
 

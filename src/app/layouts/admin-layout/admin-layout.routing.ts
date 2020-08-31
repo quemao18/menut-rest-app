@@ -21,8 +21,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'orders/:id',     component: OrdersComponent, },
     { path: 'menu-pdf',       component: MenuPdfComponent, },
 
-
-
     { path: 'user-profile',   component: UserProfileComponent },
     { path: 'table-list',     component: TableListComponent, },
     { path: 'typography',     component: TypographyComponent, },

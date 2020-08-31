@@ -7,5 +7,5 @@ export const WaiterLayoutRoutes: Routes = [
     // { path: 'login', component: LoginComponent, },
     // { path: 'forgot-password', component: ForgotPasswordComponent, },
     { path: 'waiter-home', component: HomeComponent, },
-    { path: 'waiter', component: WaiterComponent, },
+    { path: 'tables', component: WaiterComponent, },
 ];

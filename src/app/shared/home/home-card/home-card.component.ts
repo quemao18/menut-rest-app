@@ -32,6 +32,8 @@ export class HomeCardComponent implements OnInit {
 
   @Input() public route: string;
   @Input() public textButton: string;
+  @Input() public textTitle: string;
+  @Input() public textDescription: string;
 
   constructor() { }
 

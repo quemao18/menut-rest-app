@@ -6,7 +6,10 @@
 
                     <div [@animate] class="card">
                         <div class="card-header card-header-brown">
-                            <h4 class="card-title mt-0 text-yellow">Pedido</h4>
+                            <h4 *ngIf="orderId == ''" class="card-title mt-0 text-yellow">Pedido</h4>
+                            <h4 *ngIf="orderId !== ''" class="card-title mt-0 text-yellow">ÓRDEN: 
+                               <span style="text-transform: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{orderId}}</span>
+                            </h4>
                         </div>
                         <div class="card-body menu">
                             <h3 *ngIf="shoppingCartItems.length == 0 && orderId == ''" style="text-align: center;" class="card-category">Nada agregado</h3>

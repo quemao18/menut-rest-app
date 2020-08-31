@@ -5,7 +5,7 @@
             <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
                 <div [@animate] class="card">
                     <div class="card-header card-header-brown">
-                        <h4 class="card-title mt-0 text-yellow">Waiter</h4>
+                        <h4 class="card-title mt-0 text-yellow">Mesas</h4>
                         <!-- <h4 *ngIf="qrResultString" class="card-title mt-0 text-yellow">Order: {{orderIdShort}}</h4> -->
                     </div>
                     <div class="card-body menu">
@@ -58,24 +58,25 @@
                         </div>
 
                         <div *ngIf="showOrdersTable" class="card-body">
-                            <h6>Ordenes en mesa {{tableSelect}}</h6>
+                            <h6>Órdenes en mesa {{tableSelect}}</h6>
                             <div style="max-height: 570px;" class="table-responsive">
-                            <table class="table ">
+                            <table class="table table-striped ">
                                 <thead>
-                                    <tr>
-                                        <th scope="col">Order</th>
-                                        <th scope="col">Hour</th>
-                                        <th scope="col">Status</th>
-                                    </tr>
+                                    <!-- <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                    </tr> -->
                                 </thead>
                                 <tbody>
-                                    <tr (click)="showOrder(orderExist)" *ngFor="let orderExist of ordersTable; let i = index">
-                                        <td>{{orderExist.orderId}}</td>
+                                    <tr class="enabled" (click)="showOrder(orderExist)" *ngFor="let orderExist of ordersTable; let i = index">
+                                        <td><a>{{orderExist.orderId}}</a></td>
                                         <td>{{orderExist.date | date: 'hh:mm aaa'}}</td>
                                         <td>{{orderExist.status == 'Readed' ? 'En espera para cargar en comanda': ''}}</td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <p class="text-center" style="color: grey">Sólo se muestran las órdenes del día.</p>
                             </div>
                             <div class="text-center">
                                 <input (click)="showScanner=!showScanner; showOrdersTable=false; newScan = true;"  type="button" class="btn btn-danger btn-link btn-lg" value="Escanear QR">

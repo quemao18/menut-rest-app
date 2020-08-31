@@ -14,19 +14,8 @@ import { WaiterLayoutComponent } from './layouts/waiter-layout/waiter-layout.com
 const redirectUnauthorizedToLanding = () => redirectUnauthorizedTo(['login']);
 // const redirectUnauthorizedToLandingCustomer = () => redirectUnauthorizedTo(['menu']);
 
-
-
 const routes: Routes =[
-  
-  { path: '', redirectTo: 'customer-home', pathMatch: 'full', }, 
-  { 
-    path: '', component: CustomerLayoutComponent,
-    children: [
-      { path: '', loadChildren: './layouts/customer-layout/customer-layout.module#CustomerLayoutModule'},
-      // { path: '', loadChildren: () => CustomerLayoutModule },
-    ]
-  },
-  { path: 'home', redirectTo: 'login', pathMatch: 'full', }, 
+  { path: 'login', redirectTo: 'login', pathMatch: 'full', }, 
   { 
     path: '', component: HomeLayoutComponent,
     children: [
@@ -34,7 +23,15 @@ const routes: Routes =[
       // { path: '', loadChildren: () => HomeLayoutModule }
     ]
   },
-  { path: 'waiter', redirectTo: 'waiter', pathMatch: 'full', }, 
+  { path: 'customer', redirectTo: 'customer-home', pathMatch: 'full', }, 
+  { 
+    path: '', component: CustomerLayoutComponent,
+    children: [
+      { path: '', loadChildren: './layouts/customer-layout/customer-layout.module#CustomerLayoutModule'},
+      // { path: '', loadChildren: () => CustomerLayoutModule },
+    ]
+  },
+  { path: 'waiter', redirectTo: 'waiter-home', pathMatch: 'full', }, 
   { 
     path: '', component: WaiterLayoutComponent,
     ...canActivate(redirectUnauthorizedToLanding),

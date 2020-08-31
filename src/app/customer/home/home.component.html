@@ -5,12 +5,14 @@
                 <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
                     <div [@animate] class="card">
                         <div class="card-header card-header-brown">
-                            <h4 class="card-title mt-0 text-yellow">Home</h4>
+                            <h4 class="card-title mt-0 text-yellow">Inicio</h4>
                         </div>
                         <div class="card-body menu">
                          
                             <app-card-home 
                             [textButton]="'Menú'" 
+                            [textTitle]="'Bienvenidos'" 
+                            [textDescription]="' Caribbean Food Station'" 
                             [route]="['/menu']">
                 
                             </app-card-home>
