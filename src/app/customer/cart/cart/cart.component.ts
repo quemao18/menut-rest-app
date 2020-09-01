@@ -6,6 +6,8 @@ import { OrderService } from 'app/services/orders/order.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'app/services/notification/notification.service';
 import { now } from 'jquery';
+import { Router } from '@angular/router';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-cart',
@@ -39,8 +41,8 @@ export class CartComponent implements OnInit {
   constructor(public shoppingCartService: ShoppingCartService, 
     private orderService: OrderService, 
     private spinner: NgxSpinnerService,
-    private notificationService: NotificationService
-    
+    private notificationService: NotificationService,
+    private router: Router
     ) { }
 
   lang: string = 'es';
@@ -61,13 +63,15 @@ export class CartComponent implements OnInit {
   }
 
   totalPriceCart(total: number) {
-    // console.log(mensaje);
     this.totalPrice = total;
   }
 
   async checkout(){
     console.log('New Order');
-    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.show(); 
+    }, 200);
+
     this.edit = true;
     // var id  = '' + Math.random().toString(36).toUpperCase().substr(2, 6);
     var id = this.randomStringCharset(6, "ASERTCHBasertchb0123456789");
@@ -78,30 +82,36 @@ export class CartComponent implements OnInit {
       // table: 0,
       items: this.shoppingCartItems
     }
-    await this.orderService.create(data).toPromise().then(async (doc: any) => {
-      console.log('Order created successs', doc.id);
-      this.orderId = id;
-      this.documentId = doc.id;
-      this.spinner.hide();
-      // this.notificationService.showNotification('top', 'right', 'success','check', 'Checkout success!');
-      await this.sendWa(data);
-    }, (error) => {
-      console.error(error);
-      this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error Checkout');
-      this.spinner.hide();
-    });
+      await this.orderService.create(data).toPromise().then((doc: any) => {
+        console.log('Order created successs', id);
+        this.orderId = id;
+        this.documentId = doc.id;
+        // this.spinner.hide();
+        // this.notificationService.showNotification('top', 'right', 'success','check', 'Checkout success!');
+        // await this.sendWa(data);
+      }).catch((error) => {
+        console.log(error);
+        this.spinner.hide();
+        this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
+      });
   }
 
   async remove(){
+    setTimeout(async() => {
+      this.spinner.show(); 
     let data = {
       orderId: this.orderId, 
       date: Date.now(), 
       status: 'Deleted',
-      // table: 0,
       items: this.shoppingCartItems
     }
-    await this.orderService.delete(this.documentId).toPromise().then(()=> console.log('order remove'));
-    await this.sendWa(data);
+    await this.orderService.delete(this.documentId).toPromise().then(()=>{ 
+      console.log('order remove')
+      // await this.sendWa(data);
+      this.router.navigate(['/menu']);
+    });
+    }, 200);
+
   }
 
   async sendWa(data: any){

@@ -55,7 +55,14 @@
               "ngx-lightbox",
               "qrcode",
               "@zxing/library",
-              "jspdf"
+              "jspdf",
+              "raf",
+              "@babel/runtime/helpers/slicedToArray",
+              "@babel/runtime/helpers/possibleConstructorReturn",
+              "@babel/runtime/helpers/inherits",
+              "@babel/runtime/helpers/toConsumableArray",
+              "@babel/runtime/helpers/get",
+              "core-js"
             ]
           },
           "configurations": {

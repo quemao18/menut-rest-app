@@ -3,7 +3,6 @@
         <div class="row">
             <div class="col-md-6 mx-auto">
                 <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
-
                     <div [@animate] class="card">
                         <div class="card-header card-header-brown">
                             <h4 *ngIf="orderId == ''" class="card-title mt-0 text-yellow">Pedido</h4>
@@ -32,7 +31,7 @@
                             <div class="card-footer justify-content-center">
                                 <input *ngIf="!edit" [routerLink]="['/menu']" type="button" class="btn btn-danger btn-link btn-lg" value="Menú">
                                 <input *ngIf="!edit" (click)="checkout()" [disabled]="shoppingCartItems.length==0"  type="button" class="btn btn-danger btn-link btn-lg" value="Procesar">
-                                <input *ngIf="edit" (click)="remove()" [routerLink]="['/menu']" type="button" class="btn btn-danger btn-link btn-lg" value="Modificar">
+                                <input *ngIf="edit" (click)="remove()" type="button" class="btn btn-danger btn-link btn-lg" value="Modificar">
                             </div>
                         </div>
                      

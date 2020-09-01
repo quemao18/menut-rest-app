@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { interval } from 'rxjs';
 import { OrderService } from 'app/services/orders/order.service';
@@ -33,13 +33,22 @@ import { NgxSpinnerService } from 'ngx-spinner';
     ])  
   ]
 })
-export class QrCardComponent implements OnInit {
+export class QrCardComponent implements OnInit, OnDestroy {
 
   @Input() public orderId: string = '';
 
   constructor(
     private spinner: NgxSpinnerService,
-    private orderService: OrderService, private router: Router, public shoppingCartService: ShoppingCartService) { }
+    private orderService: OrderService, 
+    private router: Router, 
+    public shoppingCartService: ShoppingCartService
+    ) { }
+
+  ngOnDestroy(): void {
+    console.log('destroy')
+    this.stop()
+  }
+
   order: any = [];
   status: string = '';
   public intervallTimer = interval(1000);
@@ -48,10 +57,12 @@ export class QrCardComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.orderId!==''){
-      this.spinner.show();
-      this.subscription = this.intervallTimer.subscribe(async() => {
+      // setTimeout(() => {
+      //   this.spinner.show(); 
+      // }, 200);
+        this.subscription = this.intervallTimer.subscribe(async() => {
         // something
-          await this.orderService.getByOrderId(this.orderId).toPromise().then((docs:any)=>{
+          this.orderService.getByOrderId(this.orderId).toPromise().then((docs:any)=>{
               docs.forEach((data: any) => {
               this.status = data.data.status;
               this.items = data.data.items;
@@ -61,11 +72,17 @@ export class QrCardComponent implements OnInit {
               this.shoppingCartService.clearCart();
               this.stop();
             }
-            this.spinner.hide();
+            else
+            setTimeout(() => {
+              this.spinner.hide(); 
+            }, 500);
           });
         });
+
     } 
-    console.log(this.items)
+    else
+      this.router.navigateByUrl('/menu');
+    // console.log(this.items)
   }
 
   stop() {

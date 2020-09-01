@@ -43,10 +43,9 @@ export class MenuListComponent implements OnInit {
     public spinner: NgxSpinnerService,
     // private afStorage: AngularFireStorage,
     private notificationService: NotificationService,
-    public shoppingCartService: ShoppingCartService
+    public shoppingCartService: ShoppingCartService,
     // private _lightbox: Lightbox
     ) {
-
      }
 
   public shoppingCartItems$: Observable<Product[]> = of([]);
@@ -65,47 +64,48 @@ export class MenuListComponent implements OnInit {
     this.shoppingCartItems$ = this.shoppingCartService.getItems();
     this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);    
     this.totalItemsCart = this.shoppingCartItems.length;
-    await this.getDishesAll();
+
+    setTimeout(() => {
+      this.spinner.show();
+    }, 200);
+
     this.menuId = '';
-    this.getMenu(true);
+    await this.getMenu();
+
+    setTimeout(() => {
+      this.spinner.hide(); 
+    }, 200);
+
     setInterval(async()=>{
       console.log('Updating dishes and menu...');
       if(this.menuId == '')
-        this.getMenu(false);
+        this.getMenu();
       if(this.menuId!='')
         this.getDishes();
       this.getDishesAll();
     },60*1000*environment.updateMinutes); //update every 2 minutes
-
   }
 
   totalItems(total: number) {
-    // console.log(total);
     this.totalItemsCart = total;
   }
 
   inCartItem(item: boolean) {
-    // console.log(item);
     !item ? this.totalItemsCart-- : this.totalItemsCart;
-    // return item;
   }
 
-  getMenu(spinner?:boolean){
-    setTimeout(async () => {  
-      if(spinner)
-      this.spinner.show();
+  async getMenu(spinner?: boolean){
+    // if(spinner) this.spinner.show();
+      await this.getDishesAll();
       await this.menuService.gets().toPromise().then(
         (docs) => {
         this.menus = docs; 
-        this.spinner.hide();
         this.menuTitle = '';
       }).catch((error) => {
-        // window.alert(error)
         console.log(error);
         this.spinner.hide();
         this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
       });
-    }, 100);
   }
 
   back(){
@@ -114,39 +114,31 @@ export class MenuListComponent implements OnInit {
     this.dishes = this.dishesCopy;
   }
 
-  getDishes(){
-    setTimeout(async () => {  
+  async getDishes(){
       await this.dishService.getsByMenuId(this.menuId).toPromise().then(
         (docs) => {
         this.dishes = docs; 
         // this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
-        this.spinner.hide();
       }).catch((error) => {
-        // window.alert(error)
         console.log(error);
         this.spinner.hide();
         this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
       });
-    }, 100);
   }
 
-  async getDishesAll(){
-    // this.disable = true;
-    setTimeout(async () => {  
-      await this.dishService.gets().toPromise().then(
+  async getDishesAll(spinner?: boolean){
+    // if(spinner) this.spinner.show();
+      this.dishService.gets().toPromise().then(
         (docs) => {
         this.dishes = docs; 
         this.dishesCopy = this.dishes;
         if(this.menuId!='')
-          this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
-        this.spinner.hide();
+          this.dishes = this.dishes.filter((obj:any) => obj.data.menuId == this.menuId);        
       }).catch((error) => {
-        // window.alert(error)
         console.log(error);
         this.spinner.hide();
         this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
       });
-    }, 100);
   }
 
   filterDishes(menu: any){

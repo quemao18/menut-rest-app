@@ -223,7 +223,7 @@ export class WaiterComponent implements OnInit {
       // table: 0,
       items: this.items
     };
-    await this.sendWa(data);
+    // await this.sendWa(data);
   }
 
   async sendWa(data: any){
