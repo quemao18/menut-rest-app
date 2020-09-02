@@ -30,6 +30,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ShoppingCartService } from './services/shopping-cart/shopping-cart.service';
 import { ComponentsWaiterModule } from './waiters/components/components-waiter.module';
 import { WaiterLayoutComponent } from './layouts/waiter-layout/waiter-layout.component';
+import { AuthGuard } from './services/auth/auth.guard';
+import { AuthAdminGuard } from './services/auth/auth-admin.guard';
+import { AuthWaiterGuard } from './services/auth/auth-waiter.guard';
 
 @NgModule({
   imports: [
@@ -58,6 +61,9 @@ import { WaiterLayoutComponent } from './layouts/waiter-layout/waiter-layout.com
   ],
   providers: [
     AuthService, 
+    AuthGuard,
+    AuthAdminGuard,
+    AuthWaiterGuard,
     NotificationService, 
     VersionCheckService, 
     NgxImageCompressService, 

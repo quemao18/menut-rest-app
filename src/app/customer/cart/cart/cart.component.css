@@ -64,3 +64,9 @@
     margin-right: 15px;
     float: left;
   }
+
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: white;
+    /* border-radius: 5px; */
+    margin-top: 10px;
+  }

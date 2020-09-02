@@ -26,7 +26,16 @@
                             >
                             </app-qr-card>
 
-                            <h6 *ngIf="totalPrice>0 && orderId == ''" style="text-align: right; margin-right: 20px;" class="card-category">Total: {{totalPrice}}$</h6>
+                            <h6 *ngIf="totalPrice>0 && orderId == ''" style="text-align: right; margin-right: 20px; color: black" class="card-category">Total: 
+                                <span style="text-transform: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{totalPrice}}$</span>
+                            </h6>
+                            <form *ngIf="totalPrice>0 && orderId == ''" class="form" [formGroup]="cartForm">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Observaciones</mat-label>
+                                    <textarea matInput formControlName="details" #details></textarea>
+                                    <mat-hint >Cualquier observación que quieras en tu pedido, ejemplo: Sin salsas en la hamburguesa.</mat-hint>
+                                </mat-form-field>
+                            </form>
                             <hr>
                             <div class="card-footer justify-content-center">
                                 <input *ngIf="!edit" [routerLink]="['/menu']" type="button" class="btn btn-danger btn-link btn-lg" value="Menú">

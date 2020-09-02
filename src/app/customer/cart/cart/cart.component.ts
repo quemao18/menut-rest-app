@@ -8,6 +8,7 @@ import { NotificationService } from 'app/services/notification/notification.serv
 import { now } from 'jquery';
 import { Router } from '@angular/router';
 import { async } from '@angular/core/testing';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-cart',
@@ -52,6 +53,10 @@ export class CartComponent implements OnInit {
   orderId: string = '';
   documentId: string = '';
   edit: boolean = false;
+  cartForm = new FormGroup({
+    'details': new FormControl(''),
+  });
+
 
   ngOnInit(): void {
     // var id = this.randomStringCharset(6, "ASERTCHBasertchb0123456789");
@@ -67,7 +72,7 @@ export class CartComponent implements OnInit {
   }
 
   async checkout(){
-    console.log('New Order');
+    console.log('New Order', this.cartForm.value);
     setTimeout(() => {
       this.spinner.show(); 
     }, 200);
@@ -77,6 +82,7 @@ export class CartComponent implements OnInit {
     var id = this.randomStringCharset(6, "ASERTCHBasertchb0123456789");
     let data = {
       orderId: id, 
+      details: this.cartForm.value.details,
       date: Date.now(), 
       status: 'Pending',
       // table: 0,

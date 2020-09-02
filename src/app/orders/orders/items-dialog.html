@@ -15,7 +15,7 @@
   <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
       <div [@animate] class="card">
           <div class="card-header card-header-brown">
-              <h4 class="card-title mt-0 text-yellow">Details order: 
+              <h4 class="card-title mt-0 text-yellow">Order: 
                 <span style="text-transform: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{data.order.data.orderId}}</span>
               </h4>
           </div>
@@ -24,6 +24,7 @@
               <app-card-item  *ngFor="let item of data.order.data.items"
               [item]="item"
               ></app-card-item>
+              <h6 *ngIf="data.order.data.details" class="text-center">Observaciones: {{data.order.data.details}}</h6>
           </div>
       </div>
       

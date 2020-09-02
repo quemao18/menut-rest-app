@@ -39,6 +39,7 @@
                                   I believe your device has no media devices attached to.
                                 </blockquote>
                               </ng-container> -->
+                            <hr>
                             <div class="text-center">
                                 <input (click)="reset()" *ngIf="ordersTable == null" type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">
                                 <input (click)="showScanner = false; showOrdersTable = true" *ngIf="ordersTable != null && newScan"  type="button" class="btn btn-danger btn-link btn-lg" value="Cancelar">
@@ -50,6 +51,8 @@
                             <app-card-item  *ngFor="let item of items"
                             [item]="item"
                             ></app-card-item>
+                            <h6 *ngIf="details" class="text-center">Observaciones: {{details}}</h6>
+                            <hr>
                             <div class="text-center">
                                 <input (click)="changeStatus('Finished'); clearResult(); finish(); "  type="button" class="btn btn-danger btn-link btn-lg" value="Finalizar">
                                 <input (click)="reset()"  *ngIf="ordersTable == null"   type="button" class="btn btn-danger btn-link btn-lg" value="Mesas">
@@ -78,6 +81,7 @@
                             </table>
                             <p class="text-center" style="color: grey">Sólo se muestran las órdenes del día.</p>
                             </div>
+                            <hr>
                             <div class="text-center">
                                 <input (click)="showScanner=!showScanner; showOrdersTable=false; newScan = true;"  type="button" class="btn btn-danger btn-link btn-lg" value="Escanear QR">
                                 <input (click)="reset()"  type="button" class="btn btn-danger btn-link btn-lg" value="Mesas">

@@ -54,6 +54,7 @@ export class QrCardComponent implements OnInit, OnDestroy {
   public intervallTimer = interval(1000);
   private subscription: any;
   items: any;
+  details: string;
 
   ngOnInit(): void {
     if(this.orderId!==''){
@@ -66,6 +67,7 @@ export class QrCardComponent implements OnInit, OnDestroy {
               docs.forEach((data: any) => {
               this.status = data.data.status;
               this.items = data.data.items;
+              this.details = data.data.details;
             });
             if(this.status == 'Readed'){
               this.router.navigateByUrl('/menu');

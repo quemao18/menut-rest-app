@@ -17,8 +17,8 @@ export class VersionCheckService {
      * @param url
      * @param {number} frequency - in milliseconds, defaults to 30 minutes
      */
-    public initVersionCheck(url, frequency = 1000 * 60) {
-
+    public initVersionCheck(url: string, frequency: number = 1000 * 60): void {
+        // this.showNotification();
         setInterval(() => {
             // this.showNotification();
             this.checkVersion(url);
@@ -34,7 +34,7 @@ export class VersionCheckService {
      * Will do the call and check if the hash has changed or not
      * @param url
      */
-    private checkVersion(url) {
+    private checkVersion(url: string) {
         // timestamp these requests to invalidate caches
         this.http.get(url + '?t=' + new Date().getTime())
             // .first()
@@ -49,7 +49,6 @@ export class VersionCheckService {
                         // ENTER YOUR CODE TO DO SOMETHING UPON VERSION CHANGE
                         // for an example: location.reload();
                         this.showNotification(); 
-
                     }
                     // store the new hash so we wouldn't trigger versionChange again
                     // only necessary in case you did not force refresh
@@ -69,7 +68,7 @@ export class VersionCheckService {
      * @param newHash
      * @returns {boolean}
      */
-    private hasHashChanged(currentHash, newHash) {
+    private hasHashChanged(currentHash: string, newHash: any): boolean {
         if (!currentHash || currentHash === '{{POST_BUILD_ENTERS_HASH_HERE}}') {
             return false;
         }
@@ -85,7 +84,7 @@ export class VersionCheckService {
             title: 'Nueva versión disponible',
             message: 'Existe una actualización, haz click aqui para actualizar', 
             url: environment.web,
-            target: '_self'
+            target: '_self',
         },{
             // settings
             element: 'body',
@@ -102,7 +101,7 @@ export class VersionCheckService {
             spacing: 10,
             z_index: 1031,
             // delay: 5000,
-            timer: 1000 * 60 * 4,
+            timer: 1000 * 60 * 60,
             url_target: '_blank',
             mouse_over: null,
             animate: {
@@ -114,7 +113,7 @@ export class VersionCheckService {
             onClose: null,
             onClosed: null,
             icon_type: 'class',
-            template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+            template: '<div data-notify="container" class="update col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
                 '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
                 '<span data-notify="icon"></span> ' +
                 '<span data-notify="title"><strong>{1}</strong></span> ' +
@@ -123,8 +122,9 @@ export class VersionCheckService {
                     '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
                 '</div>' +
                 '<a href="{3}" target="{4}" data-notify="url"></a>' +
-            '</div>' 
+            '</div>'
         });
 
       }
+
 }

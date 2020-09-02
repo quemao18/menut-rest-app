@@ -4,6 +4,7 @@ import { OrderService } from 'app/services/orders/order.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'app/services/notification/notification.service';
 import { now } from 'jquery';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-waiter',
@@ -33,24 +34,9 @@ import { now } from 'jquery';
   ]
 })
 export class WaiterComponent implements OnInit {
-
-  constructor(
-    private orderService: OrderService,
-    private spinner: NgxSpinnerService,
-    private notificationService: NotificationService
-  ) { }
-
-  async ngOnInit(){
-    // this.onCodeResult('2AS13A', 5)
-    this.spinner.show();
-    await this.checkTables();
-    this.spinner.hide();
-    setInterval(() => {
-      if(this.showTables)
-        this.checkTables(true);
-    }, 60*1000*1); //checktables every minute
-  }
-
+  
+  intervallTimer = interval(1000*60*1);
+  private subscription: any;
   qrResultString: string;
   order: any = [];
   ordersTable: any;
@@ -70,6 +56,31 @@ export class WaiterComponent implements OnInit {
   hasDevices: boolean;
   hasPermission: boolean;
   arrayTables = [];
+  details: string = '';
+  
+  constructor(
+    private orderService: OrderService,
+    private spinner: NgxSpinnerService,
+    private notificationService: NotificationService
+  ) { }
+
+  async ngOnInit(){
+    // this.onCodeResult('2AS13A', 5)
+    this.spinner.show();
+    await this.checkTables();
+    this.spinner.hide();
+    this.subscription = this.intervallTimer.subscribe(async() => {
+      console.log('check tables')
+      if(this.showTables)
+        this.checkTables(true);
+    });
+  }
+
+  ngOnDestroy(): void {
+    console.log('destroy')
+    this.subscription.unsubscribe();
+  }
+
 
   async getTable(num: number){
     // this.show = !this.show;
@@ -90,6 +101,7 @@ export class WaiterComponent implements OnInit {
             id: data.id,
             status: data.data.status,
             items: data.data.items,
+            details: data.data.details,
             orderId: data.data.orderId,
             date: data.data.date,
             table: data.data.table
@@ -137,6 +149,7 @@ export class WaiterComponent implements OnInit {
 
   showOrder(order: any){
     this.items = order.items;
+    this.details = order.details;
     // this.order = order;
     this.orderIdShort = order.orderId;
     this.orderId = order.id;
@@ -171,6 +184,7 @@ export class WaiterComponent implements OnInit {
               this.orderId = data.id;
               this.status = data.data.status;
               this.orderIdShort = data.data.orderId;
+              this.details = data.data.details;
               this.order.push({
                 id: data.id,
                 status: data.data.status,

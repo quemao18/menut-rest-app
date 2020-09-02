@@ -89,7 +89,7 @@ export class AuthService {
     .then(() => {
       // this.router.navigate(['verify-email-address']);
       this.notification.showNotification('top', 'center', 'success', 'check', 'Email sent. Check your inbox!');
-      this.router.navigate(['login']);
+      this.router.navigate(['/login']);
     })
   }
 
@@ -101,7 +101,7 @@ export class AuthService {
       // window.alert('Password reset email sent, check your inbox.');
       this.spinner.hide();
       this.notification.showNotification('top', 'center', 'success', 'check', 'Password reset email sent, check your inbox.');
-      this.router.navigate(['login']);
+      this.router.navigate(['/login']);
     }).catch((error) => {
       // window.alert(error)
       this.spinner.hide();
@@ -118,13 +118,13 @@ export class AuthService {
   get isAdmindIn(): boolean { 
       // return (user !== null && user.emailVerified !== false && this.user.isAdmin !== false) ? true : false;
     // console.log(this.getUserLoggedIn());
-    return (this.getUserLoggedIn() !== null && this.getUserLoggedIn().isAdmin === false) ? false : true;
+    return (this.getUserLoggedIn() !== null && this.getUserLoggedIn().isAdmin === true) ? true : false;
   }
 
   get isWaiterdIn(): boolean { 
     // return (user !== null && user.emailVerified !== false && this.user.isAdmin !== false) ? true : false;
   // console.log(this.getUserLoggedIn());
-  return (this.getUserLoggedIn() !== null && this.getUserLoggedIn().isAdmin === false) ? false : true;
+  return (this.getUserLoggedIn() !== null && this.getUserLoggedIn().isWaiter === true) ? true : false;
 }
 
   // Sign in with Google
@@ -228,12 +228,12 @@ export class AuthService {
         this.setUserLoggedIn(doc.data);
         if(doc.data.isAdmin){
           this.ngZone.run(() => {
-            this.router.navigate(['orders']);
+            this.router.navigate(['/dashboard']);
           });
         }
         if(doc.data.isWaiter){
           this.ngZone.run(() => {
-            this.router.navigate(['waiter-home']);
+            this.router.navigate(['/waiter']);
           });
         }
       this.spinner.hide(); 
@@ -303,19 +303,26 @@ export class AuthService {
 
   removeUserLocalStore(){
     localStorage.removeItem('user');
+    localStorage.removeItem('access_token');
+
   }
   // Sign out 
   async signOut() {
     this.spinner.show();
-    return await firebase.auth().signOut().then(() => {
+    await firebase.auth().signOut().then(() => {
       this.ngZone.run(() => {
-        // setTimeout(() => {
-          localStorage.removeItem('user');
+        setTimeout(() => {
+          console.log('signOut')
+          this.removeUserLocalStore();
           this.spinner.hide();
-          this.router.navigate(['login']);
-        // }, 500);
+          this.router.navigateByUrl('/login');
+          // location.reload(true);
+        }, 500);
       });
-    });
+    }).catch(function(error) {
+      console.log(error);
+      this.notification.showNotification('top', 'center', 'warning', 'warning', error );
+    });;
   }
 
 }
