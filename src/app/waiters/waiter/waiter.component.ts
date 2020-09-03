@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'app/services/notification/notification.service';
 import { now } from 'jquery';
 import { interval } from 'rxjs';
+import { MessagingService } from 'app/services/notification/messaging.service';
 
 @Component({
   selector: 'app-waiter',
@@ -61,7 +62,8 @@ export class WaiterComponent implements OnInit {
   constructor(
     private orderService: OrderService,
     private spinner: NgxSpinnerService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private messagingService: MessagingService
   ) { }
 
   async ngOnInit(){

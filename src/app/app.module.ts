@@ -33,6 +33,8 @@ import { WaiterLayoutComponent } from './layouts/waiter-layout/waiter-layout.com
 import { AuthGuard } from './services/auth/auth.guard';
 import { AuthAdminGuard } from './services/auth/auth-admin.guard';
 import { AuthWaiterGuard } from './services/auth/auth-waiter.guard';
+import { MessagingService } from './services/notification/messaging.service';
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
 
 @NgModule({
   imports: [
@@ -51,6 +53,7 @@ import { AuthWaiterGuard } from './services/auth/auth-waiter.guard';
     AngularFireStorageModule,
     NgxSpinnerModule,
     HttpClientModule,
+    AngularFireMessagingModule
   ],
   declarations: [
     AppComponent,
@@ -66,6 +69,7 @@ import { AuthWaiterGuard } from './services/auth/auth-waiter.guard';
     AuthWaiterGuard,
     NotificationService, 
     VersionCheckService, 
+    MessagingService,
     NgxImageCompressService, 
     ShoppingCartService, 
   ],

@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { VersionCheckService } from './services/version/version-check.service';
 import { environment } from 'environments/environment';
+import { MessagingService } from './services/notification/messaging.service';
 
 
 @Component({
@@ -10,12 +11,16 @@ import { environment } from 'environments/environment';
 })
 export class AppComponent implements OnInit{
 
-    constructor(private versionCheckService: VersionCheckService){
-      
+    constructor(
+      private versionCheckService: VersionCheckService, 
+      private messagingService: MessagingService
+      ){      
     }
 
     ngOnInit(){
       this.versionCheckService.initVersionCheck(environment.versionCheckURL);
+      // this.messagingService.requestPermission();
+      // this.messagingService.receiveMessage();
       //dev
       if(window.location.hostname === 'dev.admin.chacaitoba.com')
         window.location.href = 'https://dev.admin.chacaitoba.com/#/dashboard';

@@ -10,6 +10,7 @@ import { NotificationService } from '../notification/notification.service';
 
 import { environment } from 'environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MessagingService } from '../notification/messaging.service';
 
 declare var $: any;
 
@@ -25,6 +26,7 @@ export class AuthService {
   userLogged: any = null;
   userExist: boolean = false;
   token: any;
+  tokenFCM: any;
 
   constructor(
     public afs: AngularFirestore,   // Inject Firestore service
@@ -33,7 +35,8 @@ export class AuthService {
     public ngZone: NgZone, // NgZone service to remove outside scope warning
     public notification: NotificationService,
     public spinner: NgxSpinnerService,
-    private http: HttpClient
+    private http: HttpClient,
+    private messagingService: MessagingService
   ) {    
       // this.checkAuthFirebase();
   }
@@ -56,6 +59,7 @@ export class AuthService {
         await result.user.getIdToken(false).then((token: any) => this.token = token); 
         await this.getUserDBApi(result.user);
         await this.saveUserDBApi(result.user);
+
       }).catch((error) => {
         this.spinner.hide();
         this.notification.showNotification('top', 'center', 'danger', 'warning', error.message);
@@ -143,7 +147,7 @@ export class AuthService {
     return await firebase.auth().signInWithPopup(provider)
     .then(async (result) => {
       // this.spinner.hide();
-      await result.user.getIdToken(false).then((token: any) => this.token = token); 
+      await result.user.getIdToken(false).then((token: any) => this.token = token);
       await this.getUserDBApi(result.user);
       await this.saveUserDBApi(result.user);
 
@@ -192,13 +196,15 @@ export class AuthService {
 
 
   async saveUserDBApi(user: any) {
-
+    
+    console.log(this.messagingService.getTokenLocal());
     const userData: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
+      tokenFCM: this.messagingService.getTokenLocal()
     };
 
       if(!this.userExist)
@@ -293,6 +299,7 @@ export class AuthService {
     // localStorage.removeItem('user');
     localStorage.setItem('user', JSON.stringify(data));
     localStorage.setItem('access_token', this.token);
+
   }
 
   checkAuthFirebase() {
@@ -304,7 +311,7 @@ export class AuthService {
   removeUserLocalStore(){
     localStorage.removeItem('user');
     localStorage.removeItem('access_token');
-
+    localStorage.removeItem('fcm_token');
   }
   // Sign out 
   async signOut() {

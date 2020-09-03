@@ -7,6 +7,7 @@ export interface User {
     displayName?: string;
     photoURL?: string;
     emailVerified?: boolean;
-    isAdmin?:boolean;
-    aboutMe?:string
+    isAdmin?: boolean;
+    aboutMe?: string;
+    tokenFCM?: string
  }
