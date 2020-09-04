@@ -65,7 +65,6 @@ export class OrdersComponent implements OnInit {
 
   async ngOnInit() {
     this.spinner.show();
-    // setTimeout(async () => {
       await this.orderService.gets().toPromise().then(
         (docs) => {
         this.orders = docs;
@@ -86,7 +85,6 @@ export class OrdersComponent implements OnInit {
         this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
         }
       });
-    // }, 500);
   }
 
   pageChanged(event: any){

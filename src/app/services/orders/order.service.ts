@@ -49,6 +49,13 @@ export class OrderService {
     );
   }
 
+  public sendFCM(data: any) {
+    // return this.firestore.collection(collection).add(data);
+    return this.http.post(environment.apiUrl+ `/${collection}/sendFCM`, data, 
+    { headers: this.generateHeaders() }
+    );
+  }
+
   public getByOrderId(orderId: string) {
     return this.http.get(environment.apiUrl+ `/${collection}/orderId/` + orderId, 
     { headers: this.generateHeaders() }

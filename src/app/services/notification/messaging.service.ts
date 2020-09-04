@@ -16,7 +16,8 @@ constructor(private angularFireMessaging: AngularFireMessaging) {
         const NotificationOptions = {
           body: payload.notification.body,
           data: payload.data,
-          icon: payload.notification.icon
+          // icon: payload.notification.icon
+          icon: './assets/img/logo.png',
         }
         navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope').then(registration => {
           registration.showNotification(payload.notification.title, NotificationOptions);

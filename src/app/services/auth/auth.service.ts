@@ -197,6 +197,7 @@ export class AuthService {
 
   async saveUserDBApi(user: any) {
     
+    setTimeout(async() => {
     console.log(this.messagingService.getTokenLocal());
     const userData: User = {
       uid: user.uid,
@@ -208,7 +209,7 @@ export class AuthService {
     };
 
       if(!this.userExist)
-        return await this.http.post(environment.apiUrl+'/users/',
+        await this.http.post(environment.apiUrl+'/users/',
           userData, 
           { headers: this.generateHeaders() }
         )
@@ -216,13 +217,14 @@ export class AuthService {
           res => console.log(res)
         );
       else
-        return await this.http.put(environment.apiUrl+'/users/' + userData.email, 
+        await this.http.put(environment.apiUrl+'/users/' + userData.email, 
           userData,
           { headers: this.generateHeaders() }
         )
         .toPromise().then(
           res => console.log(res)
         );
+    }, 500);
   }
 
   async getUserDBApi(userData: any) {

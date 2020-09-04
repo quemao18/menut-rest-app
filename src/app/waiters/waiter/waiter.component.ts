@@ -240,10 +240,18 @@ export class WaiterComponent implements OnInit {
       items: this.items
     };
     // await this.sendWa(data);
+    this.sendFCM(data);
+
   }
 
   async sendWa(data: any){
     await this.orderService.sendWa(data).toPromise().then((doc: any) => {
+      console.log(doc);
+    });
+  }
+
+  async sendFCM(data: any){
+    await this.orderService.sendFCM(data).toPromise().then((doc: any) => {
       console.log(doc);
     });
   }
