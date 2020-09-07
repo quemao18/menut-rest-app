@@ -6,6 +6,7 @@ import { NotificationService } from 'app/services/notification/notification.serv
 import { now } from 'jquery';
 import { interval } from 'rxjs';
 import { MessagingService } from 'app/services/notification/messaging.service';
+import { SettingService } from 'app/services/settings/setting.service';
 
 @Component({
   selector: 'app-waiter',
@@ -50,7 +51,7 @@ export class WaiterComponent implements OnInit {
   orderId: string;
   orderIdShort: string;
   status: string;
-  tables: number = 10;
+  tables: number = 0;
   tableSelect: number;
   currentDevice: MediaDeviceInfo = null;
   availableDevices: MediaDeviceInfo[];
@@ -63,12 +64,14 @@ export class WaiterComponent implements OnInit {
     private orderService: OrderService,
     private spinner: NgxSpinnerService,
     private notificationService: NotificationService,
-    private messagingService: MessagingService
+    private messagingService: MessagingService,
+    private settingService: SettingService,
   ) { }
 
   async ngOnInit(){
     // this.onCodeResult('2AS13A', 5)
     this.spinner.show();
+    await this.getSettings();
     await this.checkTables();
     this.spinner.hide();
     this.subscription = this.intervallTimer.subscribe(async() => {
@@ -76,6 +79,16 @@ export class WaiterComponent implements OnInit {
       if(this.showTables)
         this.checkTables(true);
     });
+  }
+
+  async getSettings() {
+    await this.settingService.gets().toPromise().then(
+      (docs: any)=>{
+        docs.forEach((data: any) => {
+          console.log(data)
+          this.tables = data.data.tables;
+        });
+    })
   }
 
   ngOnDestroy(): void {
