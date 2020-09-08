@@ -101,3 +101,16 @@
     margin: -14px 0px 0px -5px;
     position: absolute;
 }
+
+
+.flag{
+    margin-top: 82px;
+    width: 55px !important;
+    /* filter: drop-shadow(2px 4px 6px black); */
+    margin-left: -50px;
+    /* position: fixed; */
+}
+
+.image{
+    position: unset;
+}
