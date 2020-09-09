@@ -10,3 +10,18 @@ tr{
  .table{
      border: lightgrey solid;
  }
+
+ 
+.disabled{
+    cursor: not-allowed;
+    pointer-events: all !important;
+}
+
+.enabled{
+    cursor: pointer;
+}
+
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+    cursor: not-allowed;
+  }
+  

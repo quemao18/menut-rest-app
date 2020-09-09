@@ -11,10 +11,12 @@ import { MenusComponent } from 'app/menus/menus.component';
 import { DishesComponent } from 'app/dishes/dishes.component';
 import { OrdersComponent } from 'app/orders/orders/orders.component';
 import { MenuPdfComponent } from 'app/shared/menu-pdf/menu-pdf/menu-pdf.component';
+import { TablesComponent } from 'app/tables/tables.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent, },
     { path: 'menus',          component: MenusComponent, },
+    { path: 'tables-admin',   component: TablesComponent, },
     { path: 'dishes/:id',     component: DishesComponent, },
     { path: 'dishes',         component: DishesComponent, },
     { path: 'orders',         component: OrdersComponent, },

@@ -1,0 +1,136 @@
+<div #scroll></div>
+<div class="main-content" *ngIf="!showForm">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div [@animate] class="card card-plain">
+                    <div class="card-header card-header-brown">
+                        <h4 class="card-title mt-0 text-yellow">Tables 
+                            <a (click)="new();" class="link-white" title="Add" [routerLink]="">
+                              <i class="material-icons" >add</i>
+                            </a>
+                        </h4>
+                        <mat-form-field class="search2 card-title mt-0">
+                          <input type="text" #queryString matInput class="search" placeholder="Search" >
+                        </mat-form-field>  
+                        <p class="card-category"> Available tables </p>
+                    </div>
+                    <div class="card-body">
+                      <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                         <div style="min-height: 550px;" class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="">
+                                    <th style="text-align: center;">Order</th>
+                                    <th>Name</th>
+                                    <th>Location</th>
+                                    <th style="text-align: center;">Capacity</th>
+                                    <th style="text-align: center;">Number</th>
+                                    <th>Actions</th>
+                                </thead>
+                                <tbody>
+                                    <tr [@animate] *ngFor="let table of tables | filter2: {search: queryString.value} | paginate: config "> 
+                                        <td style="text-align: center;">
+                                          {{table.data.order}}
+                                        </td>
+                                        <td>
+                                          {{table.data.name}}
+                                        </td>
+                                        <td>
+                                          {{table.data.location}} 
+                                        </td>
+                                        <td style="text-align: center;">
+                                          {{table.data.capacity}}
+                                        </td>
+                                        <td style="text-align: center;">
+                                          {{table.data.number}}
+                                        </td>
+                                        <td> 
+                                            <a (click)="changeStatus(table.id, table.data.status); $event.stopPropagation()" [routerLink]="" [title]="!table.data.status ? 'Active' : 'Desactive'">
+                                              <i class="material-icons">{{!table.data.status ? 'check': 'power_settings_new'}}</i>
+                                            </a>
+                                            <a (click)="edit(table.id); $event.stopPropagation()" title="Edit" [routerLink]=""><i class="material-icons" >edit</i></a>
+                                            <a (click)="delete(table.id); $event.stopPropagation()" class="link-danger" title="Delete" [routerLink]=""><i class="material-icons" >delete</i></a>
+                                        </td>  
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls style="text-align: center;" (pageChange)="pageChanged($event)"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content" *ngIf="showForm">
+    <div class="container-fluid" >
+        <div class="row">
+            <div class="col-md-12">
+                <div [@animate] class="card card-plain flip" >
+                    <div class="card-header card-header-brown">
+                        <h4 class="card-title text-yellow">Table</h4>
+                        <p class="card-category">Complete data</p>
+                    </div>
+                    <div class="card-body">
+                      <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                        <form (keypress)="onChanges()"  [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+                            <div class="row">
+                                <input hidden #id formControlName= "id" >
+                                <div class="col-md-2">
+                                  <mat-form-field class="example-full-width">
+                                    <input min="1" max={{config.totalItems}} type="number" matInput #order formControlName= "order" placeholder="Order">
+                                  </mat-form-field>
+                                </div>
+
+                                <div class="col-md-5">
+                                  <mat-form-field class="example-full-width">
+                                    <input type="number" matInput #capacity formControlName= "capacity" placeholder="Capacity">
+                                  </mat-form-field>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <mat-form-field class="example-full-width">
+                                      <input type="number" matInput #number formControlName= "number" placeholder="Number">
+                                    </mat-form-field>
+                                </div>
+                        
+                            </div>
+                             <div class="row">
+                        
+                                  <div class="col-md-6" >
+                                      <mat-form-field class="example-full-width">
+                                        <input matInput #name formControlName= "name" required placeholder="Nombre">
+                                        <mat-error>Required</mat-error>
+                                      </mat-form-field>
+                                  </div>
+                                  <div class="col-md-6" >
+                                      <mat-form-field class="example-full-width">
+                                        <input matInput #location formControlName= "location" required placeholder="Location">
+                                        <mat-error>Required</mat-error>
+                                      </mat-form-field>
+                                  </div>
+
+                             </div>
+                              <hr>
+                              Active: <input (click)="onChanges()" type="checkbox" #status formControlName= "status" >
+                              <span class="label" style="float: right;margin-right: 5px;margin-top: -3px">*Required</span><br>
+                               <!-- <button [ngClass]="{'button': true, 'is-success': true, 'is-large': true, 'is-loading': porcentaje > 0 && porcentaje < 100}" [disabled]="!profileForm.valid && (porcentaje > 0 && porcentaje < 100)">Subir archivo</button> -->
+                            <button mat-raised-button (click)="scrollDiv(scroll)" [disabled]="!form.valid" type="submit" class="btn btn-danger pull-right">Save</button>
+                            <button (click) = "showForm=!showForm; reset();" mat-raised-button type="button" class="btn btn-link pull-right">Cancel</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+       
+            <!-- <div class="col-md-4">
+
+              <app-menu-card-item-medium
+              [lang]="lang" 
+              [item]="item"
+              ></app-menu-card-item-medium>
+              
+            </div> -->
+    </div>
+  </div>

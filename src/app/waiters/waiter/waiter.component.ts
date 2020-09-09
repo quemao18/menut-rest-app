@@ -7,6 +7,7 @@ import { now } from 'jquery';
 import { interval } from 'rxjs';
 import { MessagingService } from 'app/services/notification/messaging.service';
 import { SettingService } from 'app/services/settings/setting.service';
+import { TableService } from 'app/services/tables/table.service';
 
 @Component({
   selector: 'app-waiter',
@@ -51,8 +52,8 @@ export class WaiterComponent implements OnInit {
   orderId: string;
   orderIdShort: string;
   status: string;
-  tables: number = 0;
-  tableSelect: number;
+  tables: any;
+  table: any;
   currentDevice: MediaDeviceInfo = null;
   availableDevices: MediaDeviceInfo[];
   hasDevices: boolean;
@@ -64,20 +65,25 @@ export class WaiterComponent implements OnInit {
     private orderService: OrderService,
     private spinner: NgxSpinnerService,
     private notificationService: NotificationService,
-    private messagingService: MessagingService,
+    // private messagingService: MessagingService,
     private settingService: SettingService,
+    private tableService: TableService,
+
   ) { }
 
   async ngOnInit(){
     // this.onCodeResult('2AS13A', 5)
     this.spinner.show();
-    await this.getSettings();
+    // await this.getSettings();
+    await this.getTables();
     await this.checkTables();
     this.spinner.hide();
     this.subscription = this.intervallTimer.subscribe(async() => {
       console.log('check tables')
-      if(this.showTables)
-        this.checkTables(true);
+      if(this.showTables){
+        await this.getTables();
+        await this.checkTables(true);
+      }
     });
   }
 
@@ -91,18 +97,28 @@ export class WaiterComponent implements OnInit {
     })
   }
 
+  async getTables() {
+    await this.tableService.gets().toPromise().then(
+      (docs: any)=>{
+        this.tables = docs;
+        // this.tables = this.tables.sort((a: { order: number; }, b: { order: number; }) => a.order - b.order);
+    });
+  }
+
   ngOnDestroy(): void {
     console.log('destroy')
     this.subscription.unsubscribe();
   }
 
 
-  async getTable(num: number){
+  async getTable(table: any){
     // this.show = !this.show;
     this.spinner.show();
-    this.tableSelect = num;
+    this.table = table;
+    // this.table.tableSelectName = table.data.name;
+    // this.table.tableSelectId = table.id;
     this.items = null;
-    await this.orderService.getByTable(num).toPromise().then(
+    await this.orderService.getByTable(table.id).toPromise().then(
         (docs: any) => {
           this.ordersTable = [];
           docs.forEach((data: any) => {
@@ -119,7 +135,8 @@ export class WaiterComponent implements OnInit {
             details: data.data.details,
             orderId: data.data.orderId,
             date: data.data.date,
-            table: data.data.table
+            tableId: data.data.tableId,
+            table: data.data.name
           });
         });
         if(this.ordersTable.length == 0) {
@@ -173,19 +190,20 @@ export class WaiterComponent implements OnInit {
     this.showItems = true;
   }
 
-  reset(){
+  async reset(){
       this.showOrdersTable = false;
       this.showItems = false;
       this.showTables = true;
       this.showScanner = false;
       this.ordersTable = null;
       this.items = null;
-      this.checkTables(true);
+      await this.getTables();
+      await this.checkTables(true);
   }
 
-  onCodeResult(resultString: string, tableSelect: number) {
+  onCodeResult(resultString: string, table: any) {
     this.qrResultString = resultString;
-    this.tableSelect = tableSelect;
+    this.table = table;
     this.showScanner = false;
       // this.dishes = this.dishes.filter(obj => obj.data.menuId == menuId);
       console.log(this.qrResultString);
@@ -226,34 +244,36 @@ export class WaiterComponent implements OnInit {
             this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
           });
         }
-      }, 100);
+      }, 500);
   
   }
 
   async changeStatus(status: string){
     this.spinner.show();
     console.log(this.orderId);
+    console.log(this.table);
     await this.orderService.update(this.orderId, 
       {
         'status': status,
-        'table': this.tableSelect
-      
+        'table': this.table.data.name,
+        'tableId': this.table.id
       }).toPromise().then(() => {
       console.log('Changed Status');
       this.spinner.hide();
       // this.items = null;
     }).catch(() => this.spinner.hide() );
 
+    //data for FCM or WA msg
     let data = {
       orderId: this.orderIdShort, 
       date: Date.now(), 
       status: status,
-      table: this.tableSelect,
-      // table: 0,
+      table: this.table.data.name,
+      tableId: this.table.id,
       items: this.items
     };
     // await this.sendWa(data);
-    this.sendFCM(data);
+    // this.sendFCM(data);
 
   }
 
@@ -290,17 +310,24 @@ export class WaiterComponent implements OnInit {
         this.allOrders = docs;
       }
     );
+    //only readed
     this.allOrders = this.allOrders.filter((obj: any) => obj.data.status === 'Readed');
+    //only not more of 24 hours
     this.allOrders = this.allOrders.filter((obj: any) => {
       let hours = Math.abs(obj.data.date - now()) / 36e5;
       return hours <= 24;
     });
 
-    for (let index = 0; index <= this.tables; index++) {
-    this.arrayTables[index] = this.allOrders.filter((obj: any) => {
-      return obj.data.table === index+1 ? true : false;
-    }).length;
-    }
+    // for (let index = 0; index <= this.tables.length; index++) {
+    // this.arrayTables[index] = this.allOrders.filter((obj: any) => {
+    //   return obj.data.table === index+1 ? true : false;
+    // }).length;
+    // }
+    this.tables.forEach((table:any) => {
+      this.arrayTables[table.id] = this.allOrders.filter((obj: any) => {
+        return obj.data.tableId === table.id ? true : false;
+      }).length;
+    });
     this.spinner.hide();
     // console.log(this.arrayTables)
   }

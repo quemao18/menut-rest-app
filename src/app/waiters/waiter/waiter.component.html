@@ -10,10 +10,10 @@
                     </div>
                     <div class="card-body menu">
                         <div *ngIf="showScanner">
-                            <h6 class="text-center">Escanee el código QR para la mesa <strong>{{tableSelect}}</strong></h6>
+                            <h6 class="text-center">Escanee el código QR para la mesa <strong>{{table.data.name}}</strong></h6>
                             <zxing-scanner
                             [enable]="showScanner"
-                            (scanSuccess)="onCodeResult($event, tableSelect)"
+                            (scanSuccess)="onCodeResult($event, table)"
                             [(device)]="currentDevice"
                             (camerasFound)="onCamerasFound($event)"
                             (permissionResponse)="onHasPermission($event)"
@@ -47,7 +47,7 @@
                         </div>
                         
                         <div *ngIf="showItems && items">
-                            <h6>Mesa: {{tableSelect}}. Orden <span style="text-transform: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{orderIdShort}}</span></h6>
+                            <h6>Mesa: {{table.data.name}}. Orden <span style="text-transform: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{orderIdShort}}</span></h6>
                             <app-card-item  *ngFor="let item of items"
                             [item]="item"
                             ></app-card-item>
@@ -56,12 +56,12 @@
                             <div class="text-center">
                                 <input (click)="changeStatus('Finished'); clearResult(); finish(); "  type="button" class="btn btn-danger btn-link btn-lg" value="Finalizar">
                                 <input (click)="reset()"  *ngIf="ordersTable == null"   type="button" class="btn btn-danger btn-link btn-lg" value="Mesas">
-                                <input (click)="getTable(tableSelect)" *ngIf="ordersTable"  type="button" class="btn btn-danger btn-link btn-lg" value="Volver">
+                                <input (click)="getTable(table)" *ngIf="ordersTable"  type="button" class="btn btn-danger btn-link btn-lg" value="Volver">
                             </div>
                         </div>
 
                         <div *ngIf="showOrdersTable" class="card-body">
-                            <h6>Órdenes en mesa {{tableSelect}}</h6>
+                            <h6>Órdenes en mesa {{table.data.name}}</h6>
                             <div style="max-height: 570px;" class="table-responsive">
                             <table class="table table-striped ">
                                 <thead>
@@ -91,11 +91,14 @@
                         <div class="text-center" *ngIf="showTables">
                             <h6 class="text-center">Selecciona la mesa</h6>
                             <input 
-                            style="width: 30%;"
-                            *ngFor="let table of arrayN(); let i = index"
-                            [style.background-color] = "arrayTables[i] ? '#ffeb3b': ''"
-                            (click)="getTable(i+1)"  type="button" class="btn btn-danger btn-link btn-lg" 
-                            value="{{i+1}}">
+                            style="width: 49%;"
+                            *ngFor="let table of tables; let i = index"
+                            [disabled]="!table.data.status"
+                            [ngClass] = "!table.data.status ? 'disabled': 'enabled'"
+                            [style.background-color] = "arrayTables[table.id] ? '#ffeb3b': ''"
+                            (click)="getTable(table)"  type="button" class="btn btn-danger btn-link btn-lg" 
+                            value="{{table.data.name}}">
+                           
                         </div>
                     </div>
                 </div>

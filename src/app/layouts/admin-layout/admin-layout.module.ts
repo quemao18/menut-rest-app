@@ -22,12 +22,13 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { MenusComponent } from 'app/menus/menus.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { FilterPipe, FilterOrderPipe, ArraySortPipe, OrderByPipe } from 'app/pipes/pipes.pipe';
+import { FilterPipe, FilterOrderPipe, Filter2Pipe } from 'app/pipes/pipes.pipe';
 
 import { LightboxModule } from 'ngx-lightbox';
 import { DishesComponent } from 'app/dishes/dishes.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { OrdersComponent, DialogItems } from 'app/orders/orders/orders.component';
+import { TablesComponent } from 'app/tables/tables.component';
 
 
 @NgModule({
@@ -60,8 +61,10 @@ import { OrdersComponent, DialogItems } from 'app/orders/orders/orders.component
     NotificationsComponent,
     UpgradeComponent,
     MenusComponent,
+    TablesComponent,
     DishesComponent,
     FilterPipe,
+    Filter2Pipe,
     FilterOrderPipe,
     OrdersComponent,
     DialogItems,

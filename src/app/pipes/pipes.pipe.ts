@@ -59,6 +59,27 @@ export class FilterPipe implements PipeTransform {
   }
 }
 
+@Pipe({
+  name: 'filter2'
+})
+@Injectable()
+export class Filter2Pipe implements PipeTransform {
+
+ transform(items: any[], args: any[]): any {
+    // filter items array, items which match and return true will be kept, false will be filtered out
+    //return items.filter(item => item.codigo.indexOf(args[0].codigo) !== -1);
+    //return items.map(function(e) { return e; }).indexOf(args['search'].toLowerCase());
+    //  return items.filter(item => item.detalles.toLowerCase().indexOf(args['search'].toLowerCase()) !== -1);
+     if(!items) return [];
+    if(!args['search']) return items;
+    var searchText = args['search'].toLowerCase();
+    return items.filter( it => {
+    return it.data.name.toLowerCase().includes(searchText) || 
+    it.data.location.toLowerCase().includes(searchText) 
+    });
+  }
+}
+
 
 @Pipe({
   name: 'filterOrder'

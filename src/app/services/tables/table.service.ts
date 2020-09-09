@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'environments/environment';
 
-const collection = 'orders';
+const collection = 'tables';
 
 @Injectable({
   providedIn: 'root'
 })
 
 
-export class OrderService {
+export class TableService {
   constructor(
     private firestore: AngularFirestore,
     private http: HttpClient
@@ -29,41 +28,13 @@ export class OrderService {
   }
 
   public create(data: any) {
-    // return this.firestore.collection(collection).add(data);
     return this.http.post(environment.apiUrl+ `/${collection}`, data, 
     { headers: this.generateHeaders() }
     );
   }
 
   public getById(documentId: string) {
-    // return this.firestore.collection(collection).doc(documentId).snapshotChanges();
     return this.http.get(environment.apiUrl+ `/${collection}/` + documentId, 
-    { headers: this.generateHeaders() }
-    );
-  }
-
-  public sendWa(data: any) {
-    // return this.firestore.collection(collection).add(data);
-    return this.http.post(environment.apiUrl+ `/${collection}/sendWa`, data, 
-    { headers: this.generateHeaders() }
-    );
-  }
-
-  public sendFCM(data: any) {
-    // return this.firestore.collection(collection).add(data);
-    return this.http.post(environment.apiUrl+ `/${collection}/sendFCM`, data, 
-    { headers: this.generateHeaders() }
-    );
-  }
-
-  public getByOrderId(orderId: string) {
-    return this.http.get(environment.apiUrl+ `/${collection}/orderId/` + orderId, 
-    { headers: this.generateHeaders() }
-    );
-  }
-
-  public getByTable(tableId: string) {
-    return this.http.get(environment.apiUrl+ `/${collection}/tableId/` + tableId, 
     { headers: this.generateHeaders() }
     );
   }
@@ -80,14 +51,12 @@ export class OrderService {
   }
 
   public update(documentId: string, data: any) {
-    // return this.firestore.collection(collection).doc(documentId).set(data, { merge: true });
     return this.http.put(environment.apiUrl+ `/${collection}/` + documentId, data, 
     { headers: this.generateHeaders() }
     );
   }
 
   public delete(documentId: string) {
-    // return this.firestore.collection(collection).doc(documentId).delete();
     return this.http.delete(environment.apiUrl+ `/${collection}/` + documentId, 
     { headers: this.generateHeaders() }
     );
