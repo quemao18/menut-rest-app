@@ -2,6 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { VersionCheckService } from './services/version/version-check.service';
 import { environment } from 'environments/environment';
 import { MessagingService } from './services/notification/messaging.service';
+import { SettingService } from './services/settings/setting.service';
 
 
 @Component({
@@ -13,14 +14,19 @@ export class AppComponent implements OnInit{
 
     constructor(
       private versionCheckService: VersionCheckService, 
-      private messagingService: MessagingService
+      private messagingService: MessagingService,
+      private settingService: SettingService
       ){      
     }
 
-    ngOnInit(){
+    private settings: any;
+
+    async ngOnInit(){
+      await this.getSettings();
       this.versionCheckService.initVersionCheck(environment.versionCheckURL);
-      // this.messagingService.requestPermission();
-      // this.messagingService.receiveMessage();
+      if(this.settings.fcm)
+        this.messagingService.requestPermission();
+
       //dev
       if(window.location.hostname === 'dev.admin.chacaitoba.com')
         window.location.href = 'https://dev.admin.chacaitoba.com/#/dashboard';
@@ -36,5 +42,16 @@ export class AppComponent implements OnInit{
       if(window.location.hostname === 'mesonero.chacaitoba.com')
         window.location.href = 'https://mesonero.chacaitoba.com/#/waiter';
 
+    }
+
+    async getSettings() {
+      await this.settingService.gets().toPromise().then(
+        (docs: any)=>{
+          docs.forEach((data: any) => {
+            console.log(data)
+            this.settings = data.data;
+            localStorage.setItem('settings', JSON.stringify(this.settings));
+          });
+      })
     }
 }

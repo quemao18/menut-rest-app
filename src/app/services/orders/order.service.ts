@@ -28,6 +28,10 @@ export class OrderService {
     return (localStorage.getItem('access_token'));
   }
 
+  getSettings() {
+    return JSON.parse(localStorage.getItem('settings'));
+  }
+
   public create(data: any) {
     // return this.firestore.collection(collection).add(data);
     return this.http.post(environment.apiUrl+ `/${collection}`, data, 
@@ -44,16 +48,21 @@ export class OrderService {
 
   public sendWa(data: any) {
     // return this.firestore.collection(collection).add(data);
-    return this.http.post(environment.apiUrl+ `/${collection}/sendWa`, data, 
-    { headers: this.generateHeaders() }
-    );
+    if(this.getSettings().whatsapp)
+      return this.http.post(environment.apiUrl+ `/${collection}/sendWa`, data, 
+      { headers: this.generateHeaders() }
+      );
+    else
+      return;
   }
 
   public sendFCM(data: any) {
-    // return this.firestore.collection(collection).add(data);
-    return this.http.post(environment.apiUrl+ `/${collection}/sendFCM`, data, 
-    { headers: this.generateHeaders() }
-    );
+    if(this.getSettings().fcm)
+      return this.http.post(environment.apiUrl+ `/${collection}/sendFCM`, data, 
+      { headers: this.generateHeaders() }
+      );
+    else
+      return;
   }
 
   public getByOrderId(orderId: string) {

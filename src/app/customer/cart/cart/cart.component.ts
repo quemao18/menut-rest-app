@@ -94,8 +94,8 @@ export class CartComponent implements OnInit {
         this.documentId = doc.id;
         // this.spinner.hide();
         // this.notificationService.showNotification('top', 'right', 'success','check', 'Checkout success!');
-        // await this.sendWa(data);
-        // this.sendFCM(data);
+        this.sendWa(data);
+        this.sendFCM(data);
       }).catch((error) => {
         console.log(error);
         this.spinner.hide();
@@ -114,8 +114,8 @@ export class CartComponent implements OnInit {
     }
     await this.orderService.delete(this.documentId).toPromise().then(()=>{ 
       console.log('order remove')
-      // await this.sendWa(data);
-      // this.sendFCM(data);
+      this.sendWa(data);
+      this.sendFCM(data);
       this.router.navigate(['/menu']);
     });
     }, 200);
