@@ -198,14 +198,14 @@ export class AuthService {
   async saveUserDBApi(user: any) {
     
     setTimeout(async() => {
-    console.log(this.messagingService.getTokenLocal());
+    console.log(this.messagingService.getTokenFCM())
     const userData: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
-      tokenFCM: this.messagingService.getTokenLocal()
+      tokenFCM: this.messagingService.getTokenFCM()
     };
 
       if(!this.userExist)

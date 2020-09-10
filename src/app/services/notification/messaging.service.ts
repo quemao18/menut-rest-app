@@ -8,6 +8,7 @@ export class MessagingService {
  
 currentMessage = new BehaviorSubject(null);
 token: string;
+tokenFCM: any;
  
 constructor(private angularFireMessaging: AngularFireMessaging) {
  
@@ -27,7 +28,7 @@ constructor(private angularFireMessaging: AngularFireMessaging) {
  
   requestPermission() {
     this.angularFireMessaging.requestToken.subscribe(
-      (token) => { console.log('Permission granted! Save to the server!', token); this.setTokenLocal(token); },
+      (token) => { console.log('Permission granted! Save to the server!', token); this.setTokenFCM(token); },
       (error) => { console.error(error); },  
     );
   }
@@ -40,12 +41,14 @@ constructor(private angularFireMessaging: AngularFireMessaging) {
     })
   }
 
-  setTokenLocal(token: any){
+  setTokenFCM(token: any){
+    this.tokenFCM = token;
     localStorage.setItem('fcm_token', token);
   }
 
-  getTokenLocal(){
-   return localStorage.getItem('fcm_token');
+  getTokenFCM(){
+   return this.tokenFCM;
+  //  return localStorage.getItem('fcm_token');
   }
  
 }
