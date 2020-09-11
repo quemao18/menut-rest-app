@@ -1,10 +1,10 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuService } from 'app/services/menus/menu.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'app/services/notification/notification.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DishService } from 'app/services/dishes/dish.service';
-import { interval, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ShoppingCartService, Product } from 'app/services/shopping-cart/shopping-cart.service';
 import { environment } from 'environments/environment';
 
@@ -35,16 +35,15 @@ import { environment } from 'environments/environment';
     ])  
   ]
 })
+
 export class MenuListComponent implements OnInit {
 
   constructor(    
     private menuService: MenuService,
     private dishService: DishService,
     public spinner: NgxSpinnerService,
-    // private afStorage: AngularFireStorage,
     private notificationService: NotificationService,
     public shoppingCartService: ShoppingCartService,
-    // private _lightbox: Lightbox
     ) {
      }
 
