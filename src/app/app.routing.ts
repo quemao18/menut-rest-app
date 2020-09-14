@@ -18,8 +18,8 @@ import { AuthWaiterGuard } from './services/auth/auth-waiter.guard';
 // const redirectUnauthorizedToLandingCustomer = () => redirectUnauthorizedTo(['menu']);
 
 const routes: Routes =[
-  // { path: '', redirectTo: 'customer-home', pathMatch: 'full', }, 
-  { path: '', redirectTo: 'login', pathMatch: 'full', }, 
+  { path: '', redirectTo: 'customer-home', pathMatch: 'full', }, 
+  { path: 'login', redirectTo: 'login', pathMatch: 'full', }, 
   { 
     path: '', component: HomeLayoutComponent,
     children: [
