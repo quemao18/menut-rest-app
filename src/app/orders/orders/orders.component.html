@@ -19,6 +19,9 @@
                      <div style="min-height: 550px;" class="table-responsive">
                         <table class="table table-hover">
                             <thead class="">
+                                <th class="text-center">
+                                    <input type="checkbox" name="all" [checked]="isAllChecked()" (change)="checkAll($event)"/>
+                                </th>
                                 <th style="text-align: center;">OrderID</th>
                                 <th style="text-align: center;">Date</th>
                                 <th style="text-align: center;">Status</th>
@@ -28,6 +31,9 @@
                             </thead>
                             <tbody>
                                 <tr (click)="openDialog(order)"  class="enabled" [@animate] *ngFor="let order of orders | filterOrder: {search: queryString.value} | paginate: config "> 
+                                    <td (click)="$event.stopPropagation();"  class="text-center">
+                                        <input type="checkbox" name="orders[]" [(ngModel)]="order.state" value="{{order.id}}"/>
+                                    </td>
                                     <td style="text-align: center;">
                                         {{order.data.orderId}}
                                     </td>
@@ -48,12 +54,13 @@
                                           <i class="material-icons">{{!menu.data.status ? 'check': 'power_settings_new'}}</i>
                                         </a> -->
                                         <!-- <a (click)="edit(menu.id); $event.stopPropagation()" title="Edit" [routerLink]=""><i class="material-icons" >edit</i></a> -->
-                                        <a (click)="delete(order.id); $event.stopPropagation()" class="link-danger" title="Delete" [routerLink]=""><i class="material-icons" >delete</i></a>
+                                        <a style="color: red;" (click)="delete(order.id, 1); $event.stopPropagation()" class="link-danger" title="Delete" [routerLink]=""><i class="material-icons" >delete</i></a>
                                     </td>  
                                 </tr>
                             </tbody>
                         </table>
                         <pagination-controls style="text-align: center;" (pageChange)="pageChanged($event)"></pagination-controls>
+                        <a *ngIf="(isAllChecked() || isAnyChecked()) && config.totalItems > 0" style="margin-left: 28px; text-transform: none; color: red;" (click)="deleteSelection(); $event.stopPropagation()" class="link-danger" title="Delete" [routerLink]=""><i class="material-icons" >delete</i> Eliminar selección</a>
                     </div>
                 </div>
             </div>

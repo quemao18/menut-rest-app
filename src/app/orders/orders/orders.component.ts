@@ -56,6 +56,7 @@ export class OrdersComponent implements OnInit {
     }
 
   orders: any = [];
+  check: boolean = false; 
   orderId: string = '';
   config: any =  {
     itemsPerPage: 10,
@@ -87,14 +88,35 @@ export class OrdersComponent implements OnInit {
       });
   }
 
+  checkAll(ev: { target: { checked: any; }; }) {
+    this.orders.forEach((x: { state: any; }) => x.state = ev.target.checked)
+  }
+  
+  isAllChecked() {
+    return this.orders.every((_: { state: any; }) => _.state);
+  }
+
+  isAnyChecked(){
+    return this.orders.filter((_: { state: boolean; }) => _.state == true).length > 0 ? true : false;
+  }
+
+  deleteSelection(){
+    let i = 0;
+    this.orders.forEach((x: { state: any; id: string; }) => {
+      i++;
+      if(x.state) this.delete(x.id, i)
+    })
+  }
+
   pageChanged(event: any){
     this.config.currentPage = event;
   }
 
-  async delete(documentId: string) {
+  async delete(documentId: string, i?: number) {
     this.spinner.show();
     await this.orderService.delete(documentId).toPromise().then((menu) => {
       console.log('deleted');
+      if(i <= 1)
       this.notificationService.showNotification('top', 'right', 'success','check', 'Delete success');
       this.orders = this.orders.filter((obj: any) => obj.id !== documentId);
       this.config.totalItems =  this.orders.length;

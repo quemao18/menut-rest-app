@@ -17,16 +17,32 @@ export class AppComponent implements OnInit{
       private messagingService: MessagingService,
       private settingService: SettingService
       ){      
+        this.redirect();
     }
 
     private settings: any;
 
     async ngOnInit(){
+    
       await this.getSettings();
       this.versionCheckService.initVersionCheck(environment.versionCheckURL);
       if(this.settings.fcm)
         this.messagingService.requestPermission();
 
+    }
+
+    async getSettings() {
+      await this.settingService.gets().toPromise().then(
+        (docs: any)=>{
+          docs.forEach((data: any) => {
+            console.log(data)
+            this.settings = data.data;
+            localStorage.setItem('settings', JSON.stringify(this.settings));
+          });
+      })
+    }
+
+    redirect(){
       //dev
       if(window.location.hostname === 'dev.admin.chacaitoba.com')
         window.location.href = 'https://dev.admin.chacaitoba.com/#/dashboard';
@@ -41,17 +57,5 @@ export class AppComponent implements OnInit{
         window.location.href = 'https://menu.chacaitoba.com/#/customer';
       if(window.location.hostname === 'mesonero.chacaitoba.com')
         window.location.href = 'https://mesonero.chacaitoba.com/#/waiter';
-
-    }
-
-    async getSettings() {
-      await this.settingService.gets().toPromise().then(
-        (docs: any)=>{
-          docs.forEach((data: any) => {
-            console.log(data)
-            this.settings = data.data;
-            localStorage.setItem('settings', JSON.stringify(this.settings));
-          });
-      })
     }
 }
