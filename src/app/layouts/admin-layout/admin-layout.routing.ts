@@ -1,15 +1,15 @@
 import { Routes } from '@angular/router';
 
-import { DashboardComponent } from '../../dashboard/dashboard.component';
+import { DashboardComponent } from '../../admin/dashboard/dashboard.component';
 import { UserProfileComponent } from '../../user-profile/user-profile.component';
 import { TableListComponent } from '../../table-list/table-list.component';
 import { TypographyComponent } from '../../typography/typography.component';
 import { IconsComponent } from '../../icons/icons.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
-import { MenusComponent } from 'app/menus/menus.component';
-import { DishesComponent } from 'app/dishes/dishes.component';
-import { OrdersComponent } from 'app/orders/orders/orders.component';
+import { MenusComponent } from 'app/admin/menus/menus.component';
+import { DishesComponent } from 'app/admin/dishes/dishes.component';
+import { OrdersComponent } from 'app/admin/orders/orders.component';
 import { MenuPdfComponent } from 'app/shared/menu-pdf/menu-pdf/menu-pdf.component';
 import { TablesComponent } from 'app/tables/tables.component';
 
