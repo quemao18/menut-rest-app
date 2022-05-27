@@ -112,8 +112,8 @@ export class MenuPdfComponent implements OnInit {
   public openPDF():void {
     let DATA = this.htmlData.nativeElement;
     let doc = new jsPDF('p','pt', 'a4');
-    doc.fromHTML(DATA.innerHTML,15,15);
-    doc.output('dataurlnewwindow');
+    // doc.fromHTML(DATA.innerHTML,15,15);
+    // doc.output('dataurlnewwindow');
   }
 
 
@@ -121,11 +121,11 @@ export class MenuPdfComponent implements OnInit {
     let DATA = this.htmlData.nativeElement;
     let doc = new jsPDF('p','pt', 'letter');
     // doc.internal.scaleFactor = 1.1;
-    doc.addHTML(DATA, 
-    function save() {
-      doc.save('chacaitoba-menu.pdf');
-      // window.open(doc.output('bloburl'));
-    });
+    // doc.addHTML(DATA, 
+    // function save() {
+    //   doc.save('chacaitoba-menu.pdf');
+    //   // window.open(doc.output('bloburl'));
+    // });
   }
 
 }

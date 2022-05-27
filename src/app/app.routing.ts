@@ -23,7 +23,10 @@ const routes: Routes =[
   { 
     path: '', component: HomeLayoutComponent,
     children: [
-      {path: '', loadChildren: './layouts/home-layout/home-layout.module#HomeLayoutModule'},
+      {
+        path: '', 
+        loadChildren: () => import('./layouts/home-layout/home-layout.module').then(x => x.HomeLayoutModule)
+      },
       // { path: '', loadChildren: () => HomeLayoutModule }
     ]
   },
@@ -31,7 +34,10 @@ const routes: Routes =[
   { 
     path: '', component: CustomerLayoutComponent,
     children: [
-      { path: '', loadChildren: './layouts/customer-layout/customer-layout.module#CustomerLayoutModule'},
+      { 
+        path: '', 
+        loadChildren: () => import('./layouts/customer-layout/customer-layout.module').then(x => x.CustomerLayoutModule)
+      },
       // { path: '', loadChildren: () => CustomerLayoutModule },
     ]
   },
@@ -40,7 +46,10 @@ const routes: Routes =[
     path: '', component: WaiterLayoutComponent,
     canActivate: [AuthGuard, AuthWaiterGuard],
     children: [
-      {path: '', loadChildren: './layouts/waiter-layout/waiter-layout.module#WaiterLayoutModule'},
+      {
+        path: '', 
+        loadChildren: () => import('./layouts/waiter-layout/waiter-layout.module').then(x => x.WaiterLayoutModule)
+      }
       // { path: '', loadChildren: () => WaiterLayoutModule }
     ]
   },
@@ -50,10 +59,15 @@ const routes: Routes =[
     component: AdminLayoutComponent,
     canActivate: [AuthGuard, AuthAdminGuard],
     children: [
-      {path: '', loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'}
-      // { path: '', loadChildren: () => AdminLayoutModule }
+      {
+        path: '', 
+        loadChildren: () => import('./layouts/admin-layout/admin-layout.module').then(x => x.AdminLayoutModule)
+        // { path: '', loadChildren: () => AdminLayoutModule } 
+      }
     ]
   },
+
+
   
 ];
 

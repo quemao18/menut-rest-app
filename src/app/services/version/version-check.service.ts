@@ -27,7 +27,7 @@ export class VersionCheckService {
 
     public reload(){
         // alert()
-        location.reload(true);
+        location.reload();
     }
 
     /**
@@ -83,7 +83,7 @@ export class VersionCheckService {
             icon: 'glyphicon glyphicon-warning-sign',
             title: 'Nueva versión disponible',
             message: 'Existe una actualización, haz click aqui para actualizar', 
-            url: environment.web,
+            // url: environment.web,
             target: '_self',
         },{
             // settings

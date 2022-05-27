@@ -24,7 +24,8 @@ export class CardItemComponent implements OnInit {
     album.push({
       src: photo,
       caption: name,
-      thumb: photo
+      thumb: photo,
+      downloadUrl: ''
    });
     this._lightbox.open(album, 0);
   }

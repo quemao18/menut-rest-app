@@ -13,7 +13,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LightboxModule } from 'ngx-lightbox';
 import { SharedModule } from 'app/shared/shared.module';
-import { ZXingScannerModule } from '@zxing/ngx-scanner';
+// import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { HomeComponent } from 'app/waiters/home/home.component';
 import { WaiterComponent } from 'app/waiters/waiter/waiter.component';
 
@@ -33,7 +33,7 @@ import { WaiterComponent } from 'app/waiters/waiter/waiter.component';
     NgxSpinnerModule,
     NgxPaginationModule,
     LightboxModule,
-    ZXingScannerModule
+    // ZXingScannerModule
   ],
   declarations: [
     // CartComponent

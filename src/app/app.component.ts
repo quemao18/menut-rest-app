@@ -25,7 +25,7 @@ export class AppComponent implements OnInit{
     async ngOnInit(){
     
       await this.getSettings();
-      this.versionCheckService.initVersionCheck(environment.versionCheckURL);
+      // this.versionCheckService.initVersionCheck(environment.versionCheckURL);
       if(this.settings.fcm)
         this.messagingService.requestPermission();
 

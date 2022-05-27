@@ -79,11 +79,13 @@ export class DishCardItemLargeComponent implements OnInit {
 
   open(name: string, photo: string): void {
     // open lightbox        
-    const album = [{
-          src: photo,
-          caption: name,
-          thumb: photo
-       }];
+    const album = [];
+    album.push({
+      src: photo,
+      caption: name,
+      thumb: photo,
+      downloadUrl: ''
+   });
     this._lightbox.open(album, 0);
   }
  

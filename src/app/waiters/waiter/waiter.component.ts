@@ -3,11 +3,12 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { OrderService } from 'app/services/orders/order.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'app/services/notification/notification.service';
-import { now } from 'jquery';
+
 import { interval } from 'rxjs';
-import { MessagingService } from 'app/services/notification/messaging.service';
+
 import { SettingService } from 'app/services/settings/setting.service';
 import { TableService } from 'app/services/tables/table.service';
+import { now } from 'jquery';
 
 @Component({
   selector: 'app-waiter',

@@ -1,7 +1,10 @@
 import { Injectable, NgZone } from '@angular/core';
 import { User } from "../user/user";
 // import { auth } from 'firebase/app';
-import * as firebase from 'firebase/app';
+// import * as firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from "@angular/router";
@@ -43,8 +46,7 @@ export class AuthService {
 
   generateHeaders() {
     console.log(this.getAccessToken());
-    const headers = new HttpHeaders( { authorization: `Bearer ${this.getAccessToken()}` } );
-    return headers;
+    return new HttpHeaders( { authorization: `Bearer ${this.getAccessToken()}` } );
   }
 
   getAccessToken() {
@@ -53,31 +55,31 @@ export class AuthService {
 
   // Sign in with email/password
   async signIn(email: string, password: string) {
-    this.spinner.show();
-    return await firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(async (result) => { 
-        await result.user.getIdToken(false).then((token: any) => this.token = token); 
-        await this.getUserDBApi(result.user);
-        await this.saveUserDBApi(result.user);
+    // this.spinner.show();
+    // return await firebase.auth().signInWithEmailAndPassword(email, password)
+    //   .then(async (result) => { 
+    //     await result.user.getIdToken(false).then((token: any) => this.token = token); 
+    //     await this.getUserDBApi(result.user);
+    //     await this.saveUserDBApi(result.user);
 
-      }).catch((error) => {
-        this.spinner.hide();
-        this.notification.showNotification('top', 'center', 'danger', 'warning', error.message);
-      })
+    //   }).catch((error) => {
+    //     this.spinner.hide();
+    //     this.notification.showNotification('top', 'center', 'danger', 'warning', error.message);
+    //   })
   }
 
   // Sign up with email/password
   async signUp(email: string, password: string) {
     try {
-      this.spinner.show();
-      const result = await firebase.auth().createUserWithEmailAndPassword(email, password);
-      /* Call the SendVerificaitonMail() function when new user sign
-      up and returns promise */
-      this.spinner.hide();
-      this.notification.showNotification('top', 'center', 'success', 'check', 'Register success!');
-      this.sendVerificationMail();
-      await result.user.getIdToken(false).then((token: any) => this.token = token); 
-      this.saveUserDBApi(result.user);
+      // this.spinner.show();
+      // const result = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      // /* Call the SendVerificaitonMail() function when new user sign
+      // up and returns promise */
+      // this.spinner.hide();
+      // this.notification.showNotification('top', 'center', 'success', 'check', 'Register success!');
+      // this.sendVerificationMail();
+      // await result.user.getIdToken(false).then((token: any) => this.token = token); 
+      // this.saveUserDBApi(result.user);
     }
     catch (error) {
       // window.alert(error.message);
