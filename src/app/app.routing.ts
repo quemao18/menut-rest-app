@@ -57,7 +57,7 @@ const routes: Routes =[
   {
     path: '',
     component: AdminLayoutComponent,
-    canActivate: [AuthGuard, AuthAdminGuard],
+    // canActivate: [AuthGuard, AuthAdminGuard],
     children: [
       {
         path: '', 

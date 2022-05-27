@@ -2,10 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/services/auth/auth.service';
 import { UserService } from 'app/services/user/user.service';
 import { Validators, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { AngularFirestore } from '@angular/fire/firestore';
+// import { AngularFirestore } from '@angular/fire/firestore';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AngularFireStorage } from '@angular/fire/storage';
+
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+
+
 
 @Component({
   selector: 'app-user-profile',

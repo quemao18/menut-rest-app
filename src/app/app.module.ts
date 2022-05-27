@@ -12,14 +12,13 @@ import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { HomeLayoutComponent } from './layouts/home-layout/home-layout.component';
 import { AuthService } from './services/auth/auth.service';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+
 import { environment } from 'environments/environment';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NotificationService } from './services/notification/notification.service';
 
-import { AngularFireStorageModule } from '@angular/fire/storage';
+
 
 import { VersionCheckService } from './services/version/version-check.service';
 import { NgxImageCompressService } from 'ngx-image-compress';
@@ -34,8 +33,12 @@ import { AuthGuard } from './services/auth/auth.guard';
 import { AuthAdminGuard } from './services/auth/auth-admin.guard';
 import { AuthWaiterGuard } from './services/auth/auth-waiter.guard';
 import { MessagingService } from './services/notification/messaging.service';
-import { AngularFireMessagingModule } from '@angular/fire/messaging';
+import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
+// import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+// import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { AngularFireModule } from '@angular/fire/compat';
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -48,12 +51,12 @@ import { AngularFireMessagingModule } from '@angular/fire/messaging';
     RouterModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
-    AngularFireStorageModule,
+    // provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    // provideFirestore(() => getFirestore()),
     NgxSpinnerModule,
     HttpClientModule,
-    AngularFireMessagingModule
+    AngularFireMessagingModule,
+    AngularFireStorageModule
   ],
   declarations: [
     AppComponent,

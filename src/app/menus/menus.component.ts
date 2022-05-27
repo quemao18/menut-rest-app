@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { MenuService } from 'app/services/menus/menu.service';
