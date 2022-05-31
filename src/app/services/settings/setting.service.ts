@@ -19,8 +19,7 @@ export class SettingService {
   }
 
   generateHeaders() {
-    const headers = new HttpHeaders( { authorization: `Bearer ${this.getAccessToken()}` } );
-    return headers;
+    return new HttpHeaders( { authorization: `Bearer ${this.getAccessToken()}` } );
   }
 
   getAccessToken() {
@@ -61,4 +60,13 @@ export class SettingService {
     { headers: this.generateHeaders() }
     );
   }
+  
+  get getSettings(): any{
+    return JSON.parse(localStorage.getItem('settings')!);
+  }
+
+  setSettings(settings: any){
+    localStorage.setItem('settings', JSON.stringify(settings));
+  }
+
 }

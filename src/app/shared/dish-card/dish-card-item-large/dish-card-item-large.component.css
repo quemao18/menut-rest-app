@@ -104,8 +104,8 @@
 
 
 .flag{
-    margin-top: 82px;
-    width: 55px !important;
+    /* margin-top: 82px; */
+    width: 40px !important;
     /* filter: drop-shadow(2px 4px 6px black); */
     margin-left: -50px;
     /* position: fixed; */

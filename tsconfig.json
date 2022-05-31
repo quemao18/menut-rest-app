@@ -18,6 +18,5 @@
       "dom"
     ],
     "skipLibCheck": true
-  },
-  "angularCompilerOptions": { "enableIvy": false }
+  }
 }

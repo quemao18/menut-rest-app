@@ -18,7 +18,7 @@ import { AuthWaiterGuard } from './services/auth/auth-waiter.guard';
 // const redirectUnauthorizedToLandingCustomer = () => redirectUnauthorizedTo(['menu']);
 
 const routes: Routes =[
-  { path: '', redirectTo: 'customer-home', pathMatch: 'full', }, 
+  { path: '', redirectTo: 'customer/home', pathMatch: 'full', }, 
   { path: 'login', redirectTo: 'login', pathMatch: 'full', }, 
   { 
     path: '', component: HomeLayoutComponent,
@@ -30,7 +30,7 @@ const routes: Routes =[
       // { path: '', loadChildren: () => HomeLayoutModule }
     ]
   },
-  { path: 'customer', redirectTo: 'customer-home', pathMatch: 'full', }, 
+  { path: 'customer', redirectTo: 'customer/home', pathMatch: 'full', }, 
   { 
     path: '', component: CustomerLayoutComponent,
     children: [
@@ -41,7 +41,7 @@ const routes: Routes =[
       // { path: '', loadChildren: () => CustomerLayoutModule },
     ]
   },
-  { path: 'waiter', redirectTo: 'waiter-home', pathMatch: 'full', }, 
+  { path: 'waiter', redirectTo: 'waiter/home', pathMatch: 'full', }, 
   { 
     path: '', component: WaiterLayoutComponent,
     canActivate: [AuthGuard, AuthWaiterGuard],
@@ -53,11 +53,11 @@ const routes: Routes =[
       // { path: '', loadChildren: () => WaiterLayoutModule }
     ]
   },
-  { path: 'dashboard', redirectTo: 'orders', pathMatch: 'full', }, 
+  { path: 'admin', redirectTo: 'admin/menus', pathMatch: 'full', }, 
   {
     path: '',
     component: AdminLayoutComponent,
-    // canActivate: [AuthGuard, AuthAdminGuard],
+    canActivate: [AuthGuard, AuthAdminGuard],
     children: [
       {
         path: '', 

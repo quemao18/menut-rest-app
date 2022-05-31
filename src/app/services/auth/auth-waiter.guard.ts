@@ -13,7 +13,7 @@ export class AuthWaiterGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if(this.auth.isWaiterdIn || this.auth.isAdmindIn){
+    if(this.auth.isWaiterIn || this.auth.isAdminIn){
       return true;
     }else{
       this.myRoute.navigate(["login"]);

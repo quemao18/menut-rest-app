@@ -1,11 +1,9 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app.routing';
-import { ComponentsModule } from './components/components.module';
 
 import { AppComponent } from './app.component';
 
@@ -25,7 +23,7 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 import { CustomerLayoutComponent } from './layouts/customer-layout/customer-layout.component';
 import { ComponentsCustomerModule } from './customer/components/components-customer.module';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ShoppingCartService } from './services/shopping-cart/shopping-cart.service';
 import { ComponentsWaiterModule } from './waiters/components/components-waiter.module';
 import { WaiterLayoutComponent } from './layouts/waiter-layout/waiter-layout.component';
@@ -36,27 +34,34 @@ import { MessagingService } from './services/notification/messaging.service';
 import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
-// import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
-// import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
+import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { ComponentsAdminModule } from './admin/components/components-admin.module';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    // HttpModule,
-    ComponentsModule,
+    ComponentsAdminModule,
     ComponentsCustomerModule,
     ComponentsWaiterModule,
     RouterModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    // provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    // provideFirestore(() => getFirestore()),
+    // AngularFirestoreModule.enablePersistence(),
     NgxSpinnerModule,
     HttpClientModule,
     AngularFireMessagingModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    ServiceWorkerModule.register('combined-sw.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   declarations: [
     AppComponent,
@@ -75,6 +80,8 @@ import { AngularFireModule } from '@angular/fire/compat';
     MessagingService,
     NgxImageCompressService, 
     ShoppingCartService, 
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: "en-VE" },
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

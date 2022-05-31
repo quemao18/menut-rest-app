@@ -34,10 +34,18 @@ export class HomeCardComponent implements OnInit {
   @Input() public textButton: string;
   @Input() public textTitle: string;
   @Input() public textDescription: string;
+  @Input() public instagram: string = '';
+  @Input() public whatsapp: string = '';
+  @Input() public address: string = '';
+  @Input() public logo: string = '';
 
+  urlIg = '';
+  urlWa = '';
   constructor() { }
 
   ngOnInit(): void {
+    this.urlIg = 'https://instagram.com/' + this.instagram;
+    this.urlWa = `https://api.whatsapp.com/send?phone=${this.whatsapp}&text=Hola,%20qué%20tal?`
   }
 
 }

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "material-dashboard-angular": {
+    "menu-app-rest": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -19,12 +19,15 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
+              "src/combined-sw.js",
               "src/firebase-messaging-sw.js",
-              "src/manifest.json"
+              "src/manifest.json",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "node_modules/ngx-lightbox/lightbox.css",
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
+              "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
               "src/assets/scss/material-dashboard.scss",
               "src/assets/css/demo.css",
               "src/styles.scss"
@@ -66,14 +69,15 @@
               "@babel/runtime/helpers/toConsumableArray",
               "@babel/runtime/helpers/get",
               "core-js"
-            ]
+            ],
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "production": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -87,10 +91,8 @@
               ]
             },
             "development": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
+              "optimization": false,
+              "sourceMap": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -108,18 +110,22 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "material-dashboard-angular:build"
+            "browserTarget": "menu-app-rest:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "material-dashboard-angular:build:production"
+              "browserTarget": "menu-app-rest:build:production"
+            },
+            "development": {
+              "browserTarget": "menu-app-rest:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "material-dashboard-angular:build"
+            "browserTarget": "menu-app-rest:build"
           }
         },
         "test": {
@@ -142,6 +148,7 @@
             "styles": [
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "src/assets/scss/material-dashboard.scss",
+              "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
               "src/assets/css/demo.css",
               "src/styles.scss"
             ],
@@ -149,7 +156,10 @@
               "src/assets",
               "src/favicon.ico",
               "src/firebase-messaging-sw.js",
-              "src/manifest.json"
+              "src/manifest.json",
+              "src/manifest.webmanifest",
+              "src/manifest.webmanifest",
+              "src/manifest.webmanifest"
             ]
           }
         },
@@ -165,7 +175,7 @@
         }
       }
     },
-    "material-dashboard-angular-e2e": {
+    "menu-app-rest-e2e": {
       "root": "",
       "sourceRoot": "",
       "projectType": "application",
@@ -174,7 +184,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "material-dashboard-angular:serve"
+            "devServerTarget": "menu-app-rest:serve"
           }
         },
         "lint": {
@@ -189,11 +199,10 @@
       }
     }
   },
-  "defaultProject": "material-dashboard-angular",
+  "defaultProject": "menu-app-rest",
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "app",
-      "styleext": "scss"
+      "prefix": "app"
     },
     "@schematics/angular:directive": {
       "prefix": "app"

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { SettingService } from '../../services/settings/setting.service';
 
 @Component({
   selector: 'app-home',
@@ -30,9 +31,12 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  settings: any;
+
+  constructor(private settingService: SettingService) { }
 
   ngOnInit(): void {
+    this.settings = this.settingService.getSettings;
   }
 
 }

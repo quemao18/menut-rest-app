@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./footer-waiter.component.css']
 })
 export class FooterWaiterComponent implements OnInit {
-  test : Date = new Date();
+  date : Date = new Date();
   
   constructor() { }
 

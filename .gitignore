@@ -46,5 +46,5 @@ src/environments/environment.ts
 src/environments/environment.prod.ts
 firebase-debug.log
 src/environments/environment.dev.ts
-src/firebase-messaging-sw.js
+# src/firebase-messaging-sw.js
 .angular/

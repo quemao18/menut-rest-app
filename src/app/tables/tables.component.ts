@@ -112,18 +112,18 @@ export class TablesComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     // setTimeout(async () => {
-      this.spinner.show();
-      await this.tableService.gets().toPromise().then(
-        (docs) => { 
-        this.tables = docs; 
-        this.config.totalItems =  this.tables.length;
-        this.spinner.hide();
-      }).catch((error) => {
-        // window.alert(error)
-        console.log(error);
-        this.spinner.hide();
-        this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
-      });
+      // this.spinner.show();
+      // await this.tableService.gets().toPromise().then(
+      //   (docs) => { 
+      //   this.tables = docs; 
+      //   this.config.totalItems =  this.tables.length;
+      //   this.spinner.hide();
+      // }).catch((error) => {
+      //   // window.alert(error)
+      //   console.log(error);
+      //   this.spinner.hide();
+      //   this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
+      // });
     // }, 500);
   }
 

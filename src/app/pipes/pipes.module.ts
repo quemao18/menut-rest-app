@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
 import {CommonModule} from "@angular/common";
-import { ArraySortPipe, OrderByPipe } from './pipes.pipe';
+import { ArraySortPipe, OrderByPipe, PhonePipe } from './pipes.pipe';
 
 
 @NgModule({
   declarations:[
     ArraySortPipe,
-    OrderByPipe
+    OrderByPipe,
+    PhonePipe
   ], 
   imports:[CommonModule],
   exports:[
     ArraySortPipe,
-    OrderByPipe
+    OrderByPipe,
+    PhonePipe,
   ] 
 })
 

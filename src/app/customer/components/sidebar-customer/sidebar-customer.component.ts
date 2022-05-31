@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/services/auth/auth.service';
+import { environment } from '../../../../environments/environment';
+import { SettingService } from '../../../services/settings/setting.service';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -10,9 +12,9 @@ declare interface RouteInfo {
     class: string;
 }
 export const ROUTES: RouteInfo[] = [
-    { path: '/customer-home', title: 'Inicio',  icon: 'home', class: '' },
-    { path: '/menu', title: 'Menú',  icon: 'restaurant_menu', class: '' },
-    { path: '/cart', title: 'Pedido',  icon: 'shopping_cart', class: '' },
+    { path: 'customer/home', title: 'Inicio',  icon: 'home', class: '' },
+    { path: 'customer/menu', title: 'Menú',  icon: 'restaurant_menu', class: '' },
+    // { path: '/cart', title: 'Pedido',  icon: 'shopping_cart', class: '' },
     // { path: '/dish', title: 'Dishes',  icon: 'fastfood', class: '' },
 ];
 
@@ -24,10 +26,14 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarCustomerComponent implements OnInit {
   menuItems: any[];
 
-  constructor(public router: Router, public authService: AuthService) { }
+  appName: string;
+
+
+  constructor(public router: Router, public authService: AuthService, private settingService: SettingService) { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
+    this.appName = this.settingService.getSettings.appName;
   }
   isMobileMenu() {
       if ($(window).width() > 991) {

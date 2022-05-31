@@ -3,7 +3,8 @@ import { VersionCheckService } from './services/version/version-check.service';
 import { environment } from 'environments/environment';
 import { MessagingService } from './services/notification/messaging.service';
 import { SettingService } from './services/settings/setting.service';
-
+import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,47 +16,48 @@ export class AppComponent implements OnInit{
     constructor(
       private versionCheckService: VersionCheckService, 
       private messagingService: MessagingService,
-      private settingService: SettingService
+      private settingService: SettingService,
+      private afs: AngularFirestore,
       ){      
-        this.redirect();
     }
 
-    private settings: any;
+    private settingsCollection: AngularFirestoreCollection<any>;
+    settings: Observable<any[]>;
 
-    async ngOnInit(){
-    
-      await this.getSettings();
-      // this.versionCheckService.initVersionCheck(environment.versionCheckURL);
-      if(this.settings.fcm)
-        this.messagingService.requestPermission();
+    ngOnInit(){
+      this.getSettings();
+      this.messagingService.requestPermission();
+      this.messagingService.receiveMessage();
+
+      if(environment.production){
+        this.versionCheckService.checkForUpdates();  
+      }
 
     }
 
-    async getSettings() {
-      await this.settingService.gets().toPromise().then(
-        (docs: any)=>{
-          docs.forEach((data: any) => {
-            console.log(data)
-            this.settings = data.data;
-            localStorage.setItem('settings', JSON.stringify(this.settings));
-          });
-      })
+    getSettings() {
+      this.settingsCollection = this.afs.collection<any>('settings', 
+      ref => ref.where('projectId', '==', environment.firebaseConfig.projectId));
+      this.settingsCollection.valueChanges({idField: 'id'})
+      .subscribe(data => {
+        if(data && data.length > 0){
+        this.settingService.setSettings(data[0]);
+        }else{
+          this.settingsCollection.add({projectId: environment.firebaseConfig.projectId})
+        }
+      });
     }
 
     redirect(){
-      //dev
-      if(window.location.hostname === 'dev.admin.chacaitoba.com')
-        window.location.href = 'https://dev.admin.chacaitoba.com/#/dashboard';
-      if(window.location.hostname === 'dev.menu.chacaitoba.com')
-        window.location.href = 'https://dev.menu.chacaitoba.com/#/customer';
-      if(window.location.hostname === 'dev.mesonero.chacaitoba.com')
-        window.location.href = 'https://dev.mesonero.chacaitoba.com/#/waiter';
       //prod
+      /** 
+       * no use
       if(window.location.hostname === 'admin.chacaitoba.com')
         window.location.href = 'https://admin.chacaitoba.com/#/dashboard';
       if(window.location.hostname === 'menu.chacaitoba.com')
         window.location.href = 'https://menu.chacaitoba.com/#/customer';
       if(window.location.hostname === 'mesonero.chacaitoba.com')
         window.location.href = 'https://mesonero.chacaitoba.com/#/waiter';
+      */
     }
 }

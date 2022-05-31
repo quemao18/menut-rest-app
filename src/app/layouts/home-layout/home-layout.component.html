@@ -1,6 +1,6 @@
 <div class="wrapper wrapper-full-page">
     <div class="page-header header-filter" 
-    filter-color="black" style="background-image: url(./assets/img/login2.jpg);
+    filter-color="black" style="background-image: url(./assets/img/login.jpg);
     background-size: cover; background-position: top center;">
       <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
        
@@ -31,7 +31,7 @@
                         </a>
                       </li> -->
                       <li class="nav-item  active ">
-                        <a href="../pages/login.html" class="nav-link">
+                        <a href="#" class="nav-link">
                           <i class="material-icons">fingerprint</i>
                           Login
                         </a>
@@ -47,7 +47,7 @@
                 </div>
               </nav>
 
-            <ngx-spinner></ngx-spinner>
+            <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
 
             <router-outlet></router-outlet>
             
@@ -81,7 +81,7 @@
                     ©
                     <script>
                       document.write(new Date().getFullYear())
-                    </script>2020, made with <i class="material-icons">favorite</i> by
+                    </script>{{date | date:'YYYY'}}, made with <i class="material-icons">favorite</i> by
                     <a href="https://github.com/quemao18" target="_blank">quemao18</a> for a better web.
                   </div>
                 </div>

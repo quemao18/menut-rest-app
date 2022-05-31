@@ -51,10 +51,11 @@ export class FilterPipe implements PipeTransform {
     if(!args['search']) return items;
     var searchText = args['search'].toLowerCase();
     return items.filter( it => {
-    return it.data.name.es.toLowerCase().includes(searchText) || 
-    it.data.name.en.toLowerCase().includes(searchText) || 
-    it.data.description.es.toLowerCase().includes(searchText) || 
-    it.data.description.en.toLowerCase().includes(searchText) 
+    return it.name.es.toLowerCase().includes(searchText) || 
+    it.name.en.toLowerCase().includes(searchText) || 
+    it.description.es.toLowerCase().includes(searchText) || 
+    it.description.en.toLowerCase().includes(searchText) ||
+    it.ref.toLowerCase().includes(searchText) 
     });
   }
 }
@@ -74,8 +75,8 @@ export class Filter2Pipe implements PipeTransform {
     if(!args['search']) return items;
     var searchText = args['search'].toLowerCase();
     return items.filter( it => {
-    return it.data.name.toLowerCase().includes(searchText) || 
-    it.data.location.toLowerCase().includes(searchText) 
+    return it.name.toLowerCase().includes(searchText) || 
+    it.location.toLowerCase().includes(searchText) 
     });
   }
 }
@@ -96,9 +97,22 @@ export class FilterOrderPipe implements PipeTransform {
     if(!args['search']) return items;
     var searchText = args['search'].toLowerCase();
     return items.filter( it => {
-    return it.data.orderId.toLowerCase().includes(searchText) || 
-    it.data.status.toLowerCase().includes(searchText) 
+    return it.orderId.toLowerCase().includes(searchText) || 
+    it.status.toLowerCase().includes(searchText) 
     
     });
+  }
+}
+
+@Pipe({
+  name: "phone"
+})
+export class PhonePipe {
+  transform(rawNum) {
+    const countryCodeStr = "";//rawNum.slice(0,3);
+    const areaCodeStr = rawNum.slice(3,6);
+    const midSectionStr = rawNum.slice(6,9);
+    const lastSectionStr = rawNum.slice(9);
+    return `${countryCodeStr} (${areaCodeStr})${midSectionStr}-${lastSectionStr}`;
   }
 }

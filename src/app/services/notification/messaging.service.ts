@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 import { BehaviorSubject } from 'rxjs'
+import { NotificationService } from './notification.service';
 
  
 @Injectable()
@@ -10,20 +11,20 @@ currentMessage = new BehaviorSubject(null);
 token: string;
 tokenFCM: any;
  
-constructor(private angularFireMessaging: AngularFireMessaging) {
+constructor(private angularFireMessaging: AngularFireMessaging, private notificationService: NotificationService) {
  
-      this.angularFireMessaging.onMessage((payload) => {
-        console.log(payload);
-        const NotificationOptions = {
-          body: payload.notification.body,
-          data: payload.data,
-          // icon: payload.notification.icon
-          icon: './assets/img/logo.png',
-        }
-        navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope').then(registration => {
-          registration.showNotification(payload.notification.title, NotificationOptions);
-        });
-      })
+      // this.angularFireMessaging.onMessage((payload) => {
+      //   console.log(payload);
+      //   const NotificationOptions = {
+      //     body: payload.notification.body,
+      //     data: payload.data,
+      //     // icon: payload.notification.icon
+      //     icon: './assets/img/logo.png',
+      //   }
+      //   navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope').then(registration => {
+      //     registration.showNotification(payload.notification.title, NotificationOptions);
+      //   });
+      // })
   }
  
   requestPermission() {
@@ -38,7 +39,12 @@ constructor(private angularFireMessaging: AngularFireMessaging) {
       (payload) => {
       console.log("new message received. ", payload);
       this.currentMessage.next(payload);
-    })
+    });
+    this.angularFireMessaging.onMessage((payload) => {
+      console.log('Message received. ', payload);
+      this.currentMessage.next(payload);
+      
+});
   }
 
   setTokenFCM(token: any){

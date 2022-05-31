@@ -6,11 +6,23 @@
     /* max-height: 570px; */
     max-height: -moz-calc(100vh - 200px);
     max-height: -webkit-calc(100vh - 200px);
-    max-height: calc(100vh - 200px);
+    max-height: calc(90vh - 200px);
     overflow-y: auto;
 }
 
 .top{
     margin-top: -45px;
+}
+
+.actions, .card-title a {
+    cursor: pointer;
+}
+
+.card-footer, .btn {
+    cursor: pointer;
+}
+
+.no-hover{
+    pointer-events: none;
 }
 

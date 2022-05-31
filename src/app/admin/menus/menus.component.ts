@@ -1,17 +1,32 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { MenuService } from 'app/services/menus/menu.service';
 
 import { NotificationService } from 'app/services/notification/notification.service';
 
-import { Lightbox } from 'ngx-lightbox';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { AuthService } from 'app/services/auth/auth.service';
+import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
 
-
+export interface Item {
+  photoPF: string,	
+  photoBG: string,
+  status: boolean,
+  ref?: string,
+  order?: number,
+  name: {
+    es: string,
+    en: string,
+  },
+  description: {
+    es: string,
+    en: string,
+  },
+  menuId?: string,
+  price?: number,
+}
 @Component({
   selector: 'app-menus',
   templateUrl: './menus.component.html',
@@ -39,17 +54,17 @@ import { AuthService } from 'app/services/auth/auth.service';
     ])  
   ]
 })
-export class MenusComponent implements OnInit, AfterViewInit {
+export class MenusComponent implements OnInit {
 
   @ViewChild('scroll', { read: ElementRef }) public scroll: ElementRef<any>;
+  private itemsCollection: AngularFirestoreCollection<Item>;
+  menus: Observable<Item[]>;
 
   constructor(
-    private menuService: MenuService,
     public spinner: NgxSpinnerService,
     private afStorage: AngularFireStorage,
     private notificationService: NotificationService,
-    private _lightbox: Lightbox,
-    private authService: AuthService
+    private afs: AngularFirestore
     ) {
 
      }
@@ -59,55 +74,35 @@ export class MenusComponent implements OnInit, AfterViewInit {
   finish = false;
   imageChangedEventPF: any = '';
   imageChangedEventBG: any = '';
-  croppedImagePF: any = '';
-  croppedImageBG: any = '';
+  croppedImagePF: any = null;
+  croppedImageBG: any = null;
   data: any;
   path = '/menus';
   photoPF = './assets/img/default-pf.png';
   photoBG = './assets/img/default-bg.png';
-    
-  item: any = {
-    data:{
+
+  item: Item = {
     photoPF: './assets/img/default-pf.png',
     photoBG: './assets/img/default-bg.png',
+    status: true,
+    ref: '',
+    order: 0,
     name: {
       es: '',
-      en: '',
+      en: ''
     },
     description: {
       es: '',
-      en: '',
-    },
+      en: ''
     }
   }
 
-  form = new FormGroup({
-    // uid: new FormControl({value: null, disabled: true}),
-    id: new FormControl(),
-    order: new FormControl(),
-    ref: new FormControl(),
-    // name: new FormControl('', Validators.required),
-    // nameEs: new FormControl('', Validators.required),
-    name: new FormGroup({
-      es: new FormControl('', Validators.required),
-      en: new FormControl('', Validators.required)
-    }),
-    description: new FormGroup({
-      es: new FormControl('',),
-      en: new FormControl('',)
-    }),
-    filePF: new FormControl(null),
-    fileBG: new FormControl(null),
-    photoPF:  new FormControl(null),
-    photoBG:  new FormControl(null),
-    status:  new FormControl(true),
-
-  });
+  form: FormGroup;
 
   documentId = null;
   status = true;
-  currentStatus = 1;
-  menus: any;
+  isEdit = false;
+
   max: number;
   config: any =  {
     itemsPerPage: 5,
@@ -126,42 +121,70 @@ export class MenusComponent implements OnInit, AfterViewInit {
     el.scrollIntoView();
   }
 
-  async ngOnInit() {
-    // setTimeout(async () => {
-      this.spinner.show();
-      await this.menuService.gets().toPromise().then(
-        (docs) => { 
-        this.menus = docs; 
-        // docs.forEach((data: any) => {
-        //   this.menus.push({
-        //     id: data.id,
-        //     data: data.data()
-        //   });
-        // });
-        this.config.totalItems =  this.menus.length;
-        this.spinner.hide();
-      }).catch((error) => {
-        // window.alert(error)
-        console.log(error);
-        this.spinner.hide();
-        this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
-      });
-    // }, 500);
-  }
-
-  ngAfterViewInit(): void {
+  ngOnInit() {
+    this.spinner.show();
+    this.itemsCollection = this.afs.collection<Item>('menus');
+    this.menus = this.itemsCollection.valueChanges({idField: 'id'});
+    this.menus
+    .subscribe((data: string | any[]) => { 
+      this.config.totalItems = data.length;
+      this.spinner.hide();
+    });
     
+    this.form = new FormGroup({
+      // uid: new FormControl({value: null, disabled: true}),
+      id: new FormControl(''),
+      order: new FormControl('', [Validators.min(1)]),
+      ref: new FormControl(''),
+      name: new FormGroup({
+        es: new FormControl('', Validators.required),
+        en: new FormControl('', Validators.required)
+      }),
+      description: new FormGroup({
+        es: new FormControl('',),
+        en: new FormControl('',)
+      }),
+      filePF: new FormControl(null),
+      fileBG: new FormControl(null),
+      photoPF:  new FormControl(null),
+      photoBG:  new FormControl(null),
+      status:  new FormControl(true),
+  
+    });
   }
 
-  pageChanged(event){
+  pageChanged(event: any){
     this.config.currentPage = event;
   }
   
-  async onSubmit(form: any, documentId = this.documentId, status = this.status) {
-      // console.log(`Status: ${this.currentStatus}`);
-      // setTimeout(() => {
-      this.spinner.show();
-      // }, 200);
+  addItem(item: Item) {
+    this.spinner.show();
+    this.itemsCollection.add(item)
+    .then(() => {
+      this.spinner.hide();
+      this.showForm = false;
+      this.notificationService.showNotification('top', 'right', 'success','check', 'Save success');
+    })
+    .catch((error: { message: any; }) => {
+      this.spinner.hide();
+      this.showForm = false;
+      this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
+    });
+  }
+
+  updateItem(documentId:string, data: any) {
+    this.spinner.show();
+    this.itemsCollection.doc(documentId).update(data).then(() => {
+      this.spinner.hide();
+      this.showForm = !this.showForm && this.isEdit;
+      this.notificationService.showNotification('top', 'right', 'success','check', 'Update success');
+    }).catch((error: { message: any; }) => {
+      this.spinner.hide();
+      this.notificationService.showNotification('top', 'right', 'danger','warning', error.message);
+    });
+  }
+
+  async onSubmit(form: any, documentId = this.documentId) {
       let data = {
         order: form.order,
         ref: form.ref,
@@ -177,47 +200,13 @@ export class MenusComponent implements OnInit, AfterViewInit {
         photoBG: this.photoBG,
         status: form.status
       }
-      if (this.currentStatus == 1) {
+      if (!this.isEdit) {
         console.log('New Doc');
-        await this.menuService.create(data).toPromise().then(() => {
-          console.log('Doc created successs');
-          setTimeout(() => {
-            this.ngOnInit();
-            this.showForm = false;
-          }, 100);
-          this.notificationService.showNotification('top', 'right', 'success','check', 'Save success');
-        }, (error) => {
-          console.error(error);
-          this.spinner.hide();
-          if(error.status == 401) {
-            this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please login again...');
-            this.authService.signOut();
-          }else{
-            this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error saving');
-          }
-        });
+        this.addItem(data)
       } else {
         console.log('Edit Doc');
-        return await this.menuService.update(documentId, data).toPromise().then(() => {
-          this.currentStatus = 1;
-          console.log('Doc edited success');
-          setTimeout(async () => {  
-            await this.ngOnInit();
-            this.showForm = false;
-          }, 100);
-          this.notificationService.showNotification('top', 'right', 'success','check', 'Edited success');
-        }, (error) => {
-          console.log(error);
-          this.spinner.hide();
-          if(error.status == 401) {
-            this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please Login Again...');
-            this.authService.signOut();
-          }else{
-            this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error editing');
-          }
-        });
+        this.updateItem(documentId, data);
       }
-      
     }
 
     async upload(){
@@ -231,77 +220,40 @@ export class MenusComponent implements OnInit, AfterViewInit {
 
     edit(documentId: string) {
       this.showForm = true;
-      this.reset();
       this.spinner.show();
-        this.menuService.getById(documentId).toPromise().then((menu: any) => {
-        this.currentStatus = 2;
-        this.documentId = documentId;
-        this.status = menu.data.status,
-        this.photoPF = menu.data.photoPF;
-        this.photoBG = menu.data.photoBG;
-        this.item = {
-          data: {  
-            photoBG: menu.data.photoBG,
-            photoPF: menu.data.photoPF,
-            status: menu.data.status,
-            name: {
-              es: menu.data.name.es,
-              en: menu.data.name.en,
-            },
-            description: {
-              es: menu.data.description.es,
-              en: menu.data.description.en,
-            },
-            ref: menu.data.ref,
-            order: menu.data.order,
-          }
-        };
-        // console.log(this.item)
-        this.form.patchValue({
-          id: documentId,
-          name: {
-            es: menu.data.name.es,
-            en: menu.data.name.en,
-          },
-          description: {
-            es: menu.data.description.es,
-            en: menu.data.description.en,
-          },
-          ref: menu.data.ref,
-          order: menu.data.order,
-          status: menu.data.status,
-        });
-        // editSubscribe.unsubscribe();
+      this.reset();
+      this.itemsCollection.doc(documentId).ref.get().then((doc: { exists: any; data: () => Item; }) => {
         this.spinner.hide();
-
-      },
-      (error) => 
-        {
-          console.log(error);
-          this.notificationService.showNotification('top', 'right', 'danger','danger', error.message)
+        if (doc.exists) {
+          this.isEdit = true;
+          this.documentId = documentId;
+          this.item = doc.data(); 
+          this.photoPF = this.item.photoPF;
+          this.photoBG = this.item.photoBG;
+          this.form.patchValue(this.item);
         }
-      )//.unsubscribe();
+      }).catch((error: { message: any; }) => {
+        this.spinner.hide();
+        this.notificationService.showNotification('top', 'right', 'danger','warning', error.message);
+      });
     }
 
     onChanges(): void {
-      this.form.valueChanges.subscribe(val => {
-          // console.log(val);
+      this.form.valueChanges.subscribe((val: { status: any; name: { es: any; en: any; }; description: { es: any; en: any; }; ref: any; order: any; }) => {
           this.item = {
-            data: {
-              photoBG: this.photoBG,
-              photoPF: this.photoPF,
-              status: val.status,
-              name: {
-                es: val.name.es,
-                en: val.name.en,
-              },
-              description: {
-                es: val.description.es,
-                en: val.description.en
-              },
-              ref: val.ref,
-              order: val.order,
-            }
+            photoBG: this.photoBG,
+            photoPF: this.photoPF,
+            status: val.status,
+            name: {
+              es: val.name.es,
+              en: val.name.en,
+            },
+            description: {
+              es: val.description.es,
+              en: val.description.en
+            },
+            ref: val.ref,
+            order: val.order,
           };
       });
     }
@@ -310,55 +262,27 @@ export class MenusComponent implements OnInit, AfterViewInit {
       this.reset();
       this.showForm=!this.showForm;
       this.form.patchValue({
-        order: this.config.totalItems + 1
+        order: this.config?.totalItems + 1
       })
     }
 
-    async delete(documentId: string) {
+    delete(documentId: string) {
       this.spinner.show();
-      await this.menuService.delete(documentId).toPromise().then((menu) => {
-        console.log('deleted');
-        this.notificationService.showNotification('top', 'right', 'success','check', 'Delete success');
-        this.menus = this.menus.filter(obj => obj.id !== documentId);
-        this.config.totalItems =  this.menus.length;
-        // setTimeout(() => {
-        //   this.ngOnInit();
-        // }, 100);
+      this.itemsCollection.doc(documentId).delete().then(() => {
         this.spinner.hide();
-      }, (error) => {
-        console.log(error);
+        this.notificationService.showNotification('top', 'right', 'success','check', 'Deleted success');
+      }).catch((error: { message: any; }) => {
         this.spinner.hide();
-        if(error.status == 401) {
-          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please Login Again...');
-          this.authService.signOut();
-        }else{
-          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error deleting');
-        }
+        this.notificationService.showNotification('top', 'right', 'danger','warning', error.message);
       });
     }
 
-    async changeStatus(documentId: string, status: boolean) {
-      this.spinner.show();
+    changeStatus(documentId: string, status: boolean) {
+      this.reset();
       let data = {
         status: !status 
       }
-     await this.menuService.update(documentId, data).toPromise().then(() => {
-        console.log('Edited');
-        this.notificationService.showNotification('top', 'right', 'success','check', 'Status changed success');
-        this.menus.forEach(x =>  {
-          if(x.id == documentId) x.data.status = !x.data.status
-       });
-       this.spinner.hide();
-      }, (error) => {
-        console.log(error);
-        this.spinner.hide();
-        if(error.status == 401) {
-          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Unauthorized. Please Login Again...');
-          this.authService.signOut();
-        }else{
-          this.notificationService.showNotification('top', 'right', 'danger','warning', 'Error changing status');
-        }
-      });
+      this.updateItem(documentId, data);        
     }
   
 
@@ -369,13 +293,13 @@ export class MenusComponent implements OnInit, AfterViewInit {
       this.finish = true;
       // this.spinner.show();
       
-      await ref.putString(image, 'data_url', {contentType:'image/webp'}).then((result) => {
+      await ref.putString(image, 'data_url', {contentType:'image/webp'}).then((result: any) => {
         // console.log(result);
         console.log('Upload finished');
         // this.spinner.hide();
       });
 
-      ref.getDownloadURL().subscribe(function(URL) {
+      ref.getDownloadURL().subscribe(function(URL: any) {
         console.log(URL);
         // if(type == 'profile')
         // this.photoPF = URL;
@@ -387,21 +311,24 @@ export class MenusComponent implements OnInit, AfterViewInit {
 
     fileChangeEvent(event: any, type: string): void {
       this.spinner.show();
-      if(type == 'profile')
-      this.imageChangedEventPF = event;
-      if(type == 'background')
-      this.imageChangedEventBG = event;
+      if( type == 'profile'){
+        this.imageChangedEventPF = event;
+      }
+      if( type == 'background'){
+        this.imageChangedEventBG = event;
+      }
     }
+
     imageCropped(event: ImageCroppedEvent, type: string) {
       if(type == 'profile'){
         this.croppedImagePF = event.base64;
         this.photoPF = event.base64;
-        this.item.data.photoPF = this.photoPF;
+        this.item.photoPF = this.photoPF;
       }
       if(type == 'background'){
         this.croppedImageBG = event.base64;
         this.photoBG = event.base64;
-        this.item.data.photoBG = this.photoBG;
+        this.item.photoBG = this.photoBG;
       }
     }
     imageLoaded() {
@@ -427,14 +354,13 @@ export class MenusComponent implements OnInit, AfterViewInit {
         fileBG: null,
         filePF: null,
       });
-      this.currentStatus = 1;
-      this.croppedImageBG = '';
-      this.croppedImagePF = '';
+      this.isEdit = false;
+      this.croppedImageBG = null;
+      this.croppedImagePF = null;
       this.imageChangedEventPF = null;
       this.imageChangedEventBG = null;
       this.photoPF = './assets/img/default-pf.png';
       this.photoBG = './assets/img/default-bg.png';
-      // this.lang = 'es';
     }
-
 }
+

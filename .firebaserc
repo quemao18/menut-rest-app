@@ -1,6 +1,6 @@
 {
   "projects": {
-    "prod": "chacaitobaires",
-    "dev": "chacaitobaires-dev"
-  }
+    "default": "menu-rest-app"
+  },
+  "targets": {}
 }

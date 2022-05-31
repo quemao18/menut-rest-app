@@ -1,88 +1,43 @@
-import { Injectable, Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment'; 
+import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
+import { interval } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 declare var $: any;
 
 @Injectable()
 export class VersionCheckService {
-    // this will be replaced by actual hash post-build.js
-    private currentHash = '{{POST_BUILD_ENTERS_HASH_HERE}}';
 
-    constructor(private http: HttpClient, private router: Router) {}
-
-    /**
-     * Checks in every set frequency the version of frontend application
-     * @param url
-     * @param {number} frequency - in milliseconds, defaults to 30 minutes
-     */
-    public initVersionCheck(url: string, frequency: number = 1000 * 60): void {
-        // this.showNotification();
-        setInterval(() => {
-            // this.showNotification();
-            this.checkVersion(url);
-        }, frequency);
+    constructor(public swUpdate: SwUpdate) {
+        interval(1000 * 60 * environment.updateMinutes).subscribe(
+            () => swUpdate.checkForUpdate().then(() => console.log('checking for updates'))
+        );
     }
 
-    public reload(){
-        // alert()
-        location.reload();
-    }
-
-    /**
-     * Will do the call and check if the hash has changed or not
-     * @param url
-     */
-    private checkVersion(url: string) {
-        // timestamp these requests to invalidate caches
-        this.http.get(url + '?t=' + new Date().getTime())
-            // .first()
-            .subscribe(
-                (response: any) => {
-                    const hash = response.hash;
-                    const hashChanged = this.hasHashChanged(this.currentHash, hash);
-                    console.log('hash', hash);
-                    console.log('currentHash', this.currentHash);
-                    // If new version, do something
-                    if (hashChanged) {
-                        // ENTER YOUR CODE TO DO SOMETHING UPON VERSION CHANGE
-                        // for an example: location.reload();
-                        this.showNotification(); 
-                    }
-                    // store the new hash so we wouldn't trigger versionChange again
-                    // only necessary in case you did not force refresh
-                    this.currentHash = hash;
-                },
-                (err) => {
-                    console.error(err, 'Could not get version');
-                }
-            );
-    }
-
-    /**
-     * Checks if hash has changed.
-     * This file has the JS hash, if it is a different one than in the version.json
-     * we are dealing with version change
-     * @param currentHash
-     * @param newHash
-     * @returns {boolean}
-     */
-    private hasHashChanged(currentHash: string, newHash: any): boolean {
-        if (!currentHash || currentHash === '{{POST_BUILD_ENTERS_HASH_HERE}}') {
-            return false;
-        }
-
-        return currentHash !== newHash;
+    public checkForUpdates(): void {
+        const updatesAvailable = this.swUpdate.versionUpdates.pipe(
+        filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'),
+        map(evt => ({
+        type: 'UPDATE_AVAILABLE',
+        current: evt.currentVersion,
+        available: evt.latestVersion,
+        })));
+        console.log('checkUpdate');
+        updatesAvailable
+        .subscribe(event => {
+            console.log('updateAvailable', event);
+            this.showNotification()
+        });
     }
 
     public showNotification() {
 
         $.notify({
             // options
-            icon: 'glyphicon glyphicon-warning-sign',
+            icon: 'warning',
             title: 'Nueva versión disponible',
-            message: 'Existe una actualización, haz click aqui para actualizar', 
+            message: 'Existe una actualización, haz click aquí para actualizar', 
             // url: environment.web,
             target: '_self',
         },{
@@ -113,9 +68,9 @@ export class VersionCheckService {
             onClose: null,
             onClosed: null,
             icon_type: 'class',
-            template: '<div data-notify="container" class="update col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+            template: '<div data-notify="container" style="cursor: pointer;" class="update col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
                 '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-                '<span data-notify="icon"></span> ' +
+                '<i class="material-icons" data-notify="icon">warning</i>' +
                 '<span data-notify="title"><strong>{1}</strong></span> ' +
                 '<span data-notify="message">{2}</span>' +
                 '<div class="progress" data-notify="progressbar">' +

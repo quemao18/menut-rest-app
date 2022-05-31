@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeLayoutComponent implements OnInit {
 
+  date = new Date();
+
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
 }

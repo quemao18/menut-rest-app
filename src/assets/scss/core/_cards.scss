@@ -202,6 +202,15 @@
       background: linear-gradient(60deg, $red-400, $red-600);
     }
 
+    .card-header-orange .card-icon,
+    .card-header-orange .card-text,
+    .card-header-orange:not(.card-header-icon):not(.card-header-text),
+    &.bg-brown,
+    &.card-rotate.bg-orange .front,
+    &.card-rotate.bg-orange .back{
+      background: linear-gradient(60deg, $orange-700, $orange-900);
+    }
+
     .card-header-brown .card-icon,
     .card-header-brown .card-text,
     .card-header-brown:not(.card-header-icon):not(.card-header-text),
@@ -213,6 +222,10 @@
 
     .card-header-brown h1{
       color:$yellow-400 !important;
+    }
+
+    .card-header-orange h1{
+      color:$white !important;
     }
 
     .card-header-rose .card-icon,

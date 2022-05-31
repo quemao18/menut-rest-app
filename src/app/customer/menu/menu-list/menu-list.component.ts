@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuService } from 'app/services/menus/menu.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from 'app/services/notification/notification.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { DishService } from 'app/services/dishes/dish.service';
-import { Observable, of } from 'rxjs';
 import { ShoppingCartService, Product } from 'app/services/shopping-cart/shopping-cart.service';
 import { environment } from 'environments/environment';
-
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { combineLatest, Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { uniq } from 'lodash';
+import { Item } from 'app/admin/menus/menus.component';
 @Component({
   selector: 'app-menu-list',
   templateUrl: './menu-list.component.html',
@@ -39,8 +40,8 @@ import { environment } from 'environments/environment';
 export class MenuListComponent implements OnInit {
 
   constructor(    
-    private menuService: MenuService,
-    private dishService: DishService,
+    // private dishService: DishService,
+    private afs: AngularFirestore,
     public spinner: NgxSpinnerService,
     private notificationService: NotificationService,
     public shoppingCartService: ShoppingCartService,
@@ -49,8 +50,8 @@ export class MenuListComponent implements OnInit {
 
   public shoppingCartItems$: Observable<Product[]> = of([]);
   public shoppingCartItems: Product[] = [];
-  menus: any = [];
-  dishes: any = [];
+
+  // dishes: any = [];
   dishesCopy: any = [];
   lang: string = 'es';
   menuTitle: string = '';
@@ -58,31 +59,62 @@ export class MenuListComponent implements OnInit {
   menuId: string = '';
   totalItemsCart: number = 0;
   itemsCart: any;
+  private menusCollection: AngularFirestoreCollection<Item>;
+  menus: Observable<Item[]>;
+  private dishesCollection: AngularFirestoreCollection<Item>;
+  dishes: Observable<Item[]>;
 
   async ngOnInit(){
-    this.shoppingCartItems$ = this.shoppingCartService.getItems();
-    this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);    
-    this.totalItemsCart = this.shoppingCartItems.length;
+    this.spinner.show();
+    this.menusCollection = this.afs.collection<Item>('menus');
+    this.menus = this.menusCollection.valueChanges({idField: 'id'});
+    this.menus.subscribe(()=>this.spinner.hide());
+    // this.shoppingCartItems$ = this.shoppingCartService.getItems();
+    // this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);    
+    // this.totalItemsCart = this.shoppingCartItems.length;
+  }
 
-    setTimeout(() => {
-      this.spinner.show();
-    }, 200);
+  getList() { 
+    return this.afs.collection<any>('menus').valueChanges({idField: 'id'})
+    .pipe(
+      switchMap((menus: any) => {
+        const menusIds = uniq(menus.map((bp:any) => bp.id))
+        return combineLatest([
+          of(menus),
+          // combineLatest(
+            menusIds.map((menuId: any) =>
+              this.afs.collection<any>('dishes', ref => ref.where('menuId', '==', menuId)).valueChanges({idField: 'id'})
+              // .pipe(
+              //   map((dishes: any) => { 
+              //     return {menuId: menuId, data: uniq(dishes.map((bp:any) => bp.id))} 
+              //     }
+              //   )
+              // )
+            )
+          // )
+        ])
+      }),
+      map(([menus, dishes]:any) => {
+          return menus.map((menu: any) => {
+            return {
+              ...menu, 
+              dishes: dishes//.find((rev: any) =>rev.menuId === menu.id),
+            }
+          })
+      }),
+    )
+  }
 
-    this.menuId = '';
-    await this.getMenu();
-
-    setTimeout(() => {
-      this.spinner.hide(); 
-    }, 200);
-
-    setInterval(async()=>{
-      console.log('Updating dishes and menu...');
-      if(this.menuId == '')
-        this.getMenu();
-      if(this.menuId!='')
-        this.getDishes();
-      this.getDishesAll();
-    },60*1000*environment.updateMinutes); //update every 2 minutes
+  getDishes(menuId: string){
+    this.spinner.show();
+    if(menuId !== 'all'){
+      this.dishesCollection = this.afs.collection<Item>('dishes', ref => ref.where('menuId', '==', menuId));
+      this.dishes = this.dishesCollection.valueChanges({idField: 'id'});
+    }else{
+      this.dishesCollection = this.afs.collection<Item>('dishes');
+      this.dishes = this.dishesCollection.valueChanges({idField: 'id'});
+    }
+    this.dishes.subscribe(()=>this.spinner.hide());
   }
 
   totalItems(total: number) {
@@ -93,58 +125,17 @@ export class MenuListComponent implements OnInit {
     !item ? this.totalItemsCart-- : this.totalItemsCart;
   }
 
-  async getMenu(spinner?: boolean){
-    // if(spinner) this.spinner.show();
-      await this.getDishesAll();
-      await this.menuService.gets().toPromise().then(
-        (docs) => {
-        this.menus = docs; 
-        this.menuTitle = '';
-      }).catch((error) => {
-        console.log(error);
-        this.spinner.hide();
-        this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
-      });
-  }
-
   back(){
     this.menuId = '';
     this.menuTitle = '';
     this.dishes = this.dishesCopy;
   }
 
-  async getDishes(){
-      await this.dishService.getsByMenuId(this.menuId).toPromise().then(
-        (docs) => {
-        this.dishes = docs; 
-        // this.dishes = this.dishes.filter(obj => obj.data.menuId == this.menuId);
-      }).catch((error) => {
-        console.log(error);
-        this.spinner.hide();
-        this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
-      });
-  }
-
-  async getDishesAll(spinner?: boolean){
-    // if(spinner) this.spinner.show();
-      this.dishService.gets().toPromise().then(
-        (docs) => {
-        this.dishes = docs; 
-        this.dishesCopy = this.dishes;
-        if(this.menuId!='')
-          this.dishes = this.dishes.filter((obj:any) => obj.data.menuId == this.menuId);        
-      }).catch((error) => {
-        console.log(error);
-        this.spinner.hide();
-        this.notificationService.showNotification('top', 'right', 'danger', 'warning', error.message);
-      });
-  }
-
-  filterDishes(menu: any){
-      if(menu.data.status){
+  getDishesByMenu(menu: any){
+      if(menu.status){
         this.menuId = menu.id;
-        this.dishes = this.dishes.filter((obj:any) => obj.data.menuId == this.menuId);
-        this.menuTitle = this.lang == 'es' ? menu.data.name.es : menu.data.name.en;
+        this.getDishes(this.menuId);
+        this.menuTitle = this.lang == 'es' ? menu.name.es : menu.name.en;
       }
   }
 

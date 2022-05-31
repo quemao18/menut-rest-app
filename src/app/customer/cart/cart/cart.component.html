@@ -2,9 +2,9 @@
     <div class="container-fluid top">
         <div class="row">
             <div class="col-md-6 mx-auto">
-                <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
                     <div [@animate] class="card">
-                        <div class="card-header card-header-brown">
+                        <div class="card-header card-header-orange">
                             <h4 *ngIf="orderId == ''" class="card-title mt-0 text-yellow">Pedido</h4>
                             <h4 *ngIf="orderId !== ''" class="card-title mt-0 text-yellow">ÓRDEN: 
                                <span style="text-transform: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{orderId}}</span>

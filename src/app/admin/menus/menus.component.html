@@ -3,9 +3,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div [@animate] class="card card-plain">
-                    <div class="card-header card-header-brown">
-                        <h4 class="card-title mt-0 text-yellow">Menus 
+                <div [@animate] = "(menus | async)" class="card card-plain">
+                    <div class="card-header card-header-orange">
+                        <h4 class="card-title mt-0 ">Menus 
                             <a (click)="new();" class="link-white" title="Add" [routerLink]="">
                               <i class="material-icons" >add</i>
                             </a>
@@ -16,9 +16,10 @@
                         <p class="card-category"> Available menus </p>
                     </div>
                     <div class="card-body">
-                      <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                      <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
                          <div style="min-height: 550px;" class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover"> 
+                              <caption></caption>
                                 <thead class="">
                                     <th style="text-align: center;">Order</th>
                                     <th>Ref.</th>
@@ -28,27 +29,28 @@
                                     <th>Actions</th>
                                 </thead>
                                 <tbody>
-                                    <tr class="enabled" [routerLink]="['/dishes', menu.id]" [@animate] *ngFor="let menu of menus | filter: {search: queryString.value} | paginate: config "> 
+                                    <tr class="enabled" [routerLink]="['/admin/dishes', menu.id]" 
+                                    [@animate]="menu" *ngFor="let menu of menus | async | filter: {search: queryString.value} | paginate: config "> 
                                         <td style="text-align: center;">
-                                            {{menu.data.order}}
+                                            {{menu.order}}
                                         </td>
                                         <td>
-                                          {{menu.data.ref}}
+                                          {{menu.ref}}
                                         </td>
                                         <td>
-                                            {{menu.data.name.es}} <br>
-                                            {{menu.data.name.en}}
+                                            {{menu.name.es}} <br>
+                                            {{menu.name.en}}
                                         </td>
                                         <td>
-                                            {{menu.data.description.es}} <br>
-                                            {{menu.data.description.en}}
+                                            {{menu.description.es}} <br>
+                                            {{menu.description.en}}
                                         </td>
                                         <td>
-                                           <img class="rounded-circle" height="50px" src="{{menu.data.photoPF}}">
+                                           <img alt="" class="rounded-circle" height="50px" src="{{menu.photoPF}}">
                                         </td>
-                                        <td> 
-                                            <a (click)="changeStatus(menu.id, menu.data.status); $event.stopPropagation()" [routerLink]="" [title]="!menu.data.status ? 'Active' : 'Desactive'">
-                                              <i class="material-icons">{{!menu.data.status ? 'check': 'power_settings_new'}}</i>
+                                        <td class="actions"> 
+                                            <a (click)="changeStatus(menu.id, menu.status); $event.stopPropagation()" [routerLink]="" [title]="!menu.status ? 'Active' : 'Desactive'">
+                                              <i class="material-icons">{{!menu.status ? 'check': 'power_settings_new'}}</i>
                                             </a>
                                             <a (click)="edit(menu.id); $event.stopPropagation()" title="Edit" [routerLink]=""><i class="material-icons" >edit</i></a>
                                             <a (click)="delete(menu.id); $event.stopPropagation()" class="link-danger" title="Delete" [routerLink]=""><i class="material-icons" >delete</i></a>
@@ -70,18 +72,18 @@
         <div class="row">
             <div class="col-md-8">
                 <div [@animate] class="card card-plain flip" >
-                    <div class="card-header card-header-brown">
-                        <h4 class="card-title text-yellow">Menú</h4>
+                    <div class="card-header card-header-orange">
+                        <h4 class="card-title">Menu</h4>
                         <p class="card-category">Complete data</p>
                     </div>
                     <div class="card-body">
-                      <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
+                      <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
                         <form (keypress)="onChanges()"  [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
                             <div class="row">
                                 <input hidden #id formControlName= "id" >
                                 <div class="col-md-2">
                                   <mat-form-field class="example-full-width">
-                                    <input min="1" max={{config.totalItems}} type="number" matInput #order formControlName= "order" placeholder="Order">
+                                    <input min="1" type="number" matInput #order formControlName= "order" placeholder="Order">
                                   </mat-form-field>
                                 </div>
 
@@ -93,13 +95,13 @@
                                 
                                   <div class="col-md-4" formGroupName = "name">
                                       <mat-form-field class="example-full-width">
-                                        <input matInput #nameEs formControlName= "es" required placeholder="Nombre">
+                                        <input matInput #nameEs formControlName= "es" placeholder="Nombre">
                                         <mat-error>Required</mat-error>
                                       </mat-form-field>
                                   </div>
                                   <div class="col-md-4" formGroupName = "name">
                                       <mat-form-field class="example-full-width">
-                                        <input matInput #nameEn formControlName= "en" required placeholder="Name">
+                                        <input matInput #nameEn formControlName= "en" placeholder="Name">
                                         <mat-error>Required</mat-error>
                                       </mat-form-field>
                                   </div>
@@ -137,6 +139,7 @@
                                   (cropperReady)="cropperReady()"
                                   (loadImageFailed)="loadImageFailed()"
                                   ></image-cropper>
+                                  <img *ngIf="!croppedImagePF" alt="" [src]="photoPF" class="img-thumbnail" style="width: auto; height: auto;">
                                 </div>
                                 <div class="col-md-6">
                                   <label>Background</label>
@@ -155,6 +158,7 @@
                                   (cropperReady)="cropperReady()"
                                   (loadImageFailed)="loadImageFailed()"
                                   ></image-cropper>
+                                  <img *ngIf="!croppedImageBG" alt="" [src]="photoBG" class="img-thumbnail" style="width: auto; height: auto;">
                               </div>
                              
                               </div>

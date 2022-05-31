@@ -11,9 +11,10 @@ export class AuthAdminGuard implements CanActivate {
     private myRoute: Router){
   }
   canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if(this.auth.isAdmindIn){
+    // next: ActivatedRouteSnapshot,
+    // state: RouterStateSnapshot
+    ): Observable<boolean> | Promise<boolean> | boolean {
+    if(this.auth.isAdminIn){
       return true;
     }else{
       this.myRoute.navigate(["login"]);

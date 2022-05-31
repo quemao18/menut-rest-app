@@ -8,9 +8,9 @@ import { HomeComponent } from 'app/customer/home/home.component';
 export const CustomerLayoutRoutes: Routes = [
     // { path: 'login', component: LoginComponent, },
     // { path: 'forgot-password', component: ForgotPasswordComponent, },
-    { path: 'customer-home',           component: HomeComponent, },
-    { path: 'menu',           component: MenuListComponent, },
-    { path: 'cart',           component: CartComponent, },
+    { path: 'customer/home',           component: HomeComponent, },
+    { path: 'customer/menu',           component: MenuListComponent, },
+    { path: 'customer/cart',           component: CartComponent, },
     // { path: 'menu-pdf',       component: MenuPdfComponent, },
 
 ];

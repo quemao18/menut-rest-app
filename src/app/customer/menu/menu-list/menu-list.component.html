@@ -2,16 +2,16 @@
     <div class="container-fluid top">
         <div class="row">
             <div [@.disabled]="disable" *ngIf="menuTitle==''" class="col-md-6 mx-auto">
-            <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
-                <div [@animate] class="card">
-                    <div class="card-header card-header-brown">
-                        <h4 class="card-title mt-0 text-yellow">Menú</h4>
+            <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
+                <div [@animate]="(menus | async)" class="card">
+                    <div class="card-header card-header-orange">
+                        <h4 class="card-title mt-0">Menú</h4>
                     </div>
                     <div class="card-body menu">
-                        <app-menu-card-item-medium *ngFor="let menu of menus"
+                        <app-menu-card-item-medium *ngFor="let menu of menus | async"
                         [lang]="lang" 
                         [item]="menu"
-                        (click) = "filterDishes(menu); $event.stopPropagation();"
+                        (click) = "getDishesByMenu(menu); $event.stopPropagation();"
                         ></app-menu-card-item-medium>
                     </div>
                     <button *ngIf="totalItemsCart>0" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
@@ -22,10 +22,10 @@
             </div>
 
             <div [@.disabled]="disable" *ngIf="menuTitle!=''" class="col-md-6 mx-auto">
-                <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
-                    <div [@animate] class="card">
-                        <div class="card-header card-header-brown">
-                            <h4 class="card-title mt-0 text-yellow">{{menuTitle}}</h4>
+                <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
+                    <div [@animate] = "(dishes | async)" class="card">
+                        <div class="card-header card-header-orange">
+                            <h4 class="card-title mt-0">{{menuTitle}}</h4>
                             <!-- <h6 (click)="ngOnInit()"
                             title="Menú" 
                                 class="">
@@ -34,7 +34,7 @@
                             </h6> -->
                         </div>
                         <div class="card-body menu">
-                            <app-dish-card-item-large  *ngFor="let dish of dishes"
+                            <app-dish-card-item-large  *ngFor="let dish of dishes | async"
                             [lang]="lang" 
                             [item]="dish"
                             [menuTitle]="menuTitle"

@@ -14,21 +14,21 @@ import { MenuPdfComponent } from 'app/shared/menu-pdf/menu-pdf/menu-pdf.componen
 import { TablesComponent } from 'app/tables/tables.component';
 
 export const AdminLayoutRoutes: Routes = [
-    { path: 'dashboard',      component: DashboardComponent, },
-    { path: 'menus',          component: MenusComponent, },
-    { path: 'tables-admin',   component: TablesComponent, },
-    { path: 'dishes/:id',     component: DishesComponent, },
-    { path: 'dishes',         component: DishesComponent, },
-    { path: 'orders',         component: OrdersComponent, },
-    { path: 'orders/:id',     component: OrdersComponent, },
-    { path: 'menu-pdf',       component: MenuPdfComponent, },
+    { path: 'admin/dashboard',      component: DashboardComponent, },
+    { path: 'admin/menus',          component: MenusComponent, },
+    { path: 'admin/tables-admin',   component: TablesComponent, },
+    { path: 'admin/dishes/:id',     component: DishesComponent, },
+    { path: 'admin/dishes',         component: DishesComponent, },
+    { path: 'admin/orders',         component: OrdersComponent, },
+    { path: 'admin/orders/:id',     component: OrdersComponent, },
+    { path: 'admin/menu-pdf',       component: MenuPdfComponent, },
 
-    { path: 'user-profile',   component: UserProfileComponent },
-    { path: 'table-list',     component: TableListComponent, },
-    { path: 'typography',     component: TypographyComponent, },
-    { path: 'icons',          component: IconsComponent, },
+    { path: 'admin/profile',         component: UserProfileComponent },
+    { path: 'admin/table-list',     component: TableListComponent, },
+    // { path: 'typography',     component: TypographyComponent, },
+    // { path: 'icons',          component: IconsComponent, },
 
-    { path: 'notifications',  component: NotificationsComponent, },
-    { path: 'upgrade',        component: UpgradeComponent },
+    // { path: 'notifications',  component: NotificationsComponent, },
+    // { path: 'upgrade',        component: UpgradeComponent },
 
 ];

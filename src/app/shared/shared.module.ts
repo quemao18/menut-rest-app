@@ -17,7 +17,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MainPipeModule } from 'app/pipes/pipes.module';
-import { ArraySortPipe } from 'app/pipes/pipes.pipe';
 import { HomeCardComponent } from './home/home-card/home-card.component';
 
 

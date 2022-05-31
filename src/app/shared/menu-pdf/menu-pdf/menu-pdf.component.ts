@@ -51,11 +51,11 @@ export class MenuPdfComponent implements OnInit {
   disabled: boolean = true;
   
   async ngOnInit(){
-    this.spinner.show();
-    await this.getDishes('');
-    await this.getMenu();
-    this.disabled = false;
-    this.spinner.hide();
+    // this.spinner.show();
+    // await this.getDishes('');
+    // await this.getMenu();
+    // this.disabled = false;
+    // this.spinner.hide();
   }
   
 

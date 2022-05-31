@@ -10,9 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "install-clean": "rm node_modules /a && rm package-lock.json && npm install",
-    "post-build": "node ./build/post-build.js",
-    "build-fire-prod": "ng build --prod && npm run post-build && firebase deploy -P prod",
-    "build-fire-dev": "ng build --configuration=development && npm run post-build && firebase deploy -P dev ",
+    "build-fire": "ng build --configuration production && firebase deploy",
     "deploy": "ng build && firebase deploy"
   },
   "engines": {
@@ -34,9 +32,11 @@
     "@angular/platform-browser-dynamic": "^13.3.1",
     "@angular/platform-server": "13.3.10",
     "@angular/router": "^13.3.10",
+    "@angular/service-worker": "^13.3.10",
     "ajv": "8.11.0",
     "angularx-qrcode": "^10.0.10",
     "arrive": "2.4.1",
+    "autoprefixer": "10.4.5",
     "bootstrap": "4.6.1",
     "bootstrap-material-design": "4.1.3",
     "bootstrap-notify": "3.1.3",
@@ -91,5 +91,8 @@
     "ts-node": "~10.7.0",
     "tslint": "6.1.3",
     "typescript": "~4.4.2"
+  },
+  "overrides": {
+    "autoprefixer": "10.4.5"
   }
 }

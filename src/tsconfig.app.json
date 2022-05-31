@@ -15,6 +15,9 @@
     "test.ts",
     "**/*.spec.ts",
     "**/*.dev.ts",
-    "**/*.prod.ts"
+    "**/*.prod.ts",
+    "**/*.dev.sample.ts",
+    "**/*.prod.sample.ts"
+
   ]
 }

@@ -3,14 +3,14 @@
       <div class="row">
           <div class="col-md-8">
               <div class="card">
-                  <div class="card-header card-header-brown">
-                      <h4 class="card-title text-yellow">Edit Profile</h4>
+                  <div class="card-header card-header-orange">
+                      <h4 class="card-title">Edit Profile</h4>
                       <p class="card-category">Complete your profile</p>
                   </div>
                   <div class="card-body">
                       <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-                          <div class="row">
-                              <div class="col-md-5">
+                          <!-- <div class="row">
+                              <div class="col-md-6">
                                 <mat-form-field class="example-full-width">
                                     <input matInput #uid formControlName= "uid" placeholder="UID (disabled)" >
                                   </mat-form-field>
@@ -20,21 +20,21 @@
                                     <input matInput #userName formControlName= "userName" placeholder="Username">
                                   </mat-form-field>
                               </div>
-                              <div class="col-md-4">
+                              <div class="col-md-6">
                                   <mat-form-field class="example-full-width">
                                     <input matInput #email formControlName= "email" placeholder="Email address" type="email">
                                   </mat-form-field>
                               </div>
-                          </div>
+                          </div> -->
                           <div class="row">
                               <div class="col-md-6">
                                 <mat-form-field class="example-full-width">
-                                  <input matInput #firstName formControlName= "firstName" placeholder="Fist Name" type="text">
+                                  <input matInput #appName formControlName= "appName" placeholder="Name Rest" type="text">
                                 </mat-form-field>
                               </div>
                               <div class="col-md-6">
                                 <mat-form-field class="example-full-width">
-                                  <input matInput #lastName formControlName= "lastName" placeholder="Last Name" type="text">
+                                  <input matInput #email formControlName= "email" placeholder="Email" type="text">
                                 </mat-form-field>
                               </div>
                           </div>
@@ -45,28 +45,37 @@
                                 </mat-form-field>
                               </div>
                           </div>
-                          <!-- <div class="row">
-                              <div class="col-md-4">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <span matPrefix>@</span>
+                                <input matInput #ig formControlName= "instagram" placeholder="Instagram" type="text">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <input matInput #phoneWa formControlName= "whatsapp" placeholder="Phone Whatsapp (+584121231234)" type="text">
+                              </mat-form-field>
+                            </div>
+                        </div>
+                        
+                          <div class="row">
+                              <div class="col-md-6">
                                 <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="City" type="text">
+                                  <input matInput #textButton formControlName= "textButton" placeholder="Text Button" type="text">
                                 </mat-form-field>
                               </div>
-                              <div class="col-md-4">
+                              <div class="col-md-6">
                                 <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Country" type="text">
+                                  <input  matInput #textTitle formControlName= "textTitle" placeholder="Welcome" type="text">
                                 </mat-form-field>
                               </div>
-                              <div class="col-md-4">
-                                <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Postal Code" type="text">
-                                </mat-form-field>
-                              </div>
-                          </div> -->
+                          </div>
                           <div class="row">
                               <div class="col-md-12">
-                                <label>About Me</label>
+                                <label>Slogan</label>
                                 <mat-form-field class="example-full-width">
-                                   <textarea name="aboutMe" #aboutMe formControlName = "aboutMe" matInput placeholder="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."></textarea>
+                                   <textarea name="appSlogan" #slogan formControlName = "appSlogan" matInput placeholder="Your slogan here"></textarea>
                                  </mat-form-field>
                                   <!-- <div class="form-group">
 
@@ -79,7 +88,7 @@
                             </div>
                             <div class="row">
                               <div class="col-md-6">
-                                <label>Avatar</label>
+                                <label>Logo</label>
                                 <div class="example-full-width">
                                   <input class="file-input" type="file" #file formControlName="filePF" (change)="fileChangeEvent($event, 'profile')">
                                 </div>
@@ -87,7 +96,7 @@
                                 [imageChangedEvent]="imageChangedEventPF"
                                 [maintainAspectRatio]="true"
                                 [roundCropper]="false"
-                                [aspectRatio]="4 / 3"
+                                [aspectRatio]="1 / 1"
                                 format="webp"
                                 [imageQuality] = "40"
                                 (imageCropped)="imageCropped($event, 'profile')"
@@ -105,7 +114,7 @@
                                 [imageChangedEvent]="imageChangedEventBG"
                                 [maintainAspectRatio]="false"
                                 [roundCropper]="false"
-                                [aspectRatio]="4 / 3"
+                                [aspectRatio]="1 / 1"
                                 format="webp"
                                 [imageQuality] = "20"
                                 (imageCropped)="imageCropped($event, 'background')"
@@ -119,34 +128,56 @@
                               </div>
                             </div>
                             <hr>
-                            <progress *ngIf="percentage > 0 && percentage < 100" class="progress is-large is-success" value="{{percentage}}" max="100">{{percentage}}%</progress>
+                            <!-- <progress *ngIf="percentage > 0 && percentage < 100" class="progress is-large is-success" value="{{percentage}}" max="100">{{percentage}}%</progress> -->
                             <!-- <button [ngClass]="{'button': true, 'is-success': true, 'is-large': true, 'is-loading': porcentaje > 0 && porcentaje < 100}" [disabled]="!profileForm.valid && (porcentaje > 0 && porcentaje < 100)">Subir archivo</button> -->
-                          <button mat-raised-button [disabled]="!profileForm.valid || percentage > 0 && percentage < 100" type="submit" class="btn btn-danger pull-right">Update Profile</button>
+                          <button mat-raised-button [disabled]="!profileForm.valid" type="submit" class="btn btn-danger pull-right">Update</button>
                           <div class="clearfix"></div>
                       </form>
                   </div>
               </div>
           </div>
-          <div class="col-md-4">
+          <!-- <div class="col-md-4">
               <div class="card card-profile">
                   <div class="image">
                     <img src="{{photoBG}}" alt="..."/>
                   </div>
                   <div class="card-avatar">
                       <a href="javascript:void(0)" (click)="file.click()">
-                          <img class="img" src="{{photoURL}}" />
+                          <img alt="" class="img" src="{{logo}}" />
                       </a>
                   </div>
                   <div class="card-body">
-                      <h6 class="card-category text-gray">{{userName.value}}</h6>
-                      <h4 class="card-title">{{firstName.value}} {{lastName.value}}</h4>
+                      <h6 class="card-category text-gray">{{address.value}}</h6>
+                      <h4 class="card-title">{{appName.value}}</h4>
                       <p class="card-description">
-                      {{aboutMe.value}}
+                      {{slogan.value}}
                       </p>
                       <a href="javascript:void(0)" class="btn btn-danger btn-round">Follow</a>
                   </div>
               </div>
-          </div>
+          </div> -->
+
+          <div class="col-md-4 mx-auto">
+            <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
+                <div class="card" style="background-color:ghostwhite;">
+                    <div class="card-header card-header-orange">
+                        <h4 class="card-title mt-0">{{appName.value}}</h4>
+                    </div>
+                    <div class="card-body menu">
+                        <app-card-home 
+                        [textButton]="textButton.value"
+                        [logo]="logo"
+                        [textTitle]="textTitle.value"
+                        [textDescription]="slogan.value"
+                        [instagram]="ig.value" 
+                        [address]="address.value" 
+                        [whatsapp]="phoneWa.value"
+                        [route]="['/customer/menu']">
+                        </app-card-home>
+                    </div>
+                </div>
+            </div>
+
       </div>
   </div>
 </div>
