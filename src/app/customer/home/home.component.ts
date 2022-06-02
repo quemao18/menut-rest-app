@@ -36,7 +36,9 @@ export class HomeComponent implements OnInit {
   constructor(private settingService: SettingService) { }
 
   ngOnInit(): void {
-    this.settings = this.settingService.getSettings;
+    setTimeout(() => {
+      this.settings = this.settingService.getSettings;
+    }, 500);
   }
 
 }

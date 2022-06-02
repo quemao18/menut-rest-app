@@ -33,8 +33,11 @@ export class SidebarCustomerComponent implements OnInit {
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
-    this.appName = this.settingService.getSettings.appName;
+    setTimeout(() => {
+      this.appName = this.settingService.getSettings?.appName;      
+    }, 500);
   }
+
   isMobileMenu() {
       if ($(window).width() > 991) {
           return false;

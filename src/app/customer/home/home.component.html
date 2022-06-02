@@ -5,17 +5,17 @@
                 <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
                     <div [@animate] class="card" style="background-color:ghostwhite;">
                         <div class="card-header card-header-orange">
-                            <h4 class="card-title mt-0">{{settings.appName}}</h4>
+                            <h4 class="card-title mt-0">{{settings?.appName}}</h4>
                         </div>
                         <div class="card-body menu">
                             <app-card-home 
-                            [textButton]="settings.textButton"
-                            [logo]="settings.logo"
-                            [textTitle]="settings.textTitle" 
-                            [textDescription]="settings.appSlogan"
-                            [instagram]="settings.instagram" 
-                            [address]="settings.address" 
-                            [whatsapp]="settings.whatsapp"
+                            [textButton]="settings?.textButton"
+                            [logo]="settings?.logo"
+                            [textTitle]="settings?.textTitle" 
+                            [textDescription]="settings?.appSlogan"
+                            [instagram]="settings?.instagram" 
+                            [address]="settings?.address" 
+                            [whatsapp]="settings?.whatsapp"
                             [route]="['/customer/menu']">
                             </app-card-home>
                         </div>
