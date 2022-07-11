@@ -12,8 +12,9 @@ declare interface RouteInfo {
     class: string;
 }
 export const ROUTES: RouteInfo[] = [
-    { path: 'customer/home', title: 'Inicio',  icon: 'home', class: '' },
-    { path: 'customer/menu', title: 'Menú',  icon: 'restaurant_menu', class: '' },
+    // { path: 'customer/home', title: 'Inicio',  icon: 'home', class: '' },
+    // { path: 'customer/menu', title: 'Menú',  icon: 'restaurant_menu', class: '' },
+    
     // { path: '/cart', title: 'Pedido',  icon: 'shopping_cart', class: '' },
     // { path: '/dish', title: 'Dishes',  icon: 'fastfood', class: '' },
 ];
@@ -27,15 +28,16 @@ export class SidebarCustomerComponent implements OnInit {
   menuItems: any[];
 
   appName: string;
-
+  uid: string;
 
   constructor(public router: Router, public authService: AuthService, private settingService: SettingService) { }
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter(menuItem => menuItem);
+    // this.menuItems = ROUTES.filter(menuItem => menuItem);
+    this.uid = localStorage.getItem('uid');
     setTimeout(() => {
       this.appName = this.settingService.getSettings?.appName;      
-    }, 500);
+    }, 1500);
   }
 
   isMobileMenu() {

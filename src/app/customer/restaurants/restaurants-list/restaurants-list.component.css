@@ -1,0 +1,44 @@
+h6{
+    float: right;
+    right: 15px;
+    position: absolute;
+    cursor: pointer;
+}
+/* h4{
+    width: 60%;
+} */
+.card-header{
+    display: flex;
+}
+.card{
+    background-color: ghostwhite;
+}
+
+.yellow{
+    background: #f4eb60 !important;
+}
+.no-animate {
+    -webkit-transition: none !important;
+    transition: none !important;
+ }
+
+ .float-right{
+    position: absolute;
+    top: 88%;
+    left: 87%;
+ }
+
+ .float-left{
+    position: absolute;
+    top: 88%;
+    right: 87%;
+ }
+
+ .badge{
+    position: absolute;
+    top: -4px;
+    left: 28px;
+    background-color: blue;
+    color: white;
+    border-radius: 60%;
+ }

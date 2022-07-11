@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'environments/environment';
+import { Observable } from 'rxjs';
 
 const collection = 'settings';
 
@@ -10,12 +11,30 @@ const collection = 'settings';
 })
 
 
+
 export class SettingService {
+
+  private settingsCollection: AngularFirestoreCollection<any>;
+  settings: Observable<any[]>;
+
   constructor(
     private firestore: AngularFirestore,
-    private http: HttpClient
+    private http: HttpClient,
+    private afs: AngularFirestore,
   ) {
     this.firestore.firestore.settings({experimentalForceLongPolling: true})
+    this.settingsCollection = this.afs.collection<any>('settings', 
+      ref => ref.where('projectId', '==', environment.firebaseConfig.projectId));
+      this.settingsCollection.valueChanges({idField: 'id'})
+      .subscribe(data => {
+        if(data && data.length > 0){
+          this.setSettings(data[0]);
+          // this.themeService.setTheme('chancho-taco');
+          //this.themeService.setTheme(data[0].projectId);
+        }else{
+          this.settingsCollection.add({projectId: environment.firebaseConfig.projectId})
+        }
+      });
   }
 
   generateHeaders() {
@@ -62,10 +81,11 @@ export class SettingService {
   }
   
   get getSettings(): any{
-    return JSON.parse(localStorage.getItem('settings')!);
+    return this.settings;//JSON.parse(localStorage.getItem('settings')!);
   }
 
   setSettings(settings: any){
+    this.settings = settings;
     localStorage.setItem('settings', JSON.stringify(settings));
   }
 

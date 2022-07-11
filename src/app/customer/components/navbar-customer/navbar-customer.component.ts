@@ -123,6 +123,6 @@ export class NavbarCustomerComponent implements OnInit {
             return this.listTitles[item].title;
         }
     }
-    return 'Dashboard';
+    return '';
   }
 }

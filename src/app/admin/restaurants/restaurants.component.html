@@ -1,0 +1,229 @@
+<div #scroll></div>
+<div class="main-content" *ngIf="!showForm">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div [@animate] = "(menus | async)" class="card ">
+                    <div class="card-header card-header-theme">
+                        <h4 class="card-title mt-0 ">Restaurants 
+                            <a (click)="new();" class="link-white" title="Add" [routerLink]="">
+                              <i class="material-icons" >add</i>
+                            </a>
+                        </h4>
+                        <mat-form-field class="search2 card-title mt-0">
+                          <input type="text" #queryString matInput class="search" placeholder="Search" >
+                        </mat-form-field>  
+                        <p class="card-category"> Available restaurants </p>
+                    </div>
+                    <div class="card-body">
+                      <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
+                         <div style="min-height: 550px;" class="table-responsive">
+                            <table class="table table-hover"> 
+                              <caption></caption>
+                                <thead class="">
+                                    <!-- <th style="text-align: center;">Order</th> -->
+                                    <!-- <th>Ref.</th> -->
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Picture</th>
+                                    <th>Actions</th>
+                                </thead>
+                                <tbody>
+                                    <tr class="enabled" [routerLink]="['/admin/menus', rest.id]" 
+                                    [@animate]="rest" *ngFor="let rest of restaurants | async | filter: {search: queryString.value} | paginate: config "> 
+                                        <!-- <td style="text-align: center;">
+                                            {{rest.order}}
+                                        </td> -->
+                                        <!-- <td>
+                                          {{rest.ref}}
+                                        </td> -->
+                                        <td>
+                                            {{rest.name}} 
+                                        </td>
+                                        <td>
+                                            {{rest.description}}
+                                        </td>
+                                        <td>
+                                           <img alt="" class="rounded-circle" height="50px" src="{{rest.photoPF}}">
+                                        </td>
+                                        <td class="actions"> 
+                                            <a (click)="changeStatus(rest.id, rest.status); $event.stopPropagation()" [routerLink]="" [title]="!rest.status ? 'Active' : 'Desactive'">
+                                              <i class="material-icons">{{!rest.status ? 'check': 'power_settings_new'}}</i>
+                                            </a>
+                                            <a (click)="edit(rest.id); $event.stopPropagation()" title="Edit" [routerLink]=""><i class="material-icons" >edit</i></a>
+                                            <a (click)="delete(rest.id); $event.stopPropagation()" class="link-danger" title="Delete" [routerLink]=""><i class="material-icons" >delete</i></a>
+                                        </td>  
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls style="text-align: center;" (pageChange)="pageChanged($event)"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content" *ngIf="showForm">
+    <div class="container-fluid" >
+        <div class="row">
+            <div class="col-md-8">
+                <div [@animate] class="card  flip" >
+                    <div class="card-header card-header-theme">
+                        <h4 class="card-title">Restaurant</h4>
+                        <p class="card-category">Complete data</p>
+                    </div>
+                    <div class="card-body">
+                      <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
+
+                        <form (keypress)="onChanges()"  [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+                            <div class="row">
+                                <input hidden #id formControlName= "id" >
+                                <!-- <div class="col-md-2">
+                                  <mat-form-field class="example-full-width">
+                                    <input min="1" type="number" matInput #order formControlName= "order" placeholder="Order">
+                                  </mat-form-field>
+                                </div> -->
+
+                                <!-- < class="col-md-2">
+                                  <mat-form-field class="example-full-width">
+                                    <input type="text" matInput #ref formControlName= "ref" placeholder="Ref.">
+                                  </mat-form-field>
+                                 -->
+                                <!-- <div class="row"> -->
+                                  <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                      <input matInput #name formControlName= "name" placeholder="Name Rest" type="text">
+                                    </mat-form-field>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                      <input matInput #email formControlName= "email" placeholder="Email" type="text">
+                                    </mat-form-field>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <mat-form-field class="example-full-width">
+                                    <input matInput #description formControlName= "description" placeholder="Description" type="text">
+                                  </mat-form-field>
+                                </div>
+                            </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                    <mat-form-field class="example-full-width">
+                                      <input matInput #address formControlName= "address" placeholder="Address" type="text">
+                                    </mat-form-field>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <mat-form-field class="example-full-width">
+                                    <span matPrefix>@</span>
+                                    <input matInput #ig formControlName= "instagram" placeholder="Instagram" type="text">
+                                  </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                  <mat-form-field class="example-full-width">
+                                    <input matInput #phoneWa formControlName= "whatsapp" placeholder="Phone Whatsapp (+584121231234)" type="text">
+                                  </mat-form-field>
+                                </div>
+                            </div>
+                            
+                              <div class="row">
+                                  <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                      <input matInput #textButton formControlName= "textButton" placeholder="Text Button" type="text">
+                                    </mat-form-field>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                      <input  matInput #textTitle formControlName= "textTitle" placeholder="Welcome" type="text">
+                                    </mat-form-field>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                    <label>Slogan</label>
+                                    <mat-form-field class="example-full-width">
+                                       <textarea name="slogan" #slogan formControlName = "slogan" matInput placeholder="Your slogan here"></textarea>
+                                     </mat-form-field>
+                                      <!-- <div class="form-group">
+    
+                                          <div class="form-group">
+                                              <label class="bmd-label-floating"> Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</label>
+                                              <textarea class="form-control" rows="5"></textarea>
+                                          </div>
+                                      </div> -->
+                                  </div>
+                                </div>
+              
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <label>Logo</label>
+                                  <div class="example-full-width">
+                                    <input class="file-input" type="file" #file formControlName="filePF" (change)="fileChangeEvent($event, 'profile')">
+                                  </div>
+                                  <image-cropper
+                                  [imageChangedEvent]="imageChangedEventPF"
+                                  [maintainAspectRatio]="true"
+                                  [roundCropper]="false"
+                                  [aspectRatio]="1 / 1"
+                                  format="webp"
+                                  [imageQuality] = "20"
+                                  (imageCropped)="imageCropped($event, 'profile')"
+                                  (imageLoaded)="imageLoaded()"
+                                  (cropperReady)="cropperReady()"
+                                  (loadImageFailed)="loadImageFailed()"
+                                  ></image-cropper>
+                                  <img *ngIf="!croppedImagePF" alt="" [src]="photoPF" class="img-thumbnail" style="width: auto; height: auto;">
+                                </div>
+                                <div class="col-md-6">
+                                  <label>Background</label>
+                                  <div class="example-full-width">
+                                    <input class="file-input" type="file" #file formControlName="fileBG" (change)="fileChangeEvent($event, 'background')">
+                                  </div>
+                                  <image-cropper
+                                  [imageChangedEvent]="imageChangedEventBG"
+                                  [maintainAspectRatio]="false"
+                                  [roundCropper]="false"
+                                  [aspectRatio]="1 / 1"
+                                  format="webp"
+                                  [imageQuality] = "20"
+                                  (imageCropped)="imageCropped($event, 'background')"
+                                  (imageLoaded)="imageLoaded()"
+                                  (cropperReady)="cropperReady()"
+                                  (loadImageFailed)="loadImageFailed()"
+                                  ></image-cropper>
+                                  <img *ngIf="!croppedImageBG" alt="" [src]="photoBG" class="img-thumbnail" style="width: auto; height: auto;">
+                              </div>
+                             
+                              </div>
+                              <hr>
+                              Active: <input (click)="onChanges()" type="checkbox" #status formControlName= "status" >
+                              <span class="label" style="float: right;margin-right: 5px;margin-top: -3px">*Required</span><br>
+                               <!-- <button [ngClass]="{'button': true, 'is-success': true, 'is-large': true, 'is-loading': porcentaje > 0 && porcentaje < 100}" [disabled]="!profileForm.valid && (porcentaje > 0 && porcentaje < 100)">Subir archivo</button> -->
+                            <button mat-raised-button (click)="scrollDiv(scroll)" [disabled]="!form.valid" type="submit" class="btn btn-danger pull-right">Save</button>
+                            <button (click) = "showForm=!showForm; reset();" mat-raised-button type="button" class="btn btn-link pull-right">Cancel</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+       
+            <div class="col-md-4">
+              Restaurant in list
+              <app-restaurant-card-item-medium
+              [lang]="lang" 
+              [item]="item"
+              ></app-restaurant-card-item-medium>
+              <br>
+              Restaurant home             
+              <app-restaurant-card-item-large
+              [lang]="lang" 
+              [item]="item"
+              ></app-restaurant-card-item-large>
+            </div>
+    </div>
+  </div>

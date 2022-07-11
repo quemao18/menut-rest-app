@@ -1,0 +1,32 @@
+.card-title, .media-body h4{
+    text-transform: uppercase;
+    margin: 0px;
+}
+
+.card-body{
+    margin: 15px !important;
+    padding: 0;
+}
+
+.disabled{
+    cursor: not-allowed;
+}
+
+.enabled{
+    cursor: pointer;
+}
+
+/* Top right text */
+.top-right {
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    cursor: pointer;
+    color: blue;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.card-profile {
+    margin-top: 50px;
+}

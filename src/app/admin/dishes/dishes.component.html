@@ -3,24 +3,38 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-4">
+              <!-- Menu:  -->
+              <mat-form-field >
+                  <mat-label>Select Restaurant</mat-label>
+                  <mat-select (selectionChange)="getMenuByRestId(restId)"  [(value)]="restId" >
+                    <!-- <mat-option value="all" >All restaurants</mat-option> -->
+                    <mat-option *ngFor="let rest of restaurants | async" [value]="rest.id">
+                      {{rest.name}}
+                    </mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+
+            <div class="col-md-4" *ngIf="(menus | async)">
                 <!-- Menu:  -->
                 <mat-form-field >
                     <mat-label>Select Menu</mat-label>
-                    <mat-select (selectionChange)="getDishes(menuId)"  [(value)]="menuId" >
-                      <mat-option value="all" >All dishes</mat-option>
+                    <mat-select (selectionChange)="getDishesByMenuId(menuId)"  [(value)]="menuId" >
+                      <!-- <mat-option value="all" >All dishes</mat-option> -->
                       <mat-option *ngFor="let menu of menus | async" [value]="menu.id">
                         {{menu.name.en}}/{{menu.name.es}}
                       </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
+
             <div class="col-md-12">
 
-                <a class="" style="float: right; margin-top:-45px; margin-right: 20px;" title="Menus" [routerLink]="'/admin/menus'">
+                <a class="link-custom" style="float: right; margin-top:-45px; margin-right: 20px;" title="Menus" [routerLink]="'/admin/menus'">
                     Menus <i class="material-icons" >undo</i>
                 </a>
-                <div [@animate] = "(dishes | async)" class="card card-plain">
-                    <div class="card-header card-header-orange">
+                <div [@animate] = "(dishes | async)" class="card">
+                    <div class="card-header card-header-theme">
                         <h4 class="card-title mt-0">Dishes 
                             <a (click)="new();" class="link-white" title="Add" [routerLink]="">
                               <i class="material-icons" >add</i>
@@ -88,38 +102,31 @@
     <div class="container-fluid" >
         <div class="row">
             <div class="col-md-8">
-                <div [@animate] class="card card-plain flip" >
-                    <div class="card-header card-header-orange">
+                <div [@animate] class="card flip" >
+                    <div class="card-header card-header-theme">
                         <h4 class="card-title">Dish</h4>
                         <p class="card-category">Complete data for the dish</p>
                     </div>
                     <div class="card-body">
                       <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
                         <form (keypress)="onChanges()" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
-                            <div class="row">
-                                <input hidden #id formControlName= "id" >
-                                <div class="col-md-2">
-                                  <mat-form-field class="example-full-width">
-                                    <input min="1" type="number" matInput #order formControlName= "order" placeholder="Order">
+                           <div class="row">
+                            <input hidden #id formControlName= "id" >
+                                <div class="col-md-6">
+                                    <mat-form-field >
+                                      <mat-label>Select Restaurant</mat-label>
+                                      <mat-select (selectionChange)="getMenuByRestId(restId)"  [(value)]="restId" >
+                                        <mat-option value="all" >All restaurants</mat-option>
+                                        <mat-option *ngFor="let rest of restaurants | async" [value]="rest.id">
+                                          {{rest.name}}
+                                        </mat-option>
+                                      </mat-select>
                                   </mat-form-field>
-                                </div>
-
-                                <div class="col-md-2">
-                                  <mat-form-field class="example-full-width">
-                                    <input type="text" matInput #ref formControlName= "ref" placeholder="Ref.">
-                                  </mat-form-field>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <mat-form-field class="example-full-width">
-                                      <input type="number" matInput #price required formControlName= "price" placeholder="Price">
-                                      <mat-error>Required</mat-error>
-                                    </mat-form-field>
                                 </div>
 
                                 <div class="col-md-6">
                                     <mat-form-field>
-                                        <mat-label>Select a menú</mat-label>
+                                        <mat-label>Select a menu</mat-label>
                                         <mat-select #menuId formControlName= "menuId"  >
                                           <mat-option *ngFor="let menu of menus | async" [value]="menu.id">
                                             {{menu.name.en}}/{{menu.name.es}}
@@ -127,8 +134,32 @@
                                         </mat-select>
                                       </mat-form-field>
                                 </div>
-                                
+
+                                  
+                              </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                  <mat-form-field class="example-full-width">
+                                    <input min="1" type="number" matInput #order formControlName= "order" placeholder="Order">
+                                  </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4">
+                                  <mat-form-field class="example-full-width">
+                                    <input type="text" matInput #ref formControlName= "ref" placeholder="Ref.">
+                                  </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                      <input type="number" matInput #price required formControlName= "price" placeholder="Price">
+                                      <mat-error>Required</mat-error>
+                                    </mat-form-field>
+                                </div>
+
                             </div>
+
 
                             <div class="row">
 

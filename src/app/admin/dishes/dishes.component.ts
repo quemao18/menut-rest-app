@@ -65,12 +65,15 @@ export class DishesComponent implements OnInit {
       es: '',
       en: '',
     },
-    status: true
+    status: true,
+    restId: '',
+    menuId: '',
   };
   form = new FormGroup({
     // uid: new FormControl({value: null, disabled: true}),
     id: new FormControl(),
     menuId: new FormControl(null, Validators.required),
+    restId: new FormControl(null, Validators.required),
     order: new FormControl(),
     ref: new FormControl(),
     // name: new FormControl('', Validators.required),
@@ -114,6 +117,11 @@ export class DishesComponent implements OnInit {
   private dishesCollection: AngularFirestoreCollection<Item>;
   dishes: Observable<Item[]>;
 
+  private restaurantsCollection: AngularFirestoreCollection<Item>;
+  restaurants: Observable<Item[]>;
+
+  restId: string = '';
+
   constructor(
     public spinner: NgxSpinnerService,
     private activatedRoute: ActivatedRoute,
@@ -133,12 +141,17 @@ export class DishesComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.menusCollection = this.afs.collection<Item>('menus');
-    this.menus = this.menusCollection.valueChanges({idField: 'id'});
+    this.getRestaurants();
     this.activatedRoute.params.subscribe(params => {
       this.menuId = params['id'] || 'all';
-      this.getDishes(this.menuId);
+      this.restId = params['restId'] || '';
+      // this.getDishes(this.menuId);
     });
+  }
+
+  getRestaurants() {
+    this.restaurantsCollection = this.afs.collection<Item>('restaurants');
+    this.restaurants = this.restaurantsCollection.valueChanges({idField: 'id'});
   }
 
   pageChanged(event: any){
@@ -172,7 +185,7 @@ export class DishesComponent implements OnInit {
     });
   }
 
-  getDishes(menuId: string){
+  getDishesByMenuId(menuId: string){
     // this.router.navigate(['/dishes/'+menuId])
     this.spinner.show();
     this.dishes = null;
@@ -188,6 +201,14 @@ export class DishesComponent implements OnInit {
       this.max = dishes.length; 
       this.spinner.hide();
     }); 
+  }
+
+  getMenuByRestId(restId: any) {
+    this.menusCollection = this.afs.collection<Item>('menus', ref => ref.where('restId', '==', restId));
+    this.menus = this.menusCollection.valueChanges({idField: 'id'});
+    // this.dishesCollection = this.afs.collection<Item>('dishes', ref => ref.where('menuId', '==', menuId));
+    // this.dishes = this.dishesCollection.valueChanges({idField: 'id'});
+
   }
   
   async onSubmit(form: any, documentId = this.documentId) {
@@ -207,7 +228,8 @@ export class DishesComponent implements OnInit {
         photoPF: this.photoPF,
         photoBG: this.photoBG,
         status: form.status,
-        price: form.price
+        price: form.price,
+        restId: form.restId
       }
       if (!this.isEdit) {
         console.log('New Doc');
@@ -266,7 +288,8 @@ export class DishesComponent implements OnInit {
       this.showForm=!this.showForm;
       this.form.patchValue({
         order: this.config.totalItems + 1,
-        menuId: this.menuId
+        menuId: this.menuId,
+        restId: this.restId
       })
     }
 
@@ -332,7 +355,9 @@ export class DishesComponent implements OnInit {
         photoBG:  '',
         fileBG: null,
         filePF: null,
-        price: ''
+        price: '',
+        restId: '',
+        menuId: '',
       });
       this.isEdit = false;
       this.croppedImageBG = '';

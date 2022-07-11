@@ -18,6 +18,7 @@ import { LightboxModule } from 'ngx-lightbox';
 import { SharedModule } from 'app/shared/shared.module';
 import { CartComponent } from 'app/customer/cart/cart/cart.component';
 import { HomeComponent } from 'app/customer/home/home.component';
+import { RestaurantsListComponent } from 'app/customer/restaurants/restaurants-list/restaurants-list.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { HomeComponent } from 'app/customer/home/home.component';
   declarations: [
     MenuListComponent,
     DishListComponent,
+    RestaurantsListComponent,
     CartComponent,
     HomeComponent
   ],

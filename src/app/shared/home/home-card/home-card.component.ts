@@ -33,7 +33,7 @@ export class HomeCardComponent implements OnInit {
   @Input() public route: string;
   @Input() public textButton: string;
   @Input() public textTitle: string;
-  @Input() public textDescription: string;
+  @Input() public slogan: string;
   @Input() public instagram: string = '';
   @Input() public whatsapp: string = '';
   @Input() public address: string = '';

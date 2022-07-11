@@ -1,0 +1,20 @@
+<div > 
+      <div (click)="item.status && getRestaurant(item)" [@flip] class="card card-stats">
+        <div class="card-header card-header-info card-header-icon">
+          <!-- <div (click)="lang = 'en'; $event.stopPropagation();" title="English" class="top-right2">
+            <img alt="" src="./assets/img/icons8-usa-48.png" style="height: 30px; margin-top: -4px;margin-right: -6px;"/>
+          </div> -->
+          <img alt="" src="{{item.photoPF}}" (click)="open(item.name, item.photoPF); $event.stopPropagation();" 
+          class="card-icon-2 " style="width:70px; height: 70px;">
+          <div class="card-body" [ngClass]="!item.status? 'disabled':'enabled'" >
+            <p class="card-category">{{item.description || 'Descripción'}}</p>
+            <h3 class="card-title">{{item.name || 'Nombre'}}</h3>
+          </div>
+        </div>
+        <div class="card-footer" *ngIf="!item.status">
+            <div class="stats">
+                <span><i class="material-icons">warning</i> Cerrado</span>
+            </div>
+        </div>
+    </div>
+</div>

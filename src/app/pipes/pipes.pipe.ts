@@ -51,11 +51,17 @@ export class FilterPipe implements PipeTransform {
     if(!args['search']) return items;
     var searchText = args['search'].toLowerCase();
     return items.filter( it => {
-    return it.name.es.toLowerCase().includes(searchText) || 
-    it.name.en.toLowerCase().includes(searchText) || 
-    it.description.es.toLowerCase().includes(searchText) || 
-    it.description.en.toLowerCase().includes(searchText) ||
-    it.ref.toLowerCase().includes(searchText) 
+      if(it.name || it.description) {
+        return  it.name.toLowerCase().includes(searchText) ||
+                it.description.toLowerCase().includes(searchText);
+      }else{
+        return  it.name?.es?.toLowerCase().includes(searchText) || 
+                it.name?.en?.toLowerCase().includes(searchText) || 
+                it.description?.es?.toLowerCase().includes(searchText) || 
+                it.description?.en?.toLowerCase().includes(searchText) ||
+                it.ref?.toLowerCase().includes(searchText) 
+      }
+   
     });
   }
 }

@@ -14,9 +14,9 @@ declare interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
     // { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' },
     // { path: '/orders', title: 'Orders',  icon: 'list', class: '' },
+    { path: 'admin/restaurants', title: 'Restaurants',  icon: 'table_chart', class: '' },
     { path: 'admin/menus', title: 'Menus',  icon: 'restaurant_menu', class: '' },
     { path: 'admin/dishes', title: 'Dishes',  icon: 'fastfood', class: '' },
-    // { path: '/tables-admin', title: 'Tables',  icon: 'table_chart', class: '' },
     // { path: '/menu-pdf', title: 'Menú PDF',  icon: 'picture_as_pdf', class: '' },
     { path: '/admin/profile', title: 'Profile',  icon:'person', class: '' },
     // { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },

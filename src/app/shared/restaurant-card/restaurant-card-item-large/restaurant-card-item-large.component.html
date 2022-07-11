@@ -1,0 +1,86 @@
+<!-- es -->
+<!-- <div *ngIf="lang=='es'">
+    <div [@flip] class="card card-profile">
+        <div class="image">
+            <img src="{{item.photoBG}}" alt="..."/>
+            <div (click)="lang = 'en'" title="English" class="top-right">EN</div>
+        </div>
+        <div class="card-avatar">
+            <a href="javascript:void(0)" (click)="open(item.name.es, item.photoPF);">
+                <img class="img" src="{{item.photoPF}}" />
+            </a>
+        </div>
+        <div class="card-body">
+            <h6 *ngIf="ref" class="card-category text-gray">{{item.ref}}</h6>
+            <h4 class="card-title">{{iteam.nameEs}}</h4>
+            <p class="card-description">
+            {{iteam.descriptionEs}}
+            </p> 
+            <p class="text-danger" *ngIf="!item.status">Agotado</p>
+            <a [ngClass]="!item.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">Ver</a>
+        </div>
+    </div>
+</div> -->
+<!-- es -->
+<!-- en -->
+<!-- <div *ngIf="lang=='en'">
+    <div [@flip] class="card card-profile" >
+        <div class="image">
+        <img src="{{item.photoBG}}" alt="..."/>
+        <div (click)="lang = 'es'" title="Español" class="top-right">ES</div>
+        </div>
+        <div class="card-avatar">
+            <a href="javascript:void(0)" (click)="open(item.name.en, item.photoPF); ">
+                <img class="img" src="{{item.photoPF}}" />
+            </a>
+        </div>
+        
+        <div class="card-body">
+            <h6 *ngIf="ref" class="card-category text-gray">{{item.ref}}</h6>
+            <h4 class="card-title">{{item.nameEn}}</h4>
+            <p class="card-description">
+            {{item.descriptionEn}}
+            </p> 
+            <p class="text-danger" *ngIf="!item.status">Unavailable</p>
+            <a [ngClass]="!item.status? 'disabled':'enabled'" href="javascript:void(0)" class="btn btn-danger btn-round">View</a>
+        </div>
+    </div>
+</div>  -->
+<!-- en -->
+<div [@animate] class="card" style="background-color:ghostwhite;">
+    <div class="card-header card-header-theme">
+        <h4 class="card-title mt-0">{{item?.name}}</h4>
+    </div>
+    <div class="card-body menu">
+
+        <div [@flip] class="card card-profile top">
+            <div class="card-avatar">
+                <a href="javascript:void(0)" >
+                    <img [alt]="item?.photoPF || ''" class="img" [src]="item?.photoPF || './assets/img/logo.png'" />
+                </a>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">{{item.textTitle || 'Welcome'}}</h4>
+                <p class="card-description">
+                {{item.slogan}}
+                </p> 
+                <input [routerLink]="['/customer/menu', item.id]"  type="button" class="btn btn-lg btn-theme" [value]="item.textButton || 'Menu'">
+            </div>
+            <hr style="width: 90%; margin:0 auto">
+            <div class="card-footer" style="margin: 0 auto; padding: 10px">
+                <a *ngIf="item.instagram" [href]="getUrlIg(item)" target="_blank" class="text-muted">
+                    <i class="fa fa-instagram mr-4">&nbsp;{{item.instagram}}</i>
+                </a>
+                <a *ngIf="item.whatsapp" [href]="getUrlWa(item)" target="_blank" class="text-muted">
+                    <i class="fa fa-whatsapp">&nbsp;{{item.whatsapp | phone}}</i>
+                </a>
+            </div>
+            <button [title]="lang=='es' ? 'Volver': 'Back'" (click)="back(); $event.stopPropagation();" class="float-left btn-theme" mat-mini-fab color="warn">
+                <i class="material-icons" >undo</i>
+            </button>
+        </div>
+
+        
+        
+    </div>
+</div>

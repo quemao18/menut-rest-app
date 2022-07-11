@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit {
       mobile_menu_visible: any = 0;
     private toggleButton: any;
     private sidebarVisible: boolean;
+    uid: '';
 
     constructor(location: Location,  private element: ElementRef, private router: Router, public authService: AuthService) {
       this.location = location;
@@ -22,6 +23,7 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit(){
+        this.uid = this.authService.getUserLoggedIn.uid;    
       this.listTitles = ROUTES.filter(listTitle => listTitle);
       const navbar: HTMLElement = this.element.nativeElement;
       this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];

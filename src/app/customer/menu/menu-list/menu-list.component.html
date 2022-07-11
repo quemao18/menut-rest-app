@@ -1,11 +1,11 @@
 <div class="main-content">
     <div class="container-fluid top">
         <div class="row">
-            <div [@.disabled]="disable" *ngIf="menuTitle==''" class="col-md-6 mx-auto">
+            <div [@.disabled]="disable" class="col-md-6 mx-auto">
             <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
                 <div [@animate]="(menus | async)" class="card">
-                    <div class="card-header card-header-orange">
-                        <h4 class="card-title mt-0">Menú</h4>
+                    <div class="card-header card-header-theme">
+                        <h4 class="card-title mt-0">{{menuTitle || 'Menu'}}</h4>
                     </div>
                     <div class="card-body menu">
                         <app-menu-card-item-medium *ngFor="let menu of menus | async"
@@ -14,24 +14,21 @@
                         (click) = "getDishesByMenu(menu); $event.stopPropagation();"
                         ></app-menu-card-item-medium>
                     </div>
-                    <button *ngIf="totalItemsCart>0" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
+                    <!-- <button *ngIf="totalItemsCart>0" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
                         <span class="badge badge-light">{{totalItemsCart}}</span>
+                    </button> -->
+                    <button *ngIf="uid" [title]="lang=='es' ? 'Volver': 'Back'" (click)="back(); $event.stopPropagation();" class="float-left btn-theme" mat-mini-fab color="warn">
+                        <i class="material-icons" >undo</i>
                     </button>
 
                 </div>
             </div>
 
-            <div [@.disabled]="disable" *ngIf="menuTitle!=''" class="col-md-6 mx-auto">
+            <!-- <div [@.disabled]="disable" *ngIf="menuTitle!=''" class="col-md-6 mx-auto">
                 <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
                     <div [@animate] = "(dishes | async)" class="card">
-                        <div class="card-header card-header-orange">
+                        <div class="card-header card-header-theme">
                             <h4 class="card-title mt-0">{{menuTitle}}</h4>
-                            <!-- <h6 (click)="ngOnInit()"
-                            title="Menú" 
-                                class="">
-                                <i style="position: relative; top: 4px;" class="material-icons" >restaurant_menu</i>
-                                Menú
-                            </h6> -->
                         </div>
                         <div class="card-body menu">
                             <app-dish-card-item-large  *ngFor="let dish of dishes | async"
@@ -42,14 +39,14 @@
                             (inCartItem)="inCartItem($event)"
                             ></app-dish-card-item-large>
                         </div>
-                        <button [title]="lang=='es' ? 'Volver': 'Back'" (click)="back(); $event.stopPropagation();" class="float-left" mat-mini-fab color="warn">
+                        <button [title]="lang=='es' ? 'Volver': 'Back'" (click)="back(); $event.stopPropagation();" class="float-left btn-theme" mat-mini-fab color="warn">
                             <i class="material-icons" >undo</i>
                         </button>
-                        <button *ngIf="totalItemsCart>0" (click)="$event.stopPropagation();" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
+                        <button *ngIf="totalItemsCart>0" (click)="$event.stopPropagation();" [routerLink]="['/cart']" class="float-right btn-theme" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
                             <span class="badge badge-light">{{totalItemsCart}}</span>
                         </button>
                     </div>
-                </div>
+                </div> -->
 
         </div>
     </div>

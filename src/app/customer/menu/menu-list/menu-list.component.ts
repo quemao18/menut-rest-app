@@ -9,6 +9,8 @@ import { combineLatest, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { uniq } from 'lodash';
 import { Item } from 'app/admin/menus/menus.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-menu-list',
   templateUrl: './menu-list.component.html',
@@ -43,10 +45,14 @@ export class MenuListComponent implements OnInit {
     // private dishService: DishService,
     private afs: AngularFirestore,
     public spinner: NgxSpinnerService,
-    private notificationService: NotificationService,
+    private location: Location,
+    private activatedRoute: ActivatedRoute,
     public shoppingCartService: ShoppingCartService,
-    ) {
-     }
+    private router: Router
+  ) 
+    {
+    
+    }
 
   public shoppingCartItems$: Observable<Product[]> = of([]);
   public shoppingCartItems: Product[] = [];
@@ -61,60 +67,56 @@ export class MenuListComponent implements OnInit {
   itemsCart: any;
   private menusCollection: AngularFirestoreCollection<Item>;
   menus: Observable<Item[]>;
-  private dishesCollection: AngularFirestoreCollection<Item>;
-  dishes: Observable<Item[]>;
+  restId: string;
+  restaurant: any;
+  uid: string;
 
   async ngOnInit(){
-    this.spinner.show();
-    this.menusCollection = this.afs.collection<Item>('menus');
-    this.menus = this.menusCollection.valueChanges({idField: 'id'});
-    this.menus.subscribe(()=>this.spinner.hide());
+    // this.menusCollection = this.afs.collection<Item>('menus');
+    // this.menus = this.menusCollection.valueChanges({idField: 'id'});
+    // this.menus.subscribe(()=>this.spinner.hide());
+    this.uid = localStorage.getItem('uid');
+
+    this.activatedRoute.params.subscribe(params => {
+      this.restId = params['restId'];
+      this.getMenu(this.restId);
+      this.getRestaurant(this.restId);
+    });
+
     // this.shoppingCartItems$ = this.shoppingCartService.getItems();
     // this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems = _);    
     // this.totalItemsCart = this.shoppingCartItems.length;
   }
 
-  getList() { 
-    return this.afs.collection<any>('menus').valueChanges({idField: 'id'})
-    .pipe(
-      switchMap((menus: any) => {
-        const menusIds = uniq(menus.map((bp:any) => bp.id))
-        return combineLatest([
-          of(menus),
-          // combineLatest(
-            menusIds.map((menuId: any) =>
-              this.afs.collection<any>('dishes', ref => ref.where('menuId', '==', menuId)).valueChanges({idField: 'id'})
-              // .pipe(
-              //   map((dishes: any) => { 
-              //     return {menuId: menuId, data: uniq(dishes.map((bp:any) => bp.id))} 
-              //     }
-              //   )
-              // )
-            )
-          // )
-        ])
-      }),
-      map(([menus, dishes]:any) => {
-          return menus.map((menu: any) => {
-            return {
-              ...menu, 
-              dishes: dishes//.find((rev: any) =>rev.menuId === menu.id),
-            }
-          })
-      }),
-    )
+  getRestaurant(restId: string){
+    // this.spinner.show();
+    this.afs.collection('restaurants').doc(restId).valueChanges()
+    .subscribe(rest => {
+      this.restaurant = rest;
+      this.menuTitle = this.restaurant.name;
+      // this.spinner.hide();
+    });
   }
 
-  getDishes(menuId: string){
+  getMenu(restId: string){
+    // this.router.navigate(['/dishes/'+menuId])
     this.spinner.show();
-    if(menuId !== 'all'){
-      this.dishesCollection = this.afs.collection<Item>('dishes', ref => ref.where('menuId', '==', menuId));
-      this.dishes = this.dishesCollection.valueChanges({idField: 'id'});
+    this.menus = null;
+    if(restId !== 'all'){
+      this.menusCollection = this.afs.collection<Item>('menus', ref => ref.where('restId', '==', restId));
+      this.menus = this.menusCollection.valueChanges({idField: 'id'});
     }else{
-      this.dishesCollection = this.afs.collection<Item>('dishes');
-      this.dishes = this.dishesCollection.valueChanges({idField: 'id'});
+      // return;
+      // this.menusCollection = this.afs.collection<Item>('menus');
+      // this.menus = this.menusCollection.valueChanges({idField: 'id'});
     }
-    this.dishes.subscribe(()=>this.spinner.hide());
+    this.menus.subscribe(() => {
+      this.spinner.hide();
+    }); 
+  }
+
+  getDishesByMenu(menu: any){
+    this.router.navigate([`/customer/menu/${this.restId}/dishes/`+menu.id])
   }
 
   totalItems(total: number) {
@@ -126,17 +128,12 @@ export class MenuListComponent implements OnInit {
   }
 
   back(){
-    this.menuId = '';
-    this.menuTitle = '';
-    this.dishes = this.dishesCopy;
-  }
+    this.location.back();
+    // this.router.navigate([`/customer/restaurants/${this.uid}`])
 
-  getDishesByMenu(menu: any){
-      if(menu.status){
-        this.menuId = menu.id;
-        this.getDishes(this.menuId);
-        this.menuTitle = this.lang == 'es' ? menu.name.es : menu.name.en;
-      }
+    // this.menuId = '';
+    // this.menuTitle = '';
+    // this.dishes = this.dishesCopy;
   }
 
 }

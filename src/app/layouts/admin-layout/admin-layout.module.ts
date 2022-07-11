@@ -29,6 +29,7 @@ import { DishesComponent } from 'app/admin/dishes/dishes.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { OrdersComponent, DialogItems } from 'app/admin/orders/orders.component';
 import { TablesComponent } from 'app/tables/tables.component';
+import { RestaurantsComponent } from '../../admin/restaurants/restaurants.component';
 
 
 @NgModule({
@@ -68,6 +69,7 @@ import { TablesComponent } from 'app/tables/tables.component';
     FilterOrderPipe,
     OrdersComponent,
     DialogItems,
+    RestaurantsComponent
   ],
   entryComponents: [ 
     DialogItems 

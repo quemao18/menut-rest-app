@@ -26,3 +26,46 @@
     pointer-events: none;
 }
 
+.card .card-header-theme .card-header .card-title {
+    color: var(--primary-color) !important;
+}
+
+.actions a, .link-custom{
+    color: var(--background) !important;
+}
+
+$font: var(--font-family);
+@debug "font: #{$font}";
+
+@if $font == 'Montserrat' {
+    @font-face {
+        font-family: 'Cablegram';
+        src: url('./assets/fonts/cablegram/cablegram.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+        url('./assets/fonts/cablegram/cablegram.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+    }  
+}
+
+@import './assets/scss/material-dashboard.scss';
+
+.sidebar[data-color=orange] li.active > a {
+    background-color:var(--background);
+    box-shadow: 0 4px 20px 0px rgb(0 0 0 / 14%), 0 7px 10px -5px var(--background);
+}
+
+.card{
+    .btn-theme,
+    .card-header-theme .card-icon,
+    .card-header-theme .card-text,
+    .card-header-theme:not(.card-header-icon):not(.card-header-text),
+    &.bg-brown,
+    &.card-rotate.bg-theme .front,
+    &.card-rotate.bg-theme .back{
+        background: linear-gradient(60deg, var(--background-500), var(--background-900));
+        background-color: linear-gradient(60deg, var(--background-500), var(--background-900));
+
+    }
+}
+
+.footer a {
+    color: #000;
+}

@@ -9,11 +9,13 @@ import { NotificationService } from 'app/services/notification/notification.serv
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 export interface Item {
   photoPF: string,	
   photoBG: string,
   status: boolean,
+  restId?: string,
   ref?: string,
   order?: number,
   name: {
@@ -57,14 +59,19 @@ export interface Item {
 export class MenusComponent implements OnInit {
 
   @ViewChild('scroll', { read: ElementRef }) public scroll: ElementRef<any>;
-  private itemsCollection: AngularFirestoreCollection<Item>;
+  private menusCollection: AngularFirestoreCollection<Item>;
   menus: Observable<Item[]>;
+
+  private restaurantsCollection: AngularFirestoreCollection<Item>;
+  restaurants: Observable<Item[]>;
 
   constructor(
     public spinner: NgxSpinnerService,
     private afStorage: AngularFireStorage,
     private notificationService: NotificationService,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private activatedRoute: ActivatedRoute,
+
     ) {
 
      }
@@ -82,6 +89,7 @@ export class MenusComponent implements OnInit {
   photoBG = './assets/img/default-bg.png';
 
   item: Item = {
+    restId: '',
     photoPF: './assets/img/default-pf.png',
     photoBG: './assets/img/default-bg.png',
     status: true,
@@ -112,6 +120,7 @@ export class MenusComponent implements OnInit {
 
   lang: string = 'es';
   album: any = [];
+  restId = '';
 
   public scrollToTop() {
     this.scroll.nativeElement.scrollTop = 0;
@@ -122,18 +131,26 @@ export class MenusComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.spinner.show();
-    this.itemsCollection = this.afs.collection<Item>('menus');
-    this.menus = this.itemsCollection.valueChanges({idField: 'id'});
-    this.menus
-    .subscribe((data: string | any[]) => { 
-      this.config.totalItems = data.length;
-      this.spinner.hide();
+    this.restaurantsCollection = this.afs.collection<Item>('restaurants');
+    this.restaurants = this.restaurantsCollection.valueChanges({idField: 'id'});
+    this.activatedRoute.params.subscribe(params => {
+      this.restId = params['id'];
+      this.restId && this.getMenusByRestId(this.restId);
     });
+
+    // this.menusCollection = this.afs.collection<Item>('menus');
+    // this.menus = this.itemsCollection.valueChanges({idField: 'id'});
+    // this.menus
+    // .subscribe((data: string | any[]) => { 
+    //   this.config.totalItems = data.length;
+    //   this.spinner.hide();
+    // });
     
     this.form = new FormGroup({
       // uid: new FormControl({value: null, disabled: true}),
       id: new FormControl(''),
+      restId: new FormControl(null, Validators.required),
+
       order: new FormControl('', [Validators.min(1)]),
       ref: new FormControl(''),
       name: new FormGroup({
@@ -159,7 +176,7 @@ export class MenusComponent implements OnInit {
   
   addItem(item: Item) {
     this.spinner.show();
-    this.itemsCollection.add(item)
+    this.menusCollection.add(item)
     .then(() => {
       this.spinner.hide();
       this.showForm = false;
@@ -174,7 +191,7 @@ export class MenusComponent implements OnInit {
 
   updateItem(documentId:string, data: any) {
     this.spinner.show();
-    this.itemsCollection.doc(documentId).update(data).then(() => {
+    this.menusCollection.doc(documentId).update(data).then(() => {
       this.spinner.hide();
       this.showForm = !this.showForm && this.isEdit;
       this.notificationService.showNotification('top', 'right', 'success','check', 'Update success');
@@ -187,6 +204,7 @@ export class MenusComponent implements OnInit {
   async onSubmit(form: any, documentId = this.documentId) {
       let data = {
         order: form.order,
+        restId: form.restId,
         ref: form.ref,
         name: {
           es: form.name.es,
@@ -222,7 +240,7 @@ export class MenusComponent implements OnInit {
       this.showForm = true;
       this.spinner.show();
       this.reset();
-      this.itemsCollection.doc(documentId).ref.get().then((doc: { exists: any; data: () => Item; }) => {
+      this.menusCollection.doc(documentId).ref.get().then((doc: { exists: any; data: () => Item; }) => {
         this.spinner.hide();
         if (doc.exists) {
           this.isEdit = true;
@@ -239,8 +257,9 @@ export class MenusComponent implements OnInit {
     }
 
     onChanges(): void {
-      this.form.valueChanges.subscribe((val: { status: any; name: { es: any; en: any; }; description: { es: any; en: any; }; ref: any; order: any; }) => {
+      this.form.valueChanges.subscribe((val: any) => {
           this.item = {
+            restId: val.restId,
             photoBG: this.photoBG,
             photoPF: this.photoPF,
             status: val.status,
@@ -268,7 +287,7 @@ export class MenusComponent implements OnInit {
 
     delete(documentId: string) {
       this.spinner.show();
-      this.itemsCollection.doc(documentId).delete().then(() => {
+      this.menusCollection.doc(documentId).delete().then(() => {
         this.spinner.hide();
         this.notificationService.showNotification('top', 'right', 'success','check', 'Deleted success');
       }).catch((error: { message: any; }) => {
@@ -284,6 +303,20 @@ export class MenusComponent implements OnInit {
       }
       this.updateItem(documentId, data);        
     }
+
+    
+  getMenusByRestId(restId: string){
+    // this.router.navigate(['/dishes/'+menuId])
+    this.spinner.show();
+    this.menus = null;
+    this.menusCollection = this.afs.collection<Item>('menus', ref => ref.where('restId', '==', restId));
+    this.menus = this.menusCollection.valueChanges({idField: 'id'});
+    this.menus.subscribe(dishes => {
+      this.config.totalItems = dishes.length;
+      this.max = dishes.length; 
+      this.spinner.hide();
+    }); 
+  }
   
 
     async uploadPhoto(type:string, image: any) {
@@ -344,6 +377,7 @@ export class MenusComponent implements OnInit {
 
     reset(){
       this.form.patchValue({
+        restId: '',
         description: {es:'', en:''},
         name: {es:'', en:''},
         order: '',

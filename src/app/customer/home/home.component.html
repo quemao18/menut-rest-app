@@ -2,9 +2,16 @@
     <div class="container-fluid top">
         <div class="row">
             <div class="col-md-6 mx-auto">
+                <app-restaurant-card-item-large *ngIf="item"
+                [lang]="lang" 
+                [item]="item"
+                ></app-restaurant-card-item-large>
+            </div>
+
+            <!-- <div class="col-md-6 mx-auto">
                 <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
-                    <div [@animate] class="card" style="background-color:ghostwhite;">
-                        <div class="card-header card-header-orange">
+                    <div [@animate] class="card" style="background-color:ghostwhite;"> -->
+                        <!-- <div class="card-header card-header-theme">
                             <h4 class="card-title mt-0">{{settings?.appName}}</h4>
                         </div>
                         <div class="card-body menu">
@@ -12,15 +19,15 @@
                             [textButton]="settings?.textButton"
                             [logo]="settings?.logo"
                             [textTitle]="settings?.textTitle" 
-                            [textDescription]="settings?.appSlogan"
+                            [slogan]="settings?.slogan"
                             [instagram]="settings?.instagram" 
                             [address]="settings?.address" 
                             [whatsapp]="settings?.whatsapp"
                             [route]="['/customer/menu']">
                             </app-card-home>
-                        </div>
-                    </div>
-                </div>
+                        </div> -->
+                    <!-- </div>
+                </div> -->
         </div>
     </div>
 </div>

@@ -38,7 +38,10 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ComponentsAdminModule } from './admin/components/components-admin.module';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
+import { chanchoTacoTheme } from './themes/chancho-taco-theme';
+import { ThemeModule } from './themes/themes.module';
+import { menuRestAppTheme } from './themes/menu-rest-app-theme';
 
 @NgModule({
   imports: [
@@ -61,6 +64,10 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
+    }),
+    ThemeModule.forRoot({
+      themes: [menuRestAppTheme, chanchoTacoTheme],
+      active: 'menu-rest-app'
     })
   ],
   declarations: [

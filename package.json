@@ -11,7 +11,9 @@
     "e2e": "ng e2e",
     "install-clean": "rm node_modules /a && rm package-lock.json && npm install",
     "build-fire": "ng build --configuration production && firebase deploy",
-    "deploy": "ng build && firebase deploy"
+    "deploy": "ng build && firebase deploy",
+    "manifest:menu-rest-app": "cpx src/assets/projects/menu-rest-app/manifest/*.* src/",
+    "icons:menu-rest-app": "cpx src/assets/projects/menu-rest-app/icons/*.* src/assets/icons/"
   },
   "engines": {
     "node": "6.11.1",

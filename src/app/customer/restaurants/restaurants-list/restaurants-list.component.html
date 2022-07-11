@@ -1,0 +1,25 @@
+<div class="main-content">
+    <div class="container-fluid top">
+        <div class="row">
+            <div [@.disabled]="disable" class="col-md-6 mx-auto">
+            <ngx-spinner [fullScreen]="false" type="ball-scale-multiple" size="medium"></ngx-spinner>
+                <div [@animate]="(restaurants | async)" class="card">
+                    <div class="card-header card-header-theme">
+                        <h4 class="card-title mt-0">Elige un restaurante</h4>
+                    </div>
+                    <div class="card-body menu">
+                        <app-restaurant-card-item-medium *ngFor="let rest of restaurants | async"
+                        [lang]="lang" 
+                        [item]="rest"
+                        ></app-restaurant-card-item-medium>
+                    </div>
+                    <button *ngIf="totalItemsCart>0" [routerLink]="['/cart']" class="float-right" mat-mini-fab color="warn"><i class="material-icons" >shopping_cart</i>
+                        <span class="badge badge-light">{{totalItemsCart}}</span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  

@@ -18,6 +18,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MainPipeModule } from 'app/pipes/pipes.module';
 import { HomeCardComponent } from './home/home-card/home-card.component';
+import { RestaurantCardItemMediumComponent } from './restaurant-card/restaurant-card-item-medium/restaurant-card-item-medium.component';
+import { RestaurantCardItemLargeComponent } from './restaurant-card/restaurant-card-item-large/restaurant-card-item-large.component';
 
 
 @NgModule({
@@ -44,6 +46,8 @@ import { HomeCardComponent } from './home/home-card/home-card.component';
     CardItemComponent,
     MenuPdfComponent,
     HomeCardComponent,
+    RestaurantCardItemMediumComponent,
+    RestaurantCardItemLargeComponent,
   ],
   exports: [
     MenuCardItemLargeComponent,
@@ -53,7 +57,9 @@ import { HomeCardComponent } from './home/home-card/home-card.component';
     QrCardComponent,
     CardItemComponent,
     MenuPdfComponent,
-    HomeCardComponent
+    HomeCardComponent,
+    RestaurantCardItemMediumComponent,
+    RestaurantCardItemLargeComponent,
   ]
 })
 export class SharedModule { }
